@@ -20,9 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('transaction_code')->nullable();
             $table->uuid('parent_company_id')->nullable()->index();
-            $table->foreign('parent_company_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('transaction_code')->nullable();
             $table->boolean('is_enable')->default(1);
             $table->rememberToken();
