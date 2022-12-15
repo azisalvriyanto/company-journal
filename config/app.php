@@ -195,6 +195,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // roles and permissions
+        jeremykenedy\LaravelRoles\RolesServiceProvider::class,
+
     ],
 
     /*

@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('', function () {
+    // return view('welcome');
+
+    return redirect()->route('login');
+})->name('home');
+
+Auth::routes();
+
+Route::middleware(["auth"])->group(function () {
+    Route::resource('dashboards', App\Http\Controllers\HomeController::class)->only('index');
 });
