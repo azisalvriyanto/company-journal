@@ -21,11 +21,15 @@ class UsersTableSeeder extends Seeder
          * Add Users
          *
          */
-        if (config('roles.models.defaultUser')::where('email', '=', 'admin@admin.com')->first() === null) {
+        if (config('roles.models.defaultUser')::where('email', '=', 'admin@sintas.space')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'Admin',
-                'email'    => 'admin@admin.com',
-                'password' => bcrypt('password'),
+                'group'             => 'User',
+                'name'              => 'Admin',
+                'email'             => 'admin@sintas.space',
+                'password'          => bcrypt('password'),
+                'parent_company_id' => NULL,
+                'transaction_code'  => NULL,
+                'is_enable'         => 1,
             ]);
 
             $newUser->attachRole($adminRole);
@@ -34,25 +38,32 @@ class UsersTableSeeder extends Seeder
             }
         }
 
+        $mainCompany = config('roles.models.defaultUser')::create([
+            'group'     => 'Company',
+            'name'      => 'Sintas Space',
+            'email'     => NULL,
+            'password'  => NULL,
+        ]);
 
-        if (config('roles.models.defaultUser')::where('email', '=', 'admin@admin.com')->first() === null) {
+        $company = config('roles.models.defaultUser')::create([
+            'group'             => 'Company',
+            'name'              => 'Sintas',
+            'email'             => NULL,
+            'password'          => NULL,
+            'parent_company_id' => $mainCompany->id,
+            'transaction_code'  => 'SNTS',
+            'is_enable'         => 1,
+        ]);
+
+        if (config('roles.models.defaultUser')::where('email', '=', 'user@sintas.space')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'Admin',
-                'email'    => 'admin@admin.com',
-                'password' => bcrypt('password'),
-            ]);
-
-            $newUser->attachRole($adminRole);
-            foreach ($permissions as $permission) {
-                $newUser->attachPermission($permission);
-            }
-        }
-
-        if (config('roles.models.defaultUser')::where('email', '=', 'user@user.com')->first() === null) {
-            $newUser = config('roles.models.defaultUser')::create([
-                'name'     => 'User',
-                'email'    => 'user@user.com',
-                'password' => bcrypt('password'),
+                'group'             => 'User',
+                'name'              => 'User',
+                'email'             => 'user@sintas.space',
+                'password'          => bcrypt('password'),
+                'parent_company_id' => $company->id,
+                'transaction_code'  => NULL,
+                'is_enable'         => 1,
             ]);
 
             $newUser->attachRole($userRole);

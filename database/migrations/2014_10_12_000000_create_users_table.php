@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->uuid('parent_company_id')->nullable()->index();
             $table->string('transaction_code')->nullable();
             $table->boolean('is_enable')->default(1);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
