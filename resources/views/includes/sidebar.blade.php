@@ -98,11 +98,15 @@
                                                 auth()->user()->hasRole('user'),
                                             ],
                                         ],
-                                    //     [
-                                    //         'name'  => 'Item',
-                                    //         'url'       => route('items.index'),
-                                    //         'route'     => 'items.'
-                                    //     ],
+                                        [
+                                            'name'  => 'Item',
+                                            'url'       => route('items.index'),
+                                            'route'     => 'items.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
                                     ]
                                 ],
                                 [

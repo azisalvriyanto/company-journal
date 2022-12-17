@@ -28,4 +28,5 @@ Route::middleware(["auth"])->group(function () {
 
     Route::resource('item-categories', App\Http\Controllers\ItemCategoryController::class);
     Route::resource('unit-of-measurements', App\Http\Controllers\ItemCategoryController::class);
+    Route::resource('items', App\Http\Controllers\ItemController::class);
 });
