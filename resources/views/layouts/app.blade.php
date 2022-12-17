@@ -365,6 +365,29 @@
     <!-- Style Switcher JS -->
     <script>
         (function () {
+            // INITIALIZATION OF NAVBAR VERTICAL ASIDE
+            new HSSideNav('.js-navbar-vertical-aside').init();
+
+            // INITIALIZATION OF FORM SEARCH
+            const HSFormSearchInstance = new HSFormSearch('.js-form-search');
+
+            if (HSFormSearchInstance.collection.length) {
+                HSFormSearchInstance.getItem(1).on('close', function (el) {
+                    el.classList.remove('top-0')
+                });
+
+                document.querySelector('.js-form-search-mobile-toggle').addEventListener('click', e => {
+                    let dataOptions = JSON.parse(e.currentTarget.getAttribute('data-hs-form-search-options')),
+                    $menu = document.querySelector(dataOptions.dropMenuElement)
+
+                    $menu.classList.add('top-0')
+                    $menu.style.left = 0
+                });
+            }
+
+            // INITIALIZATION OF BOOTSTRAP DROPDOWN
+            HSBsDropdown.init();
+
             // STYLE SWITCHER
             const $dropdownBtn = document.getElementById('selectThemeDropdown') // Dropdowon trigger
             const $variants = document.querySelectorAll(`[aria-labelledby="selectThemeDropdown"] [data-icon]`) // All items of the dropdown
@@ -399,6 +422,12 @@
             // INITIALIZATION OF GO TO
             new HSGoTo('.js-go-to');
         })();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
     <!-- End Style Switcher JS -->
 

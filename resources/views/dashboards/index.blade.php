@@ -1536,29 +1536,6 @@
 <script>
     (function() {
         window.onload = function () {
-            // INITIALIZATION OF NAVBAR VERTICAL ASIDE
-            new HSSideNav('.js-navbar-vertical-aside').init();
-
-            // INITIALIZATION OF FORM SEARCH
-            const HSFormSearchInstance = new HSFormSearch('.js-form-search');
-
-            if (HSFormSearchInstance.collection.length) {
-                HSFormSearchInstance.getItem(1).on('close', function (el) {
-                    el.classList.remove('top-0')
-                });
-
-                document.querySelector('.js-form-search-mobile-toggle').addEventListener('click', e => {
-                    let dataOptions = JSON.parse(e.currentTarget.getAttribute('data-hs-form-search-options')),
-                    $menu = document.querySelector(dataOptions.dropMenuElement)
-
-                    $menu.classList.add('top-0')
-                    $menu.style.left = 0
-                });
-            }
-
-            // INITIALIZATION OF BOOTSTRAP DROPDOWN
-            HSBsDropdown.init();
-
             // INITIALIZATION OF CHARTJS
             HSCore.components.HSChartJS.init('.js-chart')
 

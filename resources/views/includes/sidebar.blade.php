@@ -78,7 +78,18 @@
                                         auth()->user()->hasRole('admin')
                                     ],
                                     'sub_menus' => NULL
-                                ]
+                                ],
+                                [
+                                    'name'      => 'User',
+                                    'icon'      => 'bi-people',
+                                    'url'       => route('users.index'),
+                                    'route'     => 'users.',
+                                    'permissions'  => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus' => NULL
+                                ],
                             ]
                         ];
                     ?>

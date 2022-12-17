@@ -23,4 +23,6 @@ Auth::routes();
 
 Route::middleware(["auth"])->group(function () {
     Route::resource('dashboards', App\Http\Controllers\HomeController::class)->only('index');
+
+    Route::resource('users', App\Http\Controllers\UserController::class);
 });

@@ -198,6 +198,8 @@ return [
         // roles and permissions
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
 
+        // DataTables
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
