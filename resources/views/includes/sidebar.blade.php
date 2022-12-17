@@ -66,7 +66,8 @@
                         $groups['reference'] = [
                             'name'  => 'Reference',
                             'permissions'  => [
-                                auth()->user()->hasRole('admin')
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
                             ],
                             'menus' => [
                                 [

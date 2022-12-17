@@ -17,12 +17,17 @@
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="usersExportDropdown"
+                    <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">
+                        <i class="bi-clipboard-plus-fill me-2"></i> Create
+                    </a>
+
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatbleUsersExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown" style="">
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatbleUsersExportDropdown"
+                        style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
                             <img class="avatar avatar-xss avatar-4x3 me-2"
@@ -66,6 +71,7 @@
                 "isResponsive": false,
                 "isShowPaging": false,
                 "entries": "#datatableEntries",
+                "deferRender": true,
                 "info": {
                     "totalQty": "#datatableUserWithPaginationInfoTotalQty"
                 },
@@ -109,12 +115,23 @@
                         "name": "name"
                     },
                     {
+                        "data": "group",
+                        "name": "group"
+                    },
+                    {
                         "data": "email",
                         "name": "email"
                     },
                     {
                         "data": "is_enable",
                         "name": "is_enable",
+                        "className": "text-center"
+                    },
+                    {
+                        "data": "actions",
+                        "name": "actions",
+                        "orderable": false,
+                        "searchable": false,
                         "className": "text-center"
                     }
                 ],
@@ -126,17 +143,23 @@
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="1">Name</th>
+                    <th rowspan="1">Group</th>
                     <th rowspan="1">Email</th>
                     <th rowspan="2">Status</th>
+                    <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
                     <th>
-                        <input type="text" id="name_search" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search"
                             placeholder="Search name" data-id="1">
                     </th>
                     <th>
-                        <input type="text" id="email_search" class="form-control form-control-sm datatable-search"
-                            placeholder="Search email" data-id="2">
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search group" data-id="2">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search email" data-id="3">
                     </th>
                 </tr>
             </thead>
@@ -212,11 +235,18 @@
                 }
             },
             language: {
-                zeroRecords: `<div class="text-center p-4">
-                    <img class="mb-3" src="{{ asset('assets/svg/illustrations/oc-error.svg') }}" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="default">
-                    <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="dark">
-                    <p class="mb-0">No data to show</p>
-                    </div>`
+                processing: `
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading ...</span>
+                        </div>
+                `,
+                zeroRecords: `
+                    <div class="text-center p-4">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations/oc-error.svg') }}" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="default">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}" alt="Image Description" style="width: 10rem;" data-hs-theme-appearance="dark">
+                        <p class="mb-0">No data to show</p>
+                    </div>
+                `
             }
         });
         const datatableUser = HSCore.components.HSDatatables.getItem('datatableUser');
@@ -246,7 +276,91 @@
 
                 HSCore.components.HSDatatables.getItem(targetTable).column(targetColumnIndex).search(elVal !== 'null' ? elVal : '').draw()
             })
-        })
+        });
+
+        $(document).on('click', '.datatable-btn-destroy', async function (e) {
+            const thisButton    = $(this);
+            const thisTr        = $($(this).parentsUntil('tr').parent());
+
+            const listNote      = `
+                </br>
+                </br>Name: ${thisTr.data('name')}
+                </br>Email: ${thisTr.data('email')}
+            `;
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to delete this list?${listNote ?? ''}`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    destroy: {
+                        text: 'Yes, Delete',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            $.post(thisButton.data('url'), {
+                                _method: 'DELETE'
+                            })
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    datatableUser.ajax.reload(null, false);
+
+                                    $.confirm({
+                                        title: 'Success',
+                                        type: 'green',
+                                        content: `${data.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${data.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                }
+            });
+        });
     })()
 </script>
 @endsection

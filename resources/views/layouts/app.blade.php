@@ -27,6 +27,9 @@
     <link rel="preload" href="{{ asset('assets/css/theme.min.css') }}" data-hs-appearance="default" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="{{ asset('assets/css/theme-dark.min.css') }}" data-hs-appearance="dark" as="style" onload="this.rel='stylesheet'">
 
+    <!-- CSS jQuery Confirm -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-confirm/jquery-confirm.min.css') }}">
+
     <style data-hs-appearance-onload-styles>
         * {
             transition: unset !important;
@@ -243,6 +246,18 @@
                 transform: scale(1);
             }
         }
+
+        div.dataTables_wrapper div.dataTables_processing {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            margin-left: -50%;
+            margin-top: 0px;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
     </style>
 
     <!-- Optional Style -->
@@ -362,7 +377,10 @@
     <script src="{{ asset('assets/js/theme.min.js') }}"></script>
     <script src="{{ asset('assets/js/hs.theme-appearance-charts.js') }}"></script>
 
-    <!-- Style Switcher JS -->
+    <!-- JS jQuery Confirm -->
+    <script src="{{ asset('assets/vendor/jquery-confirm/jquery-confirm.min.js') }}"></script>
+
+    <!-- JS Style Switcher -->
     <script>
         (function () {
             // INITIALIZATION OF NAVBAR VERTICAL ASIDE
