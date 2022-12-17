@@ -89,6 +89,15 @@
                                                 auth()->user()->hasRole('user'),
                                             ],
                                         ],
+                                        [
+                                            'name'  => 'Unit of Measurements',
+                                            'url'           => route('unit-of-measurements.index'),
+                                            'route'         => 'unit-of-measurements.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
                                     //     [
                                     //         'name'  => 'Item',
                                     //         'url'       => route('items.index'),
