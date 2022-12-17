@@ -71,6 +71,32 @@
                             ],
                             'menus' => [
                                 [
+                                    'name'      => 'Item',
+                                    'icon'      => 'bi-kanban',
+                                    'url'       => NULL,
+                                    'route'     => 'dashboards.',
+                                    'permissions'  => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus' => [
+                                        [
+                                            'name'  => 'Category',
+                                            'url'           => route('item-categories.index'),
+                                            'route'         => 'item-categories.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
+                                    //     [
+                                    //         'name'  => 'Item',
+                                    //         'url'       => route('items.index'),
+                                    //         'route'     => 'items.'
+                                    //     ],
+                                    ]
+                                ],
+                                [
                                     'name'      => 'Roles',
                                     'icon'      => 'bi-kanban',
                                     'url'       => route('laravelroles::roles.index'),

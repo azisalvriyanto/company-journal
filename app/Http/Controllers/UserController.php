@@ -12,11 +12,11 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::query()
-        ->select(['users.*']);
-
         if (request()->ajax()) {
-            return DataTables::eloquent($users)
+            $query = User::query()
+            ->select(['users.*']);
+
+            return DataTables::eloquent($query)
             ->editColumn('email', function ($query) {
                 return $query->email ? $query->email : '<i class="text-muted">Empty</i>';
             })
@@ -69,14 +69,13 @@ class UserController extends Controller
         return view('users.index');
     }
 
-
     public function destroy(Request $request, $id)
     {
-        $user = User::query()->find($id);
-        if ($user) {
+        $query = User::query()->find($id);
+        if ($query) {
             try {
                 DB::beginTransaction();
-                $user->delete();
+                $query->delete();
                 DB::commit();
 
                 return response()->json([
