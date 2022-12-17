@@ -13,8 +13,14 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (request()->ajax()) {
+            $company = auth()->user()->parentCompany;
             $query = User::query()
-            ->select(['users.*']);
+            ->select(['users.*'])
+            ->whereGroup('User')
+            ->whereIn('parent_company_id', [
+                $company->id,
+                $company->parentCompany->id
+            ]);
 
             return DataTables::eloquent($query)
             ->editColumn('email', function ($query) {

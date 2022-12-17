@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'User List')
+@section('title', 'Items List')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('users.index') }}">User</a>
+    <a class="list-separator-link" href="{{ route('items.index') }}">Item</a>
 </li>
 @endsection
 
@@ -12,21 +12,21 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Users</h4>
+                <h4 class="card-header-title">Items</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('items.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableUserExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableItemExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableUserExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableItemExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -64,8 +64,8 @@
     </div>
 
     <div class="table-responsive datatable-custom">
-        <table id="datatableUser"
-            class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
+        <table id="datatableItem"
+            class="js-datatable table table-sm table-bordered table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
                 "isResponsive": false,
@@ -73,9 +73,9 @@
                 "entries": "#datatableEntries",
                 "deferRender": true,
                 "info": {
-                    "totalQty": "#datatableUserWithPaginationInfoTotalQty"
+                    "totalQty": "#datatableItemWithPaginationInfoTotalQty"
                 },
-                "pagination": "datatableUserWithPagination",
+                "pagination": "datatableItemWithPagination",
                 "dom": "Bfrtip",
                 "buttons": [
                     {
@@ -115,12 +115,16 @@
                         "name": "name"
                     },
                     {
-                        "data": "group",
-                        "name": "group"
+                        "data": "category.name",
+                        "name": "category.name"
                     },
                     {
-                        "data": "email",
-                        "name": "email"
+                        "data": "unitOfMeasurement.name",
+                        "name": "unitOfMeasurement.name"
+                    },
+                    {
+                        "data": "detail_group",
+                        "name": "detail_group"
                     },
                     {
                         "data": "is_enable",
@@ -143,23 +147,28 @@
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="1">Name</th>
-                    <th rowspan="1">Group</th>
-                    <th rowspan="1">Email</th>
+                    <th rowspan="1">Category</th>
+                    <th rowspan="1">Unit Of Measurement</th>
+                    <th rowspan="1">Detail Group</th>
                     <th rowspan="2">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search name" data-id="1">
+                            placeholder="Search..." data-id="1">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search group" data-id="2">
+                            placeholder="Search..." data-id="1">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search email" data-id="3">
+                            placeholder="Search..." data-id="1">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-id="1">
                     </th>
                 </tr>
             </thead>
@@ -187,13 +196,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatableUserWithPaginationInfoTotalQty"></span>
+                    <span id="datatableItemWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatableUserWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatableItemWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -249,7 +258,7 @@
                 `
             }
         });
-        const datatableUser = HSCore.components.HSDatatables.getItem('datatableUser');
+        const datatableItem = HSCore.components.HSDatatables.getItem('datatableItem');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -304,7 +313,7 @@
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatableUser.ajax.reload(null, false);
+                                    datatableItem.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
