@@ -170,7 +170,7 @@
                     action: async function () {
                         var values          = [];
                         values['_method']   = `PUT`;
-                        values['owner']     = `{{ auth()->user()->parent_company_id }}`;
+                        values['owner']     = `{{ auth()->user()->parentCompany->parentCompany->id }}`;
                         $(`[name]`).map(function() {
                             const parameter = $(this).attr('name');
 
