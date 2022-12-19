@@ -74,7 +74,7 @@
                                     'name'      => 'Item',
                                     'icon'      => 'bi-kanban',
                                     'url'       => NULL,
-                                    'route'     => 'item.',
+                                    'route'     => 'items.',
                                     'permissions'  => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
@@ -82,8 +82,8 @@
                                     'sub_menus' => [
                                         [
                                             'name'  => 'Category',
-                                            'url'           => route('item-categories.index'),
-                                            'route'         => 'item-categories.',
+                                            'url'           => route('items.categories.index'),
+                                            'route'         => 'items.categories.',
                                             'permissions'   => [
                                                 auth()->user()->hasRole('admin'),
                                                 auth()->user()->hasRole('user'),
@@ -91,8 +91,8 @@
                                         ],
                                         [
                                             'name'  => 'Unit of Measurements',
-                                            'url'           => route('unit-of-measurements.index'),
-                                            'route'         => 'unit-of-measurements.',
+                                            'url'           => route('items.unit-of-measurements.index'),
+                                            'route'         => 'items.unit-of-measurements.',
                                             'permissions'   => [
                                                 auth()->user()->hasRole('admin'),
                                                 auth()->user()->hasRole('user'),
@@ -100,8 +100,8 @@
                                         ],
                                         [
                                             'name'  => 'Item',
-                                            'url'       => route('items.index'),
-                                            'route'     => 'items.',
+                                            'url'       => route('items.items.index'),
+                                            'route'     => 'items.items.',
                                             'permissions'   => [
                                                 auth()->user()->hasRole('admin'),
                                                 auth()->user()->hasRole('user'),

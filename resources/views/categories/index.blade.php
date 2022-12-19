@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Items')
+@section('title', 'Categories')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.items.index') }}">Items</a>
+    <a class="list-separator-link" href="{{ route('items.categories.index') }}">Category</a>
 </li>
 @endsection
 
@@ -12,12 +12,12 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Items</h4>
+                <h4 class="card-header-title">Category</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('items.items.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('items.categories.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
@@ -115,18 +115,6 @@
                         "name": "name"
                     },
                     {
-                        "data": "category.name",
-                        "name": "category.name"
-                    },
-                    {
-                        "data": "unitOfMeasurement.name",
-                        "name": "unitOfMeasurement.name"
-                    },
-                    {
-                        "data": "detail_group",
-                        "name": "detail_group"
-                    },
-                    {
                         "data": "is_enable",
                         "name": "is_enable",
                         "className": "text-center"
@@ -147,25 +135,10 @@
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="1">Name</th>
-                    <th rowspan="1">Category</th>
-                    <th rowspan="1">Unit Of Measurement</th>
-                    <th rowspan="1">Detail Group</th>
                     <th rowspan="2">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
-                    </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
                             placeholder="Search..." data-id="1">

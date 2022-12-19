@@ -3,10 +3,10 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.index') }}">Items</a>
+    <a class="list-separator-link" href="{{ route('items.items.index') }}">Items</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.create') }}">Create Item</a>
+    <a class="list-separator-link" href="{{ route('items.items.create') }}">Create Item</a>
 </li>
 @endsection
 
@@ -175,7 +175,7 @@
         //     "searchField": ['name'],
 		//     "options": [],
         //     "load": function(query, callback) {
-        //         fetch(`{{ route("api.items.detail-groups.index") }}?keyword=${encodeURIComponent(query)}`)
+        //         fetch(`{{ route("api.items.items.detail-groups.index") }}?keyword=${encodeURIComponent(query)}`)
         //         .then(response => response.json())
         //         .then(json => {
         //             callback(json.data);
