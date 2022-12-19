@@ -15,7 +15,7 @@
     <div class="col-lg-8 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Product information</h4>
+                <h4 class="card-header-title">Item information</h4>
             </div>
 
             <div class="card-body">

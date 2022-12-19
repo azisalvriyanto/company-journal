@@ -12,7 +12,6 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
             $query = Category::query()
@@ -56,6 +55,11 @@ class CategoryController extends Controller
         }
 
         return view('categories.index');
+    }
+
+    public function create()
+    {
+        return view('categories.create');
     }
 
     public function destroy(Request $request, $id)

@@ -3,7 +3,7 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.categories.index') }}">Category</a>
+    <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
 </li>
 @endsection
 
