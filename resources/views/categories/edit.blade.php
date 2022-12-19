@@ -6,7 +6,7 @@
     <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.categories.create') }}">Edit Category</a>
+    <a class="list-separator-link" href="{{ route('items.categories.edit', $category->id) }}">Edit Category</a>
 </li>
 @endsection
 
@@ -15,7 +15,7 @@
     <div class="col-lg-8 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Cartegory information</h4>
+                <h4 class="card-header-title">Unit of measurement information</h4>
             </div>
             
 
@@ -26,7 +26,7 @@
                             <span class="text-dark">
                                 Availability
                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Cartegory availability switch toggler."></i>
+                                    data-bs-placement="top" title="Unit of measurement availability switch toggler."></i>
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">

@@ -127,7 +127,7 @@ class Categories extends Controller
         } else {
             return response()->json([
                 'status'    => 404,
-                'message'   => 'Item category not found.',
+                'message'   => 'Category not found.',
                 'data'      => [],
                 'errors'    => [],
             ]);

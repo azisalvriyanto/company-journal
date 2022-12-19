@@ -131,7 +131,7 @@ class UnitOfMeasurements extends Controller
         } else {
             return response()->json([
                 'status'    => 404,
-                'message'   => 'Item category not found.',
+                'message'   => 'Unit of measurement not found.',
                 'data'      => [],
                 'errors'    => [],
             ]);

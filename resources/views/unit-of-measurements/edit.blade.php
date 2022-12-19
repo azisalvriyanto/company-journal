@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Create Unit of Measurement')
+@section('title', 'Create Item')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.index') }}">Unit of Measurement</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.index') }}">Unit of Measurements</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.create') }}">Create Unit of Measurement</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.edit', $unitOfMeasurement->id) }}">Edit Unit of Measurements</a>
 </li>
 @endsection
 
@@ -25,7 +25,7 @@
                             <span class="text-dark">
                                 Availability
                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Unit of measurement availability switch toggler."></i>
+                                    data-bs-placement="top" title="Cartegory availability switch toggler."></i>
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
@@ -42,7 +42,7 @@
                             <label for="name" class="form-label">Name</label>
 
                             <input id="name" name="name" type="text" class="form-control" placeholder="Kilograms, Meter, Ton, etc."
-                                aria-label="Kilograms, Meter, Ton, etc." value="">
+                                aria-label="Kilograms, Meter, Ton, etc." value="{{ $unitOfMeasurement->name }}">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -50,7 +50,7 @@
                             <label for="code" class="form-label">Code</label>
 
                             <input id="code" name="code" type="text" class="form-control" placeholder="Kg, Meter, Ton, etc."
-                                aria-label="Kg, Meter, Ton, etc." value="">
+                                aria-label="Kg, Meter, Ton, etc." value="{{ $unitOfMeasurement->code }}">
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -126,14 +126,14 @@
         });
     });
 
-    $(document).on('click', '.btn-create', async function (e) {
+    $(document).on('click', '.btn-save', async function (e) {
         const thisButton    = $(this);
         const listNote      = '';
-        const url           = `{{ route('items.unit-of-measurements.index') }}`
+        const url           = `{{ route('items.unit-of-measurements.show', $unitOfMeasurement->id) }}`
 
         await $.confirm({
             title: 'Confirmation!',
-            content: `Do you want to create this form?${listNote ?? ''}`,
+            content: `Do you want to save this form?${listNote ?? ''}`,
             autoClose: 'cancel|5000',
             type: 'orange',
             buttons: {
@@ -144,10 +144,11 @@
                     }
                 },
                 okay: {
-                    text: 'Yes, Create',
+                    text: 'Yes, Save',
                     btnClass: 'btn-primary',
                     action: async function () {
                         var values          = [];
+                        values['_method']   = `PUT`;
                         values['owner']     = `{{ auth()->user()->parent_company_id }}`;
                         $(`[name]`).map(function() {
                             const parameter = $(this).attr('name');
@@ -168,26 +169,20 @@
                                 await $.confirm({
                                     title: 'Confirmation!',
                                     type: 'orange',
+                                    autoClose: 'close|3000',
                                     buttons: {
                                         index: {
                                             text: 'Back',
                                             btnClass: 'btn-secondary',
                                             action: function () {
-                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
+                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}`)
                                             }
                                         },
-                                        reCreate: {
-                                            text: 'Recreate',
-                                            btnClass: 'btn-primary',
-                                            action: function () {
-                                                window.location.reload();
-                                            }
-                                        },
-                                        edit: {
-                                            text: 'Edit',
+                                        close: {
+                                            text: 'Still Edit',
                                             btnClass: 'btn-success',
+                                            keys: ['enter', 'esc'],
                                             action: function () {
-                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}/${res.data.id}/edit`);
                                             }
                                         },
                                     },
