@@ -17,10 +17,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('owner_id')->index();
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignUuid('item_category_id')->index();
-            $table->foreign('item_category_id')->references('id')->on('item_categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('category_id')->index();
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
-            $table->string('item_code')->nullable();
+            $table->string('code')->nullable();
             $table->foreignUuid('unit_of_measurement_id')->index();
             $table->foreign('unit_of_measurement_id')->references('id')->on('unit_of_measurements')->onUpdate('cascade')->onDelete('cascade');
             $table->string('image_url')->nullable();

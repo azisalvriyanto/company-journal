@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Category;
 use App\Models\Item;
+use App\Models\UnitOfMeasurement;
 
 use DataTables;
 
@@ -59,6 +61,15 @@ class ItemController extends Controller
         }
 
         return view('items.index');
+    }
+
+    public function create()
+    {
+        $data['detailGroups'] = collect(Item::DETAIL_GROUPS);
+        $data['categories'] = Category::query()->get()->all();
+        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->get()->all();
+
+        return view('items.create', $data);
     }
 
     public function destroy(Request $request, $id)

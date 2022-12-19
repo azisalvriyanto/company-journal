@@ -3,7 +3,7 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.index') }}">Item</a>
+    <a class="list-separator-link" href="{{ route('items.index') }}">Items</a>
 </li>
 @endsection
 
@@ -231,7 +231,6 @@
 <script src="{{ asset('assets/vendor/datatables.net.extensions/select/select.min.js') }}"></script>
 
 <script>
-    // DataTables
     (function () {
         HSCore.components.HSDatatables.init('.js-datatable', {
             select: {
@@ -371,6 +370,6 @@
                 }
             });
         });
-    })()
+    })();
 </script>
 @endsection

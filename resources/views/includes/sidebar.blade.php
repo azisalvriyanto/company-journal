@@ -74,7 +74,7 @@
                                     'name'      => 'Item',
                                     'icon'      => 'bi-kanban',
                                     'url'       => NULL,
-                                    'route'     => 'dashboards.',
+                                    'route'     => 'item.',
                                     'permissions'  => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),

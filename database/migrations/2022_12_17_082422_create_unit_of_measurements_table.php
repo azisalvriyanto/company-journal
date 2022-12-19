@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignUuid('owner_id')->index();
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
+            $table->string('code');
             $table->boolean('is_enable')->default(1);
             $table->timestamps();
             $table->softDeletes();

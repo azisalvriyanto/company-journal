@@ -10,6 +10,21 @@ class Item extends Model
 {
     use SoftDeletes, UsesUuid;
 
+    public const DETAIL_GROUPS = [
+        [
+            'id'    => "Product Name",
+            'name'  => "Product Name",
+        ],
+        [
+            'id'    => "Production Date",
+            'name'  => "Production Date",
+        ],
+        [
+            'id'    => "Expired Date",
+            'name'  => "Expired Date",
+        ]
+    ];
+
     protected $guarded = [];
 
     public function owner()

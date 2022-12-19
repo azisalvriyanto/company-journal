@@ -32874,7 +32874,8 @@ a:hover .text-inherit {
 
 .dz-dropzone .dz-message {
     width: 100%;
-    text-align: center
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .dz-dropzone .dz-details {
