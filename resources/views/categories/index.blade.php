@@ -21,12 +21,12 @@
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableItemExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableCategoryExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableItemExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableCategoryExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="table-responsive datatable-custom">
-        <table id="datatableItem"
+        <table id="datatableCategory"
             class="js-datatable table table-sm table-bordered table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
@@ -73,9 +73,9 @@
                 "entries": "#datatableEntries",
                 "deferRender": true,
                 "info": {
-                    "totalQty": "#datatableItemWithPaginationInfoTotalQty"
+                    "totalQty": "#datatableCategoryWithPaginationInfoTotalQty"
                 },
-                "pagination": "datatableItemWithPagination",
+                "pagination": "datatableCategoryWithPagination",
                 "dom": "Bfrtip",
                 "buttons": [
                     {
@@ -145,7 +145,7 @@
                     </th>
                     <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatableItem" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatableCategory" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -181,13 +181,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatableItemWithPaginationInfoTotalQty"></span>
+                    <span id="datatableCategoryWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatableItemWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatableCategoryWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -239,7 +239,7 @@
                 `
             }
         });
-        const datatableItem = HSCore.components.HSDatatables.getItem('datatableItem');
+        const datatableCategory = HSCore.components.HSDatatables.getItem('datatableCategory');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -311,7 +311,7 @@
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatableItem.ajax.reload(null, false);
+                                    datatableCategory.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
