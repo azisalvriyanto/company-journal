@@ -176,7 +176,7 @@
         //     "searchField": ['name'],
 		//     "options": [],
         //     "load": function(query, callback) {
-        //         fetch(`{{ route("api.items.items.detail-groups.index") }}?keyword=${encodeURIComponent(query)}`)
+        //         fetch(`{{ route("api.items.detail-groups.index") }}?keyword=${encodeURIComponent(query)}`)
         //         .then(response => response.json())
         //         .then(json => {
         //             callback(json.data);

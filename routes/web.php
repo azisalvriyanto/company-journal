@@ -17,7 +17,7 @@ Route::middleware(["auth"])->group(function () {
 
     Route::group(['as' => 'items.', 'prefix' => 'items'], function () {
         Route::resource('categories', App\Http\Controllers\CategoryController::class);
-        Route::resource('unit-of-measurements', App\Http\Controllers\UnitOfMeasurementsController::class);
+        Route::resource('unit-of-measurements', App\Http\Controllers\UnitOfMeasurementController::class);
         Route::resource('items', App\Http\Controllers\ItemController::class);
     });
 });

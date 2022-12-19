@@ -99,7 +99,6 @@ class Categories extends Controller
         return response()->json($response);
     }
 
-
     public function destroy($request, $id)
     {
         $query = Category::query()->find($id);

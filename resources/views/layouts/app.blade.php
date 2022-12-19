@@ -20,12 +20,15 @@
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-icons/font/bootstrap-icons.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/vendor/daterangepicker/daterangepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css') }}">
-
     <!-- CSS Front Template -->
     <link rel="preload" href="{{ asset('assets/css/theme.min.css') }}" data-hs-appearance="default" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="{{ asset('assets/css/theme-dark.min.css') }}" data-hs-appearance="dark" as="style" onload="this.rel='stylesheet'">
+
+    <!-- CSS Date Range Picker -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/daterangepicker/daterangepicker.css') }}">
+
+    <!-- CSS Tom Select -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css') }}">
 
     <!-- CSS jQuery Confirm -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-confirm/jquery-confirm.min.css') }}">
@@ -372,11 +375,13 @@
     <script src="{{ asset('assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/hs-form-search/dist/hs-form-search.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/hs-go-to/dist/hs-go-to.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/tom-select/dist/js/tom-select.complete.min.js') }}"></script>
 
     <!-- JS Front -->
     <script src="{{ asset('assets/js/theme.min.js') }}"></script>
     <script src="{{ asset('assets/js/hs.theme-appearance-charts.js') }}"></script>
+
+    <!-- CSS Tom Select -->
+    <script src="{{ asset('assets/vendor/tom-select/dist/js/tom-select.complete.min.js') }}"></script>
 
     <!-- JS jQuery Confirm -->
     <script src="{{ asset('assets/vendor/jquery-confirm/jquery-confirm.min.js') }}"></script>
