@@ -3,16 +3,16 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measuremets.index') }}">Categories</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.categories.create') }}">Create Category</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measuremets.create') }}">Create Category</a>
 </li>
 @endsection
 
 @section('content')
 <div class="row">
-    <div class="col-lg-8 mb-3 mb-lg-0">
+    <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
                 <h4 class="card-header-title">Cartegory information</h4>
@@ -36,41 +36,22 @@
 
                 <hr class="my-4">
 
-                <div class="mb-4">
-                    <label for="name" class="form-label">
-                        Name
-                        <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Categories are the goods or services you sell."></i>
-                    </label>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="mb-4">
+                            <label for="name" class="form-label">Name</label>
 
-                    <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="">
-                </div>
-            </div>
-        </div>
-    </div>
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Kilograms, Meter, Ton, etc."
+                                aria-label="Kilograms, Meter, Ton, etc." value="">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-4">
+                            <label for="code" class="form-label">Code</label>
 
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-header-title">Media</h4>
-            </div>
-
-            <div class="card-body">
-                <div id="image-url" class="js-dropzone dz-dropzone dz-dropzone-card w-100">
-                    <div class="dz-message">
-                        <img class="avatar avatar-xl avatar-4x3 mb-3"
-                            src="{{ asset('assets/svg/illustrations/oc-browse.svg') }}" alt="Browse File"
-                            data-hs-theme-appearance="default">
-                        <img class="avatar avatar-xl avatar-4x3 mb-3"
-                            src="{{ asset('assets/svg/illustrations-light/oc-browse.svg') }}" alt="Browse File"
-                            data-hs-theme-appearance="dark">
-
-                        <h5>Drag and drop your file here</h5>
-
-                        <p class="mb-2">or</p>
-
-                        <span class="btn btn-white btn-sm">Browse files</span>
+                            <input id="code" name="code" type="text" class="form-control" placeholder="Kg, Meter, Ton, etc."
+                                aria-label="Kg, Meter, Ton, etc." value="">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,7 +119,7 @@
                     text: 'Yes, Discard',
                     btnClass: 'btn-danger',
                     action: async function () {
-                        history.back() ?? window.location.replace(`{{ route('items.categories.index') }}`);
+                        history.back() ?? window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
                     }
                 },
             }
@@ -148,7 +129,7 @@
     $(document).on('click', '.btn-create', async function (e) {
         const thisButton    = $(this);
         const listNote      = '';
-        const url           = `{{ route('items.categories.index') }}`
+        const url           = `{{ route('items.unit-of-measurements.index') }}`
 
         await $.confirm({
             title: 'Confirmation!',
@@ -192,7 +173,7 @@
                                             text: 'Back',
                                             btnClass: 'btn-secondary',
                                             action: function () {
-                                                window.location.replace(`{{ route('items.categories.index') }}`);
+                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
                                             }
                                         },
                                         reCreate: {
@@ -206,7 +187,7 @@
                                             text: 'Edit',
                                             btnClass: 'btn-success',
                                             action: function () {
-                                                window.location.replace(`{{ route('items.categories.index') }}/${res.data.id}/edit`);
+                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}/${res.data.id}/edit`);
                                             }
                                         },
                                     },

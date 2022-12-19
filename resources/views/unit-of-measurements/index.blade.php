@@ -115,6 +115,10 @@
                         "name": "name"
                     },
                     {
+                        "data": "code",
+                        "name": "code"
+                    },
+                    {
                         "data": "is_enable",
                         "name": "is_enable",
                         "className": "text-center"
@@ -135,6 +139,7 @@
                 <tr>
                     <th rowspan="2" style="width: 5%">No</th>
                     <th rowspan="1">Name</th>
+                    <th rowspan="1">Code</th>
                     <th rowspan="1" style="width: 15%">Status</th>
                     <th rowspan="2" style="width: 10%">Actions</th>
                 </tr>
@@ -144,8 +149,12 @@
                             placeholder="Search..." data-target-column-index="1">
                     </th>
                     <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-target-column-index="2">
+                    </th>
+                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatableUnitOfMeasurement" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="3" data-target-table="datatableUnitOfMeasurement" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -286,6 +295,11 @@
                         <td>Name</td>
                         <td>:</td>
                         <td>${thisTr.data('name')}</td>
+                    </tr>
+                    <tr>
+                        <td>Code</td>
+                        <td>:</td>
+                        <td>${thisTr.data('code')}</td>
                     </tr>
                     <tr>
                         <td>Status</td>

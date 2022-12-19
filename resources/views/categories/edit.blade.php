@@ -6,7 +6,7 @@
     <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.items.create') }}">Edit Category</a>
+    <a class="list-separator-link" href="{{ route('items.categories.create') }}">Edit Category</a>
 </li>
 @endsection
 
