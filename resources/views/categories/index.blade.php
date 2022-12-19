@@ -65,7 +65,7 @@
 
     <div class="table-responsive datatable-custom">
         <table id="datatableCategory"
-            class="js-datatable table table-sm table-bordered table-thead-bordered table-nowrap table-align-middle card-table w-100"
+            class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
                 "isResponsive": false,
