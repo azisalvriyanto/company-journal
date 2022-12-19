@@ -90,7 +90,7 @@
                                             ],
                                         ],
                                         [
-                                            'name'  => 'Unit of Measurements',
+                                            'name'  => 'Unit of Measurement',
                                             'url'           => route('items.unit-of-measurements.index'),
                                             'route'         => 'items.unit-of-measurements.',
                                             'permissions'   => [

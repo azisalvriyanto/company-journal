@@ -270,6 +270,7 @@
 
         $(document).on('click', '.datatable-btn-destroy', async function (e) {
             const thisButton    = $(this);
+            const url           = thisButton.data('url');
             const thisTr        = $($(this).parentsUntil('tr').parent());
 
             const listNote      = `
@@ -306,7 +307,7 @@
                         text: 'Yes, Delete',
                         btnClass: 'btn-danger',
                         action: async function () {
-                            $.post(thisButton.data('url'), {
+                            $.post(url, {
                                 _method: 'DELETE'
                             })
                             .done(async function(res) {

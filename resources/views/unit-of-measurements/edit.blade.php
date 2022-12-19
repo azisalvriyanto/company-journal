@@ -63,7 +63,9 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
@@ -186,6 +188,81 @@
                                             }
                                         },
                                     },
+                                });
+                            } else {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: `${res.message ?? ''}`,
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            }
+                        })
+                        .fail(function () {
+                            $.confirm({
+                                title: 'Failed',
+                                type: 'red',
+                                content: 'There is some errors in app.',
+                                autoClose: 'close|3000',
+                                buttons: {
+                                    close: {
+                                        text: 'Close',
+                                        keys: ['enter', 'esc'],
+                                        action: function () {
+                                        }
+                                    },
+                                }
+                            });
+                        });
+                    }
+                },
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-destroy', async function (e) {
+        const url = `{{ route('items.unit-of-measurements.show', $unitOfMeasurement->id) }}`
+        await $.confirm({
+            title: 'Confirmation!',
+            content: `Do you want to delete this form?`,
+            autoClose: 'cancel|5000',
+            type: 'orange',
+            buttons: {
+                cancel: {
+                    text: 'Cancel',
+                    keys: ['enter', 'esc'],
+                    action: function () {
+                    }
+                },
+                destroy: {
+                    text: 'Yes, Delete',
+                    btnClass: 'btn-danger',
+                    action: async function () {
+                        $.post(url, {
+                            _method: 'DELETE'
+                        })
+                        .done(async function(res) {
+                            if (res.status == 200) {
+                                $.confirm({
+                                    title: 'Success',
+                                    type: 'green',
+                                    content: `${res.message ?? ''}`,
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                                window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
+                                            }
+                                        },
+                                    }
                                 });
                             } else {
                                 $.confirm({
