@@ -42,7 +42,7 @@
                             <label for="name" class="form-label">Name</label>
 
                             <input id="name" name="name" type="text" class="form-control" placeholder="Kilograms, Meter, Ton, etc."
-                                aria-label="Kilograms, Meter, Ton, etc." value="">
+                                aria-label="Kilograms, Meter, Ton, etc." value="" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -50,7 +50,7 @@
                             <label for="code" class="form-label">Code</label>
 
                             <input id="code" name="code" type="text" class="form-control" placeholder="Kg, Meter, Ton, etc."
-                                aria-label="Kg, Meter, Ton, etc." value="">
+                                aria-label="Kg, Meter, Ton, etc." value="" autocomplete="off">
                         </div>
                     </div>
                 </div>

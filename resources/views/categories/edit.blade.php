@@ -45,7 +45,7 @@
                     </label>
 
                     <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="{{ $category->name }}">
+                        aria-label="Shirt, t-shirts, etc." value="{{ $category->name }}" autocomplete="off">
                 </div>
             </div>
         </div>

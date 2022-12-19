@@ -44,7 +44,7 @@
                     </label>
 
                     <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="">
+                        aria-label="Shirt, t-shirts, etc." value="" autocomplete="off">
                 </div>
             </div>
         </div>
