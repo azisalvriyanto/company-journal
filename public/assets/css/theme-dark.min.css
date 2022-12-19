@@ -32946,6 +32946,10 @@ a:hover .text-inherit {
     margin-bottom: 1rem
 }
 
+.dz-dropzone .dz-processing {
+    width: 100%
+}
+
 .dz-dropzone .dz-processing .dz-error-mark,
 .dz-dropzone .dz-processing .dz-success-mark {
     display: none

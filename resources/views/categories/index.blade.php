@@ -133,10 +133,10 @@
             }'>
             <thead class="thead-light">
                 <tr>
-                    <th rowspan="2">No</th>
+                    <th rowspan="2" style="width: 5%">No</th>
                     <th rowspan="1">Name</th>
                     <th rowspan="2">Status</th>
-                    <th rowspan="2">Actions</th>
+                    <th rowspan="2" style="width: 10%">Actions</th>
                 </tr>
                 <tr>
                     <th>
@@ -264,10 +264,27 @@
             const thisTr        = $($(this).parentsUntil('tr').parent());
 
             const listNote      = `
-                </br>
-                </br>Name: ${thisTr.data('name')}
-                </br>Email: ${thisTr.data('email')}
-                </br>Group: ${thisTr.data('group')}
+            <table class="table table-sm table-borderless">
+                <thead>
+                    <tr>
+                        <td style="width: 20%;"></td>
+                        <td style="width: 1px;"></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Name</td>
+                        <td>:</td>
+                        <td>${thisTr.data('name')}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>:</td>
+                        <td>${thisTr.data('is-enable') == 1 ? 'Enable' : 'Disabled'}</td>
+                    </tr>
+                </tbody>
+            </table>
             `;
 
             await $.confirm({
@@ -290,7 +307,7 @@
                                     $.confirm({
                                         title: 'Success',
                                         type: 'green',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         autoClose: 'close|3000',
                                         buttons: {
                                             close: {
@@ -305,7 +322,7 @@
                                     $.confirm({
                                         title: 'Failed',
                                         type: 'red',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         buttons: {
                                             close: {
                                                 text: 'Close',

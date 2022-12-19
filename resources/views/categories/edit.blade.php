@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Create Item')
+@section('title', 'Edit Item')
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.items.create') }}">Create Category</a>
+    <a class="list-separator-link" href="{{ route('items.items.create') }}">Edit Category</a>
 </li>
 @endsection
 
@@ -17,6 +17,7 @@
             <div class="card-header">
                 <h4 class="card-header-title">Cartegory information</h4>
             </div>
+            
 
             <div class="card-body">
                 <div class="mb-4">
@@ -29,7 +30,7 @@
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" checked="">
+                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $category->is_enable ? 'checked=""' : '' }}>
                         </span>
                     </label>
                 </div>
@@ -44,7 +45,7 @@
                     </label>
 
                     <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="">
+                        aria-label="Shirt, t-shirts, etc." value="{{ $category->name }}">
                 </div>
             </div>
         </div>
@@ -87,7 +88,7 @@
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -145,14 +146,14 @@
         });
     });
 
-    $(document).on('click', '.btn-create', async function (e) {
+    $(document).on('click', '.btn-save', async function (e) {
         const thisButton    = $(this);
         const listNote      = '';
-        const url           = `{{ route('items.categories.index') }}`
+        const url           = `{{ route('items.categories.show', $category->id) }}`
 
         await $.confirm({
             title: 'Confirmation!',
-            content: `Do you want to create this form?${listNote ?? ''}`,
+            content: `Do you want to save this form?${listNote ?? ''}`,
             autoClose: 'cancel|5000',
             type: 'orange',
             buttons: {
@@ -163,10 +164,11 @@
                     }
                 },
                 okay: {
-                    text: 'Yes, Create',
+                    text: 'Yes, Save',
                     btnClass: 'btn-primary',
                     action: async function () {
                         var values          = [];
+                        values['_method']   = `PUT`;
                         values['owner']     = `{{ auth()->user()->parent_company_id }}`;
                         $(`[name]`).map(function() {
                             const parameter = $(this).attr('name');
@@ -187,26 +189,20 @@
                                 await $.confirm({
                                     title: 'Confirmation!',
                                     type: 'orange',
+                                    autoClose: 'close|3000',
                                     buttons: {
                                         index: {
                                             text: 'Back',
                                             btnClass: 'btn-secondary',
                                             action: function () {
-                                                window.location.replace(`{{ route('items.categories.index') }}`);
+                                                window.location.replace(`{{ route('items.categories.index') }}`)
                                             }
                                         },
-                                        reCreate: {
-                                            text: 'Recreate',
-                                            btnClass: 'btn-primary',
-                                            action: function () {
-                                                window.location.reload();
-                                            }
-                                        },
-                                        edit: {
-                                            text: 'Edit',
+                                        close: {
+                                            text: 'Still Edit',
                                             btnClass: 'btn-success',
+                                            keys: ['enter', 'esc'],
                                             action: function () {
-                                                window.location.replace(`{{ route('items.categories.index') }}/${res.data.id}/edit`);
                                             }
                                         },
                                     },

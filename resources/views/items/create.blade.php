@@ -26,7 +26,7 @@
                             <span class="text-dark">
                                 Availability
                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Product availability switch toggler."></i>
+                                    data-bs-placement="top" title="Item availability switch toggler."></i>
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
@@ -44,7 +44,7 @@
                             title="Items are the goods or services you sell."></i>
                     </label>
 
-                    <input id="name" name="item_name" type="text" class="form-control"
+                    <input id="name" name="name" type="text" class="form-control"
                         placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." value="">
                 </div>
 
@@ -165,6 +165,7 @@
 @endsection
 
 @section('javascript')
+<!-- JS Dropzone -->
 <script src="{{ asset('assets/vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
 
 <script>

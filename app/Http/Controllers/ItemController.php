@@ -55,6 +55,17 @@ class ItemController extends Controller
                     </div>
                 ';
             })
+            ->setRowAttr([
+                'data-id' => function($query) {
+                    return $query->id;
+                },
+                'data-name' => function($query) {
+                    return $query->name;
+                },
+                'data-is-enable' => function($query) {
+                    return $query->is_enable;
+                },
+            ])
             ->rawColumns(['is_enable', 'actions'])
             ->addIndexColumn()
             ->toJson();
