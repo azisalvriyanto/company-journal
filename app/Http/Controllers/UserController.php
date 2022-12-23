@@ -19,7 +19,7 @@ class UserController extends Controller
             ->whereGroup('User')
             ->whereIn('parent_company_id', [
                 $company->id,
-                $company->parentCompany->id
+                $company->parent_company_id
             ]);
 
             return DataTables::eloquent($query)

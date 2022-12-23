@@ -128,12 +128,11 @@
 
     $(document).on('click', '.btn-create', async function (e) {
         const thisButton    = $(this);
-        const listNote      = '';
         const url           = `{{ route('items.unit-of-measurements.index') }}`
 
         await $.confirm({
             title: 'Confirmation!',
-            content: `Do you want to create this form?${listNote ?? ''}`,
+            content: `Do you want to create this form?`,
             autoClose: 'cancel|5000',
             type: 'orange',
             buttons: {
@@ -148,7 +147,7 @@
                     btnClass: 'btn-primary',
                     action: async function () {
                         var values          = [];
-                        values['owner']     = `{{ auth()->user()->parentCompany->parentCompany->id }}`;
+                        values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
                         $(`[name]`).map(function() {
                             const parameter = $(this).attr('name');
 

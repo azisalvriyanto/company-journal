@@ -18,7 +18,7 @@ class CategoryController extends Controller
             ->select(['categories.*'])
             ->whereIn('categories.owner_id', [
                 $owner->id,
-                $owner->parentCompany->id
+                $owner->parent_company_id
             ]);
 
             return DataTables::eloquent($query)

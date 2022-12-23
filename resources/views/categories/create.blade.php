@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Item')
+@section('title', 'Create Category')
 
 @section('list-separator')
 <li class="list-inline-item">
@@ -15,7 +15,7 @@
     <div class="col-lg-8 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Cartegory information</h4>
+                <h4 class="card-header-title">Category information</h4>
             </div>
 
             <div class="card-body">
@@ -25,7 +25,7 @@
                             <span class="text-dark">
                                 Availability
                                 <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Cartegory availability switch toggler."></i>
+                                    data-bs-placement="top" title="Category availability switch toggler."></i>
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
@@ -167,7 +167,7 @@
                     btnClass: 'btn-primary',
                     action: async function () {
                         var values          = [];
-                        values['owner']     = `{{ auth()->user()->parentCompany->parentCompany->id }}`;
+                        values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
                         $(`[name]`).map(function() {
                             const parameter = $(this).attr('name');
 

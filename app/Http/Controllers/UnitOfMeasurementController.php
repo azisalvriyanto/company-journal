@@ -18,7 +18,7 @@ class UnitOfMeasurementController extends Controller
             ->select(['unit_of_measurements.*'])
             ->whereIn('unit_of_measurements.owner_id', [
                 $owner->id,
-                $owner->parentCompany->id
+                $owner->parent_company_id
             ]);
 
             return DataTables::eloquent($query)

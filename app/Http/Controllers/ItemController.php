@@ -24,7 +24,7 @@ class ItemController extends Controller
             ->select(['items.*'])
             ->whereIn('items.owner_id', [
                 $owner->id,
-                $owner->parentCompany->id
+                $owner->parent_company_id
             ]);
 
             return DataTables::eloquent($query)
@@ -76,9 +76,9 @@ class ItemController extends Controller
 
     public function create()
     {
-        $data['detailGroups'] = collect(Item::DETAIL_GROUPS);
-        $data['categories'] = Category::query()->get()->all();
-        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->get()->all();
+        $data['detailGroups'] = collect(Item::DETAIL_GROUPS)->sortBy('name');
+        $data['categories'] = Category::query()->orderBy('name')->get()->all();
+        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
 
         return view('items.create', $data);
     }

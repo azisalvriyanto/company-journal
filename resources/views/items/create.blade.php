@@ -69,6 +69,7 @@
                                         "hideSearch": false,
                                         "placeholder": "Search..."
                                 }'>
+                                    <option value="">Search...</option>
                                     @foreach($unitOfMeasurements as $unitOfMeasurement)
                                     <option value="{{ $unitOfMeasurement['id'] }}">
                                         {{ $unitOfMeasurement['name'] }}
@@ -128,6 +129,7 @@
                                 "hideSearch": false,
                                 "placeholder": "Search..."
                         }'>
+                            <option value="">Search...</option>
                             @foreach($categories as $category)
                             <option value="{{ $category['id'] }}">
                                 {{ $category['name'] }}
@@ -146,13 +148,31 @@
                                 "searchInDropdown": true,
                                 "hideSearch": false,
                                 "placeholder": "Search..."
-                            }'>
+                        }'>
+                            <option value="">Search...</option>
                             @foreach($detailGroups as $detailGroup)
                             <option value="{{ $detailGroup['id'] }}">
                                 {{ $detailGroup['name'] }}
                             </option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed start-50 bottom-0 translate-middle-x w-100 zi-99 mb-3" style="max-width: 40rem;">
+    <div class="card card-sm bg-dark border-dark mx-2">
+        <div class="card-body">
+            <div class="row justify-content-center justify-content-sm-between">
+                <div class="col"></div>
+
+                <div class="col-auto">
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
+                        <button type="button" class="btn btn-primary btn-create">Save</button>
                     </div>
                 </div>
             </div>
@@ -205,6 +225,135 @@
                     this.removeFile(file);
                 });
             }
+        });
+
+        $(document).on('click', '.btn-discard', async function (e) {
+            const thisButton    = $(this);
+            const listNote      = '';
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to discard this form?${listNote ?? ''}`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Discard',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            history.back() ?? window.location.replace(`{{ route('items.items.index') }}`);
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-create', async function (e) {
+            const thisButton    = $(this);
+            const url           = `{{ route('items.items.index') }}`
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to create this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Create',
+                        btnClass: 'btn-primary',
+                        action: async function () {
+                            var values          = [];
+                            values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
+                            $(`[name]`).map(function() {
+                                const parameter = $(this).attr('name');
+
+                                let value = '';
+                                if ($(this).attr('type') == 'checkbox') {
+                                    value = $(this).is(":checked") ? 1 : 0;
+                                } else {
+                                    value = $(this).val();
+                                }
+                                values[parameter] = value;
+                            });
+                            values = JSON.parse(JSON.stringify(Object.assign({}, values)));
+
+                            $.post(url, values)
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    await $.confirm({
+                                        title: 'Confirmation!',
+                                        type: 'orange',
+                                        buttons: {
+                                            index: {
+                                                text: 'Back',
+                                                btnClass: 'btn-secondary',
+                                                action: function () {
+                                                    window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
+                                                }
+                                            },
+                                            reCreate: {
+                                                text: 'Recreate',
+                                                btnClass: 'btn-primary',
+                                                action: function () {
+                                                    window.location.reload();
+                                                }
+                                            },
+                                            edit: {
+                                                text: 'Edit',
+                                                btnClass: 'btn-success',
+                                                action: function () {
+                                                    window.location.replace(`{{ route('items.unit-of-measurements.index') }}/${res.data.id}/edit`);
+                                                }
+                                            },
+                                        },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
         });
     })();
 </script>
