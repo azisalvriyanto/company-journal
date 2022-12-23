@@ -34,7 +34,7 @@ class Item extends Model
 
     public function category()
     {
-        return $this->belongsTo(ItemCategory::class, 'item_category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function unitOfMeasurement()

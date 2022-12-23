@@ -65,7 +65,7 @@
 
     <div class="table-responsive datatable-custom">
         <table id="datatableItem"
-            class="js-datatable table table-sm table-bordered table-thead-bordered table-nowrap table-align-middle card-table w-100"
+            class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
                 "isResponsive": false,
@@ -119,7 +119,7 @@
                         "name": "category.name"
                     },
                     {
-                        "data": "unitOfMeasurement.name",
+                        "data": "unit_of_measurement.name",
                         "name": "unitOfMeasurement.name"
                     },
                     {
@@ -288,13 +288,36 @@
 
         $(document).on('click', '.datatable-btn-destroy', async function (e) {
             const thisButton    = $(this);
-            const thisTr        = $($(this).parentsUntil('tr').parent());
+            const thisTr        = thisButton.parentsUntil('tr').parent();
+            const url           = thisTr.data('url');
 
             const listNote      = `
-                </br>
-                </br>Name: ${thisTr.data('name')}
-                </br>Email: ${thisTr.data('email')}
-                </br>Group: ${thisTr.data('group')}
+            <table class="table table-sm table-borderless">
+                <thead>
+                    <tr>
+                        <td style="width: 20%;"></td>
+                        <td style="width: 1px;"></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Name</td>
+                        <td>:</td>
+                        <td>${thisTr.data('name')}</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>:</td>
+                        <td>${thisTr.data('category')}</td>
+                    </tr>
+                    <tr>
+                        <td>UoM</td>
+                        <td>:</td>
+                        <td>${thisTr.data('unit-of-measurement')}</td>
+                    </tr>
+                </tbody>
+            </table>
             `;
 
             await $.confirm({
@@ -303,11 +326,17 @@
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
                     destroy: {
                         text: 'Yes, Delete',
                         btnClass: 'btn-danger',
                         action: async function () {
-                            $.post(thisButton.data('url'), {
+                            $.post(url, {
                                 _method: 'DELETE'
                             })
                             .done(async function(res) {
@@ -317,7 +346,7 @@
                                     $.confirm({
                                         title: 'Success',
                                         type: 'green',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         autoClose: 'close|3000',
                                         buttons: {
                                             close: {
@@ -332,7 +361,7 @@
                                     $.confirm({
                                         title: 'Failed',
                                         type: 'red',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         buttons: {
                                             close: {
                                                 text: 'Close',
@@ -359,12 +388,6 @@
                                     }
                                 });
                             });
-                        }
-                    },
-                    cancel: {
-                        text: 'Cancel',
-                        keys: ['enter', 'esc'],
-                        action: function () {
                         }
                     },
                 }

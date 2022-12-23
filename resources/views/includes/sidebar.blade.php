@@ -71,7 +71,7 @@
                             ],
                             'menus' => [
                                 [
-                                    'name'      => 'Item',
+                                    'name'      => 'Items',
                                     'icon'      => 'bi-kanban',
                                     'url'       => NULL,
                                     'route'     => 'items.',

@@ -41,7 +41,7 @@ class CategoryController extends Controller
                                 <a class="dropdown-item" href="' . route('items.categories.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
-                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;" data-url="' . route('items.categories.show', $query->id) . '">
+                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
                                     <i class="bi-trash dropdown-item-icon"></i> Delete
                                 </a>
                             </div>
@@ -52,6 +52,9 @@ class CategoryController extends Controller
             ->setRowAttr([
                 'data-id' => function($query) {
                     return $query->id;
+                },
+                'data-url' => function($query) {
+                    return route('items.categories.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
@@ -82,19 +85,19 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $categories = new Categories;
-        return $categories->store($request);
+        $query = new Categories;
+        return $query->store($request);
     }
 
     public function update(Request $request, $id)
     {
-        $categories = new Categories;
-        return $categories->update($request, $id);
+        $query = new Categories;
+        return $query->update($request, $id);
     }
 
     public function destroy(Request $request, $id)
     {
-        $categories = new Categories;
-        return $categories->destroy($request, $id);
+        $query = new Categories;
+        return $query->destroy($request, $id);
     }
 }

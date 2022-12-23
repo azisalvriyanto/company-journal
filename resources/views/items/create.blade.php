@@ -45,7 +45,7 @@
                     </label>
 
                     <input id="name" name="name" type="text" class="form-control"
-                        placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." value="">
+                        placeholder="Shirt, t-shirts, etc." aria-label="Shirt, t-shirts, etc." value="" autocomplete="off">
                 </div>
 
                 <div class="row">
@@ -123,7 +123,7 @@
                     <label for="categpry" class="form-label">Category</label>
 
                     <div class="tom-select-custom">
-                        <select class="js-select form-select" autocomplete="off" id="categpry"
+                        <select id="category" name="category" class="js-select form-select" autocomplete="off" id="categpry"
                             data-hs-tom-select-options='{
                                 "searchInDropdown": true,
                                 "hideSearch": false,
@@ -300,7 +300,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
+                                                    window.location.replace(`{{ route('items.items.index') }}`);
                                                 }
                                             },
                                             reCreate: {
@@ -314,7 +314,7 @@
                                                 text: 'Edit',
                                                 btnClass: 'btn-success',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('items.unit-of-measurements.index') }}/${res.data.id}/edit`);
+                                                    window.location.replace(`{{ route('items.items.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },

@@ -270,8 +270,8 @@
 
         $(document).on('click', '.datatable-btn-destroy', async function (e) {
             const thisButton    = $(this);
-            const url           = thisButton.data('url');
-            const thisTr        = $($(this).parentsUntil('tr').parent());
+            const thisTr        = thisButton.parentsUntil('tr').parent();
+            const url           = thisTr.data('url');
 
             const listNote      = `
             <table class="table table-sm table-borderless">
@@ -303,6 +303,12 @@
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
                     destroy: {
                         text: 'Yes, Delete',
                         btnClass: 'btn-danger',
@@ -359,12 +365,6 @@
                                     }
                                 });
                             });
-                        }
-                    },
-                    cancel: {
-                        text: 'Cancel',
-                        keys: ['enter', 'esc'],
-                        action: function () {
                         }
                     },
                 }

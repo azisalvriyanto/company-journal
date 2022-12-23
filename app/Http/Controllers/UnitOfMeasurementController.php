@@ -41,7 +41,7 @@ class UnitOfMeasurementController extends Controller
                                 <a class="dropdown-item" href="' . route('items.unit-of-measurements.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
-                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;" data-url="' . route('items.unit-of-measurements.show', $query->id) . '">
+                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
                                     <i class="bi-trash dropdown-item-icon"></i> Delete
                                 </a>
                             </div>
@@ -52,6 +52,9 @@ class UnitOfMeasurementController extends Controller
             ->setRowAttr([
                 'data-id' => function($query) {
                     return $query->id;
+                },
+                'data-url' => function($query) {
+                    return route('items.unit-of-measurements.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
@@ -85,19 +88,19 @@ class UnitOfMeasurementController extends Controller
 
     public function store(Request $request)
     {
-        $categories = new UnitOfMeasurements;
-        return $categories->store($request);
+        $query = new UnitOfMeasurements;
+        return $query->store($request);
     }
 
     public function update(Request $request, $id)
     {
-        $categories = new UnitOfMeasurements;
-        return $categories->update($request, $id);
+        $query = new UnitOfMeasurements;
+        return $query->update($request, $id);
     }
 
     public function destroy(Request $request, $id)
     {
-        $categories = new UnitOfMeasurements;
-        return $categories->destroy($request, $id);
+        $query = new UnitOfMeasurements;
+        return $query->destroy($request, $id);
     }
 }

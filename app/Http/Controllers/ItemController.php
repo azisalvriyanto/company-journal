@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Modals\Items;
 
 use App\Models\Category;
 use App\Models\Item;
@@ -31,6 +32,9 @@ class ItemController extends Controller
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
             })
+            ->editColumn('detail_group', function ($query) {
+                return $query->detail_group ?? '<i class="text-muted">NULL</i>';
+            })
             ->addColumn('actions', function ($query) {
                 return '
                     <div class="btn-group" role="group">
@@ -44,10 +48,10 @@ class ItemController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '" >
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('items.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('items.items.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
-                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;" data-url="' . route('items.show', $query->id) . '">
+                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
                                     <i class="bi-trash dropdown-item-icon"></i> Delete
                                 </a>
                             </div>
@@ -59,14 +63,20 @@ class ItemController extends Controller
                 'data-id' => function($query) {
                     return $query->id;
                 },
+                'data-url' => function($query) {
+                    return route('items.items.show', $query->id);
+                },
                 'data-name' => function($query) {
                     return $query->name;
                 },
-                'data-is-enable' => function($query) {
-                    return $query->is_enable;
+                'data-category' => function($query) {
+                    return $query->category->name;
+                },
+                'data-unit-of-measurement' => function($query) {
+                    return $query->unitOfMeasurement->name;
                 },
             ])
-            ->rawColumns(['is_enable', 'actions'])
+            ->rawColumns(['is_enable', 'detail_group','actions'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -83,35 +93,15 @@ class ItemController extends Controller
         return view('items.create', $data);
     }
 
+    public function store(Request $request)
+    {
+        $query = new Items;
+        return $query->store($request);
+    }
+
     public function destroy(Request $request, $id)
     {
-        $query = Item::query()->find($id);
-        if ($query) {
-            try {
-                DB::beginTransaction();
-                $query->delete();
-                DB::commit();
-
-                return response()->json([
-                    'status'    => 200,
-                    'message'   => 'Item deleted in successfully.',
-                    'data'      => NULL
-                ]);
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response()->json([
-                    'status'   => 500,
-                    'message'   => $e->getMessage(),
-                    'data'      => NULL
-                ]);
-            }
-        } else {
-            return response()->json([
-                'status'    => 404,
-                'message'   => 'Item not found.',
-                'data'      => NULL
-            ]);
-        }
+        $query = new Items;
+        return $query->destroy($request, $id);
     }
 }
