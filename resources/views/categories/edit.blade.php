@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Edit Item')
+@section('title', 'Edit ' . $query->name)
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('items.categories.index') }}">Categories</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.categories.edit', $category->id) }}">Edit Category</a>
+    <a class="list-separator-link" href="{{ route('items.categories.show', $query->id) }}">{{ $query->name }}</a>
+</li>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('items.categories.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -30,7 +33,7 @@
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $category->is_enable ? 'checked=""' : '' }}>
+                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
                         </span>
                     </label>
                 </div>
@@ -45,7 +48,7 @@
                     </label>
 
                     <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="{{ $category->name }}" autocomplete="off">
+                        aria-label="Shirt, t-shirts, etc." value="{{ $query->name }}" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -150,7 +153,7 @@
     $(document).on('click', '.btn-save', async function (e) {
         const thisButton    = $(this);
         const listNote      = '';
-        const url           = `{{ route('items.categories.show', $category->id) }}`
+        const url           = `{{ route('items.categories.show', $query->id) }}`
 
         await $.confirm({
             title: 'Confirmation!',
@@ -246,7 +249,7 @@
     });
 
     $(document).on('click', '.btn-destroy', async function (e) {
-        const url = `{{ route('items.categories.show', $category->id) }}`
+        const url = `{{ route('items.categories.show', $query->id) }}`
         await $.confirm({
             title: 'Confirmation!',
             content: `Do you want to delete this form?`,

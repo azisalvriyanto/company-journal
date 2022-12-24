@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Create Item')
+@section('title', 'Edit ' . $query->name)
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('items.unit-of-measurements.index') }}">Unit of Measurements</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.edit', $unitOfMeasurement->id) }}">Edit Unit of Measurements</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.show', $query->id) }}">{{ $query->name }}</a>
+</li>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -42,7 +45,7 @@
                             <label for="name" class="form-label">Name</label>
 
                             <input id="name" name="name" type="text" class="form-control" placeholder="Kilograms, Meter, Ton, etc."
-                                aria-label="Kilograms, Meter, Ton, etc." value="{{ $unitOfMeasurement->name }}" autocomplete="off">
+                                aria-label="Kilograms, Meter, Ton, etc." value="{{ $query->name }}" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -50,7 +53,7 @@
                             <label for="code" class="form-label">Code</label>
 
                             <input id="code" name="code" type="text" class="form-control" placeholder="Kg, Meter, Ton, etc."
-                                aria-label="Kg, Meter, Ton, etc." value="{{ $unitOfMeasurement->code }}" autocomplete="off">
+                                aria-label="Kg, Meter, Ton, etc." value="{{ $query->code }}" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -131,7 +134,7 @@
     $(document).on('click', '.btn-save', async function (e) {
         const thisButton    = $(this);
         const listNote      = '';
-        const url           = `{{ route('items.unit-of-measurements.show', $unitOfMeasurement->id) }}`
+        const url           = `{{ route('items.unit-of-measurements.show', $query->id) }}`
 
         await $.confirm({
             title: 'Confirmation!',
@@ -227,7 +230,7 @@
     });
 
     $(document).on('click', '.btn-destroy', async function (e) {
-        const url = `{{ route('items.unit-of-measurements.show', $unitOfMeasurement->id) }}`
+        const url = `{{ route('items.unit-of-measurements.show', $query->id) }}`
         await $.confirm({
             title: 'Confirmation!',
             content: `Do you want to delete this form?`,

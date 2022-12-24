@@ -81,7 +81,7 @@ class UnitOfMeasurementController extends Controller
 
     public function edit($id)
     {
-        $data['unitOfMeasurement'] = UnitOfMeasurement::query()->findOrFail($id);
+        $data['query'] = UnitOfMeasurement::query()->findOrFail($id);
 
         return view('unit-of-measurements.edit', $data);
     }

@@ -78,7 +78,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $data['category'] = Category::query()->findOrFail($id);
+        $data['query'] = Category::query()->findOrFail($id);
 
         return view('categories.edit', $data);
     }

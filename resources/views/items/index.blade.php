@@ -150,7 +150,7 @@
                     <th rowspan="1">Category</th>
                     <th rowspan="1">Unit Of Measurement</th>
                     <th rowspan="1">Detail Group</th>
-                    <th rowspan="2">Status</th>
+                    <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
                 <tr>
@@ -170,8 +170,20 @@
                         <input type="text" class="form-control form-control-sm datatable-search"
                             placeholder="Search..." data-id="1">
                     </th>
+                    <th>
+                        <div class="tom-select-custom">
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="5" data-target-table="datatableItem" data-hs-tom-select-options='{
+                                "searchInDropdown": false,
+                                "hideSearch": true
+                            }'>
+                                <option value="null" selected="">Any</option>
+                                <option value="1">Enable</option>
+                                <option value="0">Disable</option>
+                            </select>
+                        </div>
+                    </th>
                 </tr>
-            </thead>
+            </thead>    
         </table>
     </div>
 
@@ -232,6 +244,8 @@
 
 <script>
     (function () {
+        HSCore.components.HSTomSelect.init('.js-select');
+
         HSCore.components.HSDatatables.init('.js-datatable', {
             select: {
                 style: 'multi',
