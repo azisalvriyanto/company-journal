@@ -65,18 +65,21 @@ class Categories extends Controller
         if ($validator->passes()) {
             try {
                 $query = Category::query()->find($id);
+                if ($query) {
+                    $query->owner_id     = $request->owner;
+                    $query->name         = $request->name;
+                    $query->is_enable    = $request->is_enable ?? 0;
+                    $query->save();
+    
+                    $response = [
+                        'status'    => 200,
+                        'message'   => 'Category updated in successfully.',
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                } else {
 
-                $query->owner_id     = $request->owner;
-                $query->name         = $request->name;
-                $query->is_enable    = $request->is_enable ?? 0;
-                $query->save();
-
-                $response = [
-                    'status'    => 200,
-                    'message'   => 'Category updated in successfully.',
-                    'data'      => $query,
-                    'errors'    => [],
-                ];
+                }
             } catch (\Exception $e) {
                 DB::rollback();
 

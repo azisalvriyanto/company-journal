@@ -117,7 +117,7 @@
                 },
                 okay: {
                     text: 'Yes, Discard',
-                    btnClass: 'btn-danger',
+                    btnClass: 'btn-secondary',
                     action: async function () {
                         history.back() ?? window.location.replace(`{{ route('items.unit-of-measurements.index') }}`);
                     }

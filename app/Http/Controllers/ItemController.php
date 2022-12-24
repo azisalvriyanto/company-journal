@@ -99,6 +99,22 @@ class ItemController extends Controller
         return $query->store($request);
     }
 
+    public function edit($id)
+    {
+        $data['query']              = Item::query()->findOrFail($id);
+        $data['detailGroups']       = collect(Item::DETAIL_GROUPS)->sortBy('name');
+        $data['categories']         = Category::query()->orderBy('name')->get()->all();
+        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
+
+        return view('items.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $query = new Items;
+        return $query->update($request, $id);
+    }
+
     public function destroy(Request $request, $id)
     {
         $query = new Items;

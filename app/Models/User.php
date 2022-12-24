@@ -29,13 +29,7 @@ class User extends Authenticatable
 
     public function parentCompany()
     {
-        return $this->belongsTo(User::class, 'parent_company_id', 'id');
-    }
-
-    public function getParentCompanyAttribute()
-    {
-        if (!$this->parent_company_id) {
-            return $this->find('fdcbff21-696b-4fbb-a2eb-19badda653b0');
-        }
+        return $this->belongsTo(User::class, 'parent_company_id', 'id')
+        ->withDefault($this->find('fdcbff21-696b-4fbb-a2eb-19badda653b0')->toArray());
     }
 }
