@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div class="table-responsive datatable-custom">
+    <div class="datatable-custom">
         <table id="datatableItem"
             class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
@@ -194,7 +194,7 @@
                     <span class="me-2">Showing:</span>
 
                     <div class="tom-select-custom">
-                        <select id="datatableEntries" class="js-select form-select form-select-borderless w-auto"
+                        <select id="datatableEntries" class="js-select form-select form-select-borderless" style="width: 100px;"
                             autocomplete="off" data-hs-tom-select-options='{
                             "searchInDropdown": false,
                             "hideSearch": true

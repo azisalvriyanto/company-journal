@@ -35,7 +35,7 @@ class CategoryController extends Controller
                         <div class="btn-group">
                             <button type="button" class="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty" id="datatableMore-' . $query->id . '" data-bs-toggle="dropdown" aria-expanded="false"></button>
 
-                            <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '" >
+                            <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="' . route('items.categories.edit', $query->id) . '">
