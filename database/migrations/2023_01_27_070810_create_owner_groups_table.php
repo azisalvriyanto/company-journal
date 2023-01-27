@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('owner_groups', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('color_code')->dafault('#FFFFFF');
             $table->boolean('is_enable')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('owner_groups');
     }
 };
