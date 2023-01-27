@@ -76,7 +76,7 @@ class PaymentMethodController extends Controller
     public function store(Request $request)
     {
         $query = new PaymentMethods;
-        return $query->store($request);
+        return response()->json($query->store($request));
     }
 
     public function edit($id)
@@ -89,12 +89,12 @@ class PaymentMethodController extends Controller
     public function update(Request $request, $id)
     {
         $query = new PaymentMethods;
-        return $query->update($request, $id);
+        return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
         $query = new PaymentMethods;
-        return $query->destroy($request, $id);
+        return response()->json($query->destroy($request, $id));
     }
 }

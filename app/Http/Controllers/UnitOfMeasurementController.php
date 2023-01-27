@@ -82,7 +82,7 @@ class UnitOfMeasurementController extends Controller
     public function store(Request $request)
     {
         $query = new UnitOfMeasurements;
-        return $query->store($request);
+        return response()->json($query->store($request));
     }
 
     public function edit($id)
@@ -95,12 +95,12 @@ class UnitOfMeasurementController extends Controller
     public function update(Request $request, $id)
     {
         $query = new UnitOfMeasurements;
-        return $query->update($request, $id);
+        return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
         $query = new UnitOfMeasurements;
-        return $query->destroy($request, $id);
+        return response()->json($query->destroy($request, $id));
     }
 }

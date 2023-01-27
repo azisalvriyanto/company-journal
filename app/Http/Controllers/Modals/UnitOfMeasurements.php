@@ -65,7 +65,7 @@ class UnitOfMeasurements extends Controller
             ];
         }
 
-        return response()->json($response);
+        return $response;
     }
 
     public function update($request, $id)
@@ -113,7 +113,7 @@ class UnitOfMeasurements extends Controller
             ];
         }
 
-        return response()->json($response);
+        return $response;
     }
 
     public function destroy($request, $id)
@@ -150,6 +150,6 @@ class UnitOfMeasurements extends Controller
             ];
         }
 
-        return response()->json($response);
+        return $response;
     }
 }
