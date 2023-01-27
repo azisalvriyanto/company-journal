@@ -38,7 +38,7 @@ class PaymentMethodController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('operating-costs.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('payment-methods.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
                                 <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
@@ -54,7 +54,7 @@ class PaymentMethodController extends Controller
                     return $query->id;
                 },
                 'data-url' => function($query) {
-                    return route('operating-costs.show', $query->id);
+                    return route('payment-methods.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
@@ -77,5 +77,24 @@ class PaymentMethodController extends Controller
     {
         $query = new PaymentMethods;
         return $query->store($request);
+    }
+
+    public function edit($id)
+    {
+        $data['query'] = PaymentMethod::query()->findOrFail($id);
+
+        return view('payment-methods.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $query = new PaymentMethods;
+        return $query->update($request, $id);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $query = new PaymentMethods;
+        return $query->destroy($request, $id);
     }
 }

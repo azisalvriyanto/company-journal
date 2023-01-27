@@ -3,7 +3,7 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.payment-methods.index') }}">Payment Methods</a>
+    <a class="list-separator-link" href="{{ route('payment-methods.index') }}">Payment Methods</a>
 </li>
 @endsection
 
@@ -17,7 +17,7 @@
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('payments.payment-methods.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('payment-methods.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
