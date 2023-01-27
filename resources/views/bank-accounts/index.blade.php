@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Payment Methods')
+@section('title', 'Bank Accounts')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.payment-methods.index') }}">Payment Methods</a>
+    <a class="list-separator-link" href="{{ route('payments.bank-accounts.index') }}">Bank Accounts</a>
 </li>
 @endsection
 
@@ -12,12 +12,12 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Payment Methods</h4>
+                <h4 class="card-header-title">Bank Accounts</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('payments.payment-methods.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('payments.bank-accounts.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
@@ -111,8 +111,16 @@
                         "className": "text-center"
                     },
                     {
+                        "data": "bank_name",
+                        "name": "bank_name"
+                    },
+                    {
                         "data": "name",
                         "name": "name"
+                    },
+                    {
+                        "data": "account_number",
+                        "name": "account_number"
                     },
                     {
                         "data": "is_enable",
@@ -134,7 +142,9 @@
             <thead class="thead-light">
                 <tr>
                     <th rowspan="2">No</th>
+                    <th rowspan="1">Bank Name</th>
                     <th rowspan="1">Name</th>
+                    <th rowspan="1">Account Number</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
@@ -144,8 +154,16 @@
                             placeholder="Search..." data-id="1">
                     </th>
                     <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-id="2">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-id="3">
+                    </th>
+                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatablePaymentMethod" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="4" data-target-table="datatablePaymentMethod" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>

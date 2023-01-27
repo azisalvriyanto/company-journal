@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Modals\PaymentMethods;
-use App\Models\PaymentMethod;
+use App\Http\Controllers\Modals\BankAccounts;
+use App\Models\BankAccount;
 
 use DataTables;
 
-class PaymentMethodController extends Controller
+class BankAccountController extends Controller
 {
     public function index(Request $request)
     {
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
-            $query = PaymentMethod::query()
-            ->select(['payment_methods.*'])
-            ->whereIn('payment_methods.owner_id', [
+            $query = BankAccount::query()
+            ->select(['bank_accounts.*'])
+            ->whereIn('bank_accounts.owner_id', [
                 $owner->id,
                 $owner->parent_company_id
             ]);
@@ -38,7 +38,7 @@ class PaymentMethodController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('payments.payment-methods.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('payments.bank-accounts.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
                                 <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
@@ -54,7 +54,7 @@ class PaymentMethodController extends Controller
                     return $query->id;
                 },
                 'data-url' => function($query) {
-                    return route('payments.payment-methods.show', $query->id);
+                    return route('payments.bank-accounts.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
@@ -65,36 +65,36 @@ class PaymentMethodController extends Controller
             ->toJson();
         }
 
-        return view('payment-methods.index');
+        return view('bank-accounts.index');
     }
 
     public function create()
     {
-        return view('payment-methods.create');
+        return view('bank-accounts.create');
     }
 
     public function store(Request $request)
     {
-        $query = new PaymentMethods;
+        $query = new BankAccounts;
         return response()->json($query->store($request));
     }
 
     public function edit($id)
     {
-        $data['query'] = PaymentMethod::query()->findOrFail($id);
+        $data['query'] = BankAccount::query()->findOrFail($id);
 
-        return view('payment-methods.edit', $data);
+        return view('bank-accounts.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $query = new PaymentMethods;
+        $query = new BankAccounts;
         return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
-        $query = new PaymentMethods;
+        $query = new BankAccounts;
         return response()->json($query->destroy($request, $id));
     }
 }

@@ -3,10 +3,10 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payment-methods.index') }}">Payment Methods</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-methods.index') }}">Payment Methods</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payment-methods.create') }}">Create Payment Method</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-methods.create') }}">Create Payment Method</a>
 </li>
 @endsection
 
@@ -96,7 +96,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('payment-methods.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('payments.payment-methods.index') }}`);
                         }
                     },
                 }
@@ -105,7 +105,7 @@
 
         $(document).on('click', '.btn-create', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('payment-methods.index') }}`
+            const url           = `{{ route('payments.payment-methods.index') }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -150,7 +150,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payment-methods.index') }}`);
+                                                    window.location.replace(`{{ route('payments.payment-methods.index') }}`);
                                                 }
                                             },
                                             reCreate: {
@@ -164,7 +164,7 @@
                                                 text: 'Edit',
                                                 btnClass: 'btn-success',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payment-methods.index') }}/${res.data.id}/edit`);
+                                                    window.location.replace(`{{ route('payments.payment-methods.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },

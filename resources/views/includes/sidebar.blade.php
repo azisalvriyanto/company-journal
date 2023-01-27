@@ -48,17 +48,17 @@
                             ],
                             'menus' => [
                                 [
-                                    'name'      => 'Items',
-                                    'icon'      => 'bi-kanban',
-                                    'url'       => NULL,
-                                    'route'     => 'items.',
-                                    'permissions'  => [
+                                    'name'          => 'Items',
+                                    'icon'          => 'bi-kanban',
+                                    'url'           => NULL,
+                                    'route'         => 'items.',
+                                    'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
                                     'sub_menus' => [
                                         [
-                                            'name'  => 'Category',
+                                            'name'          => 'Category',
                                             'url'           => route('items.categories.index'),
                                             'route'         => 'items.categories.',
                                             'permissions'   => [
@@ -67,7 +67,7 @@
                                             ],
                                         ],
                                         [
-                                            'name'  => 'Unit of Measurement',
+                                            'name'          => 'Unit of Measurement',
                                             'url'           => route('items.unit-of-measurements.index'),
                                             'route'         => 'items.unit-of-measurements.',
                                             'permissions'   => [
@@ -76,9 +76,9 @@
                                             ],
                                         ],
                                         [
-                                            'name'  => 'Item',
-                                            'url'       => route('items.items.index'),
-                                            'route'     => 'items.items.',
+                                            'name'          => 'Item',
+                                            'url'           => route('items.items.index'),
+                                            'route'         => 'items.items.',
                                             'permissions'   => [
                                                 auth()->user()->hasRole('admin'),
                                                 auth()->user()->hasRole('user'),
@@ -87,43 +87,62 @@
                                     ]
                                 ],
                                 [
-                                    'name'      => 'Roles',
-                                    'icon'      => 'bi-kanban',
-                                    'url'       => route('laravelroles::roles.index'),
-                                    'route'     => 'laravelroles::roles.',
-                                    'permissions'  => [
+                                    'name'          => 'Roles',
+                                    'icon'          => 'bi-kanban',
+                                    'url'           => route('laravelroles::roles.index'),
+                                    'route'         => 'laravelroles::roles.',
+                                    'permissions'   => [
                                         auth()->user()->hasRole('admin')
                                     ],
                                     'sub_menus' => NULL
                                 ],
                                 [
-                                    'name'      => 'Operating Cost',
-                                    'icon'      => 'bi-cash-coin',
-                                    'url'       => route('operating-costs.index'),
-                                    'route'     => 'operating-costs.',
-                                    'permissions'  => [
+                                    'name'          => 'Operating Cost',
+                                    'icon'          => 'bi-cash-coin',
+                                    'url'           => route('operating-costs.index'),
+                                    'route'         => 'operating-costs.',
+                                    'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
                                     'sub_menus' => NULL
                                 ],
                                 [
-                                    'name'      => 'Payment Method',
-                                    'icon'      => 'bi-credit-card',
-                                    'url'       => route('payment-methods.index'),
-                                    'route'     => 'payment-methods.',
-                                    'permissions'  => [
+                                    'name'          => 'Payments',
+                                    'icon'          => 'bi-credit-card',
+                                    'url'           => NULL,
+                                    'route'         => 'payments.',
+                                    'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
-                                    'sub_menus' => NULL
+                                    'sub_menus' => [
+                                        [
+                                            'name'          => 'Payment Method',
+                                            'url'           => route('payments.payment-methods.index'),
+                                            'route'         => 'payments.payment-methods.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
+                                        [
+                                            'name'          => 'Bank Account',
+                                            'url'           => route('payments.bank-accounts.index'),
+                                            'route'         => 'payments.bank-accounts.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
+                                    ]
                                 ],
                                 [
-                                    'name'      => 'User',
-                                    'icon'      => 'bi-people',
-                                    'url'       => route('users.index'),
-                                    'route'     => 'users.',
-                                    'permissions'  => [
+                                    'name'          => 'User',
+                                    'icon'          => 'bi-people',
+                                    'url'           => route('users.index'),
+                                    'route'         => 'users.',
+                                    'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
