@@ -120,6 +120,17 @@
                                     'sub_menus' => NULL
                                 ],
                                 [
+                                    'name'      => 'Operating Cost',
+                                    'icon'      => 'bi-cash-coin',
+                                    'url'       => route('operating-costs.index'),
+                                    'route'     => 'operating-costs.',
+                                    'permissions'  => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus' => NULL
+                                ],
+                                [
                                     'name'      => 'User',
                                     'icon'      => 'bi-people',
                                     'url'       => route('users.index'),
