@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_owner_group', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignUuid('owner_group_id')->index();
-            $table->foreign('owner_group_id')->references('id')->on('owner_groups')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('owner_id')->index();
+            $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('group')->default('Contact');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_owner_group');
+        Schema::dropIfExists('contacts');
     }
 };
