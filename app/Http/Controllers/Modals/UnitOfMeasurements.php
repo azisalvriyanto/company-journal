@@ -21,29 +21,38 @@ class UnitOfMeasurements extends Controller
         ]);
 
         if ($validator->passes()) {
-            try {
-                DB::beginTransaction();
+            if ($query) {
+                try {
+                    DB::beginTransaction();
 
-                $query = UnitOfMeasurement::query()->create([
-                    'owner_id'  => $request->owner,
-                    'name'      => $request->name,
-                    'code'      => $request->code,
-                    'is_enable' => $request->is_enable ?? 0,
-                ]);
+                    $query = UnitOfMeasurement::query()->create([
+                        'owner_id'  => $request->owner,
+                        'name'      => $request->name,
+                        'code'      => $request->code,
+                        'is_enable' => $request->is_enable ?? 0,
+                    ]);
 
-                DB::commit();
+                    DB::commit();
+                    $response = [
+                        'status'    => 200,
+                        'message'   => 'Unit of measurement created in successfully.',
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $response = [
+                        'status'    => 500,
+                        'message'   => $e->getMessage(),
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                }
+            } else {
                 $response = [
-                    'status'    => 200,
-                    'message'   => 'Unit of measurement created in successfully.',
-                    'data'      => $query,
-                    'errors'    => [],
-                ];
-            } catch (\Exception $e) {
-                DB::rollback();
-                $response = [
-                    'status'   => 500,
-                    'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'status'    => 404,
+                    'message'   => 'Operating cost not found.',
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -51,7 +60,7 @@ class UnitOfMeasurements extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Unit of measurement failed to create.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -89,9 +98,9 @@ class UnitOfMeasurements extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
-                    'status'   => 500,
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -99,7 +108,7 @@ class UnitOfMeasurements extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Unit of measurement failed to update.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -120,15 +129,15 @@ class UnitOfMeasurements extends Controller
                 $response = [
                     'status'    => 200,
                     'message'   => 'Unit of measurement deleted in successfully.',
-                    'data'      => [],
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
-                    'status'   => 500,
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'data'      => $query,
                     'errors'    => [],
                 ];
             }
@@ -136,7 +145,7 @@ class UnitOfMeasurements extends Controller
             $response = [
                 'status'    => 404,
                 'message'   => 'Unit of measurement not found.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => [],
             ];
         }

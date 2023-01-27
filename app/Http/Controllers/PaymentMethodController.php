@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Modals\Categories;
+use App\Http\Controllers\Modals\PaymentMethods;
 use App\Models\PaymentMethod;
 
 use DataTables;
@@ -15,9 +15,6 @@ class PaymentMethodController extends Controller
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
             $query = PaymentMethod::query()
-            ->with([
-                'unitOfMeasurement',
-            ])
             ->select(['payment_methods.*'])
             ->whereIn('payment_methods.owner_id', [
                 $owner->id,
@@ -69,5 +66,16 @@ class PaymentMethodController extends Controller
         }
 
         return view('payment-methods.index');
+    }
+
+    public function create()
+    {
+        return view('payment-methods.create');
+    }
+
+    public function store(Request $request)
+    {
+        $query = new PaymentMethods;
+        return $query->store($request);
     }
 }

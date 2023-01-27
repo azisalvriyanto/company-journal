@@ -316,19 +316,19 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Name</td>
-                        <td>:</td>
-                        <td>${thisTr.data('name')}</td>
+                        <td class="p-0">Name</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('name')}</td>
                     </tr>
                     <tr>
-                        <td>Category</td>
-                        <td>:</td>
-                        <td>${thisTr.data('category')}</td>
+                        <td class="p-0">Category</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('category')}</td>
                     </tr>
                     <tr>
-                        <td>UoM</td>
-                        <td>:</td>
-                        <td>${thisTr.data('unit-of-measurement')}</td>
+                        <td class="p-0">UoM</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('unit-of-measurement')}</td>
                     </tr>
                 </tbody>
             </table>

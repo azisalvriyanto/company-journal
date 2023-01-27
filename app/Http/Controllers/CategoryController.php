@@ -76,17 +76,17 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
+    public function store(Request $request)
+    {
+        $query = new Categories;
+        return $query->store($request);
+    }
+
     public function edit($id)
     {
         $data['query'] = Category::query()->findOrFail($id);
 
         return view('categories.edit', $data);
-    }
-
-    public function store(Request $request)
-    {
-        $query = new Categories;
-        return $query->store($request);
     }
 
     public function update(Request $request, $id)

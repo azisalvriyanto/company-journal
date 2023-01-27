@@ -43,9 +43,9 @@ class OperatingCosts extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
-                    'status'   => 500,
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -53,7 +53,7 @@ class OperatingCosts extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Operating cost failed to create.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -71,31 +71,39 @@ class OperatingCosts extends Controller
         ]);
 
         if ($validator->passes()) {
-            try {
-                DB::beginTransaction();
+            $query = OperatingCost::query()->find($id);
+            if ($query) {
+                try {
+                    DB::beginTransaction();
 
-                $query = OperatingCost::query()->find($id);
+                    $query->owner_id                = $request->owner;
+                    $query->name                    = $request->name;
+                    $query->default_cost            = number_format((double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
+                    $query->unit_of_measurement_id  = $request->unit_of_measurement;
+                    $query->is_enable               = $request->is_enable ?? 0;
+                    $query->save();
 
-                $query->owner_id                = $request->owner;
-                $query->name                    = $request->name;
-                $query->default_cost            = number_format((double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
-                $query->unit_of_measurement_id  = $request->unit_of_measurement;
-                $query->is_enable               = $request->is_enable ?? 0;
-                $query->save();
-
-                DB::commit();
+                    DB::commit();
+                    $response = [
+                        'status'    => 200,
+                        'message'   => 'Operating cost updated in successfully.',
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $response = [
+                        'status'    => 500,
+                        'message'   => $e->getMessage(),
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                }
+            } else {
                 $response = [
-                    'status'    => 200,
-                    'message'   => 'Operating cost updated in successfully.',
-                    'data'      => $query,
-                    'errors'    => [],
-                ];
-            } catch (\Exception $e) {
-                DB::rollback();
-                $response = [
-                    'status'   => 500,
-                    'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'status'    => 404,
+                    'message'   => 'Operating cost not found.',
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -103,7 +111,7 @@ class OperatingCosts extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Operating cost failed to update.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -124,21 +132,24 @@ class OperatingCosts extends Controller
                 $response = [
                     'status'    => 200,
                     'message'   => 'Operating cost deleted in successfully.',
-                    'data'      => NULL
+                    'data'      => NULL,
+                    'errors'    => [],
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
-                    'status'   => 500,
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => NULL
+                    'data'      => $query,
+                    'errors'    => [],
                 ];
             }
         } else {
             $response = [
                 'status'    => 404,
                 'message'   => 'Operating cost not found.',
-                'data'      => NULL
+                'data'      => NULL,
+                'errors'    => [],
             ];
         }
 

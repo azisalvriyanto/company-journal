@@ -293,19 +293,19 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Name</td>
-                        <td>:</td>
-                        <td>${thisTr.data('name')}</td>
+                        <td class="p-0">Name</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('name')}</td>
                     </tr>
                     <tr>
-                        <td>Code</td>
-                        <td>:</td>
-                        <td>${thisTr.data('code')}</td>
+                        <td class="p-0">Code</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('code')}</td>
                     </tr>
                     <tr>
-                        <td>Status</td>
-                        <td>:</td>
-                        <td>${thisTr.data('is-enable') == 1 ? 'Enable' : 'Disabled'}</td>
+                        <td class="p-0">Status</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('is-enable') == 1 ? 'Enable' : 'Disabled'}</td>
                     </tr>
                 </tbody>
             </table>

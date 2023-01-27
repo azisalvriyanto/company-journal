@@ -3,61 +3,52 @@
 namespace App\Http\Controllers\Modals;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item;
+use App\Models\PaymentMethod;
 
 use Illuminate\Http\Response;
 
 use DB;
 use Validator;
 
-class Items extends Controller
+class PaymentMethods extends Controller
 {
     public function store($request)
     {
         $validator = Validator::make($request->all(), [
-            'owner'                 => 'required|exists:users,id',
-            'category'              => 'required|exists:categories,id',
-            'name'                  => 'required|string',
-            'code'                  => 'nullable|string',
-            'unit_of_measurement'   => 'required|exists:unit_of_measurements,id',
-            'detail_group'          => 'nullable|string',
+            'owner' => 'required|exists:users,id',
+            'name'  => 'required|string',
         ]);
 
         if ($validator->passes()) {
             try {
                 DB::beginTransaction();
 
-                $query                          = new Item;
+                $query                          = new PaymentMethod;
                 $query->owner_id                = $request->owner;
-                $query->category_id             = $request->category;
                 $query->name                    = $request->name;
-                $query->code                    = $request->code ?? NULL;
-                $query->unit_of_measurement_id  = $request->unit_of_measurement;
-                $query->image_url               = $request->image_url ?? NULL;
-                $query->detail_group            = $request->detail_group;
                 $query->is_enable               = $request->is_enable ?? 0;
                 $query->save();
 
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Item created in successfully.',
+                    'message'   => 'Payment method created in successfully.',
                     'data'      => $query,
                     'errors'    => [],
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
-                return response()->json([
+                $response = [
                     'status'    => 500,
                     'message'   => $e->getMessage(),
                     'data'      => NULL,
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Item failed to create.',
+                'message'   => 'Payment method failed to create.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -69,34 +60,25 @@ class Items extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'owner'                 => 'required|exists:users,id',
-            'category'              => 'required|exists:categories,id',
-            'name'                  => 'required|string',
-            'code'                  => 'nullable|string',
-            'unit_of_measurement'   => 'required|exists:unit_of_measurements,id',
-            'detail_group'          => 'nullable|string',
+            'owner' => 'required|exists:users,id',
+            'name'  => 'required|string',
         ]);
 
         if ($validator->passes()) {
-            $query = Item::query()->find($id);
+            $query = PaymentMethod::query()->find($id);
             if ($query) {
                 try {
                     DB::beginTransaction();
 
                     $query->owner_id                = $request->owner;
-                    $query->category_id             = $request->category;
                     $query->name                    = $request->name;
-                    $query->code                    = $request->code ?? NULL;
-                    $query->unit_of_measurement_id  = $request->unit_of_measurement;
-                    $query->image_url               = $request->image_url ?? NULL;
-                    $query->detail_group            = $request->detail_group;
                     $query->is_enable               = $request->is_enable ?? 0;
                     $query->save();
 
                     DB::commit();
                     $response = [
                         'status'    => 200,
-                        'message'   => 'Item updated in successfully.',
+                        'message'   => 'Payment method updated in successfully.',
                         'data'      => $query,
                         'errors'    => [],
                     ];
@@ -112,7 +94,7 @@ class Items extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Item not found.',
+                    'message'   => 'Operating cost not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -120,7 +102,7 @@ class Items extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Item failed to update.',
+                'message'   => 'Payment method failed to update.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -131,7 +113,7 @@ class Items extends Controller
 
     public function destroy($request, $id)
     {
-        $query = Item::query()->find($id);
+        $query = PaymentMethod::query()->find($id);
         if ($query) {
             try {
                 DB::beginTransaction();
@@ -141,7 +123,7 @@ class Items extends Controller
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Item deleted in successfully.',
+                    'message'   => 'Payment method deleted in successfully.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -157,7 +139,7 @@ class Items extends Controller
         } else {
             $response = [
                 'status'    => 404,
-                'message'   => 'Item not found.',
+                'message'   => 'Payment method not found.',
                 'data'      => NULL,
                 'errors'    => [],
             ];

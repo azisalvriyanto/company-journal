@@ -293,11 +293,6 @@
                         <td class="p-0 text-center">:</td>
                         <td class="p-0">${thisTr.data('name')}</td>
                     </tr>
-                    <tr>
-                        <td class="p-0">UoM</td>
-                        <td class="p-0 text-center">:</td>
-                        <td class="p-0">${thisTr.data('unit-of-measurement')}</td>
-                    </tr>
                 </tbody>
             </table>
             `;

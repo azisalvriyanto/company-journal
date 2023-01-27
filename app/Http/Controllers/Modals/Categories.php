@@ -39,9 +39,9 @@ class Categories extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
-                    'status'   => 500,
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -49,7 +49,7 @@ class Categories extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Category failed to create.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -65,39 +65,37 @@ class Categories extends Controller
         ]);
 
         if ($validator->passes()) {
-            try {
-                DB::beginTransaction();
-
-                $query = Category::query()->find($id);
-                if ($query) {
+            $query = Category::query()->find($id);
+            if ($query) {
+                try {
+                    DB::beginTransaction();
 
                     $query->owner_id     = $request->owner;
                     $query->name         = $request->name;
                     $query->is_enable    = $request->is_enable ?? 0;
                     $query->save();
 
+                    DB::commit();
                     $response = [
                         'status'    => 200,
                         'message'   => 'Category updated in successfully.',
                         'data'      => $query,
                         'errors'    => [],
                     ];
-                } else {
+                } catch (\Exception $e) {
+                    DB::rollback();
                     $response = [
-                        'status'    => 404,
-                        'message'   => 'Category not found..',
-                        'data'      => [],
+                        'status'    => 500,
+                        'message'   => $e->getMessage(),
+                        'data'      => $query,
                         'errors'    => [],
                     ];
                 }
-
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollback();
+            } else {
                 $response = [
-                    'status'   => 500,
-                    'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'status'    => 404,
+                    'message'   => 'Category not found.',
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             }
@@ -105,7 +103,7 @@ class Categories extends Controller
             $response = [
                 'status'    => 500,
                 'message'   => 'Category failed to update.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
         }
@@ -126,7 +124,7 @@ class Categories extends Controller
                 $response = [
                     'status'    => 200,
                     'message'   => 'Category deleted in successfully.',
-                    'data'      => [],
+                    'data'      => NULL,
                     'errors'    => [],
                 ];
             } catch (\Exception $e) {
@@ -134,7 +132,7 @@ class Categories extends Controller
                 $response = [
                     'status'    => 500,
                     'message'   => $e->getMessage(),
-                    'data'      => [],
+                    'data'      => $query,
                     'errors'    => [],
                 ];
             }
@@ -142,7 +140,7 @@ class Categories extends Controller
             $response = [
                 'status'    => 404,
                 'message'   => 'Category not found.',
-                'data'      => [],
+                'data'      => NULL,
                 'errors'    => [],
             ];
         }
