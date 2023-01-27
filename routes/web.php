@@ -22,4 +22,5 @@ Route::middleware(["auth"])->group(function () {
     });
 
     Route::resource('operating-costs', App\Http\Controllers\OperatingCostController::class);
+    Route::resource('payment-methods', App\Http\Controllers\PaymentMethodController::class);
 });
