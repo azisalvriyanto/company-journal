@@ -22,6 +22,8 @@ class UnitOfMeasurements extends Controller
 
         if ($validator->passes()) {
             try {
+                DB::beginTransaction();
+
                 $query = UnitOfMeasurement::query()->create([
                     'owner_id'  => $request->owner,
                     'name'      => $request->name,
@@ -29,6 +31,7 @@ class UnitOfMeasurements extends Controller
                     'is_enable' => $request->is_enable ?? 0,
                 ]);
 
+                DB::commit();
                 $response = [
                     'status'    => 200,
                     'message'   => 'Unit of measurement created in successfully.',
@@ -37,13 +40,12 @@ class UnitOfMeasurements extends Controller
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
+                $response = [
                     'status'   => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
             $response = [
@@ -67,6 +69,8 @@ class UnitOfMeasurements extends Controller
 
         if ($validator->passes()) {
             try {
+                DB::beginTransaction();
+
                 $query = UnitOfMeasurement::query()->find($id);
 
                 $query->owner_id     = $request->owner;
@@ -75,6 +79,7 @@ class UnitOfMeasurements extends Controller
                 $query->is_enable    = $request->is_enable ?? 0;
                 $query->save();
 
+                DB::commit();
                 $response = [
                     'status'    => 200,
                     'message'   => 'Unit of measurement updated in successfully.',
@@ -83,13 +88,12 @@ class UnitOfMeasurements extends Controller
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
+                $response = [
                     'status'   => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
             $response = [
@@ -109,32 +113,34 @@ class UnitOfMeasurements extends Controller
         if ($query) {
             try {
                 DB::beginTransaction();
-                $query->delete();
-                DB::commit();
 
-                return response()->json([
+                $query->delete();
+
+                DB::commit();
+                $response = [
                     'status'    => 200,
                     'message'   => 'Unit of measurement deleted in successfully.',
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
+                $response = [
                     'status'   => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
-            return response()->json([
+            $response = [
                 'status'    => 404,
                 'message'   => 'Unit of measurement not found.',
                 'data'      => [],
                 'errors'    => [],
-            ]);
+            ];
         }
+
+        return response()->json($response);
     }
 }

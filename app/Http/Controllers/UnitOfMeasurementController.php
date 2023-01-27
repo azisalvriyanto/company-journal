@@ -79,17 +79,17 @@ class UnitOfMeasurementController extends Controller
         return view('unit-of-measurements.create');
     }
 
+    public function store(Request $request)
+    {
+        $query = new UnitOfMeasurements;
+        return $query->store($request);
+    }
+
     public function edit($id)
     {
         $data['query'] = UnitOfMeasurement::query()->findOrFail($id);
 
         return view('unit-of-measurements.edit', $data);
-    }
-
-    public function store(Request $request)
-    {
-        $query = new UnitOfMeasurements;
-        return $query->store($request);
     }
 
     public function update(Request $request, $id)

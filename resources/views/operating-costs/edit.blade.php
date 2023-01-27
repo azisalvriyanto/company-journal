@@ -6,7 +6,10 @@
     <a class="list-separator-link" href="{{ route('operating-costs.index') }}">Operating Costs</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('operating-costs.create') }}">Create Operating Cost</a>
+    <a class="list-separator-link" href="{{ route('items.items.show', $query->id) }}">{{ $query->name }}</a>
+</li>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('items.items.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -30,7 +33,7 @@
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" checked="">
+                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
                         </span>
                     </label>
                 </div>
@@ -40,7 +43,7 @@
                 <div class="mb-4">
                     <label for="name" class="form-label">Name</label>
 
-                    <input id="name" name="name" type="text" class="form-control" placeholder="Home Electricity, Labor, etc." value="" autocomplete="off">
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Home Electricity, Labor, etc." value="{{ $query->name }}" autocomplete="off">
                 </div>
 
                 <div class="row">
@@ -48,7 +51,7 @@
                         <div class="mb-4">
                             <label for="default-cost" class="form-label">Default Cost</label>
 
-                            <input id="default-cost" name="default_cost" type="text" class="form-control" placeholder="x,xx.xx" value="">
+                            <input id="default-cost" name="default_cost" type="text" class="form-control" placeholder="x,xx.xx" value="{{ $query->default_cost ?? '' }}">
                         </div>
                     </div>
 
@@ -65,7 +68,7 @@
                                 }'>
                                     <option value="">Search...</option>
                                     @foreach($unitOfMeasurements as $unitOfMeasurement)
-                                    <option value="{{ $unitOfMeasurement['id'] }}">
+                                    <option value="{{ $unitOfMeasurement['id'] }}" <?= ($unitOfMeasurement['id'] == $query->unit_of_measurement_id ? 'selected' : '') ?>>
                                         {{ $unitOfMeasurement['name'] }}
                                     </option>
                                     @endforeach
@@ -83,12 +86,14 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -135,13 +140,14 @@
             });
         });
 
-        $(document).on('click', '.btn-create', async function (e) {
+        $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('operating-costs.index') }}`
+            const listNote      = '';
+            const url           = `{{ route('operating-costs.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to create this form?`,
+                content: `Do you want to save this form?${listNote ?? ''}`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -152,10 +158,11 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Create',
+                        text: 'Yes, Save',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
+                            values['_method']   = `PUT`;
                             values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
                             $(`[name]`).map(function() {
                                 const parameter = $(this).attr('name');
@@ -176,29 +183,98 @@
                                     await $.confirm({
                                         title: 'Confirmation!',
                                         type: 'orange',
+                                        autoClose: 'close|3000',
                                         buttons: {
                                             index: {
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('operating-costs.index') }}`);
+                                                    window.location.replace(`{{ route('operating-costs.index') }}`)
                                                 }
                                             },
-                                            reCreate: {
-                                                text: 'Recreate',
-                                                btnClass: 'btn-primary',
-                                                action: function () {
-                                                    window.location.reload();
-                                                }
-                                            },
-                                            edit: {
-                                                text: 'Edit',
+                                            close: {
+                                                text: 'Still Edit',
                                                 btnClass: 'btn-success',
+                                                keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('operating-costs.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-destroy', async function (e) {
+            const url = `{{ route('operating-costs.show', $query->id) }}`
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to delete this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    destroy: {
+                        text: 'Yes, Delete',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            $.post(url, {
+                                _method: 'DELETE'
+                            })
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    $.confirm({
+                                        title: 'Success',
+                                        type: 'green',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                    window.location.replace(`{{ route('operating-costs.index') }}`);
+                                                }
+                                            },
+                                        }
                                     });
                                 } else {
                                     $.confirm({

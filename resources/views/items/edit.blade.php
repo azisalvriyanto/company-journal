@@ -33,7 +33,7 @@
                             </span>
                         </span>
                         <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" checked="">
+                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
                         </span>
                     </label>
                 </div>

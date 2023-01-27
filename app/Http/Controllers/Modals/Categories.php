@@ -21,12 +21,15 @@ class Categories extends Controller
 
         if ($validator->passes()) {
             try {
+                DB::beginTransaction();
+
                 $query = Category::query()->create([
                     'owner_id'  => $request->owner,
                     'name'      => $request->name,
                     'is_enable' => $request->is_enable ?? 0,
                 ]);
 
+                DB::commit();
                 $response = [
                     'status'    => 200,
                     'message'   => 'Category created in successfully.',
@@ -35,13 +38,12 @@ class Categories extends Controller
                 ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
+                $response = [
                     'status'   => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
             $response = [
@@ -64,13 +66,16 @@ class Categories extends Controller
 
         if ($validator->passes()) {
             try {
+                DB::beginTransaction();
+
                 $query = Category::query()->find($id);
                 if ($query) {
+
                     $query->owner_id     = $request->owner;
                     $query->name         = $request->name;
                     $query->is_enable    = $request->is_enable ?? 0;
                     $query->save();
-    
+
                     $response = [
                         'status'    => 200,
                         'message'   => 'Category updated in successfully.',
@@ -78,17 +83,23 @@ class Categories extends Controller
                         'errors'    => [],
                     ];
                 } else {
-
+                    $response = [
+                        'status'    => 404,
+                        'message'   => 'Category not found..',
+                        'data'      => [],
+                        'errors'    => [],
+                    ];
                 }
+
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
+                $response = [
                     'status'   => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
             $response = [
@@ -108,32 +119,34 @@ class Categories extends Controller
         if ($query) {
             try {
                 DB::beginTransaction();
-                $query->delete();
-                DB::commit();
 
-                return response()->json([
+                $query->delete();
+
+                DB::commit();
+                $response = [
                     'status'    => 200,
                     'message'   => 'Category deleted in successfully.',
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
-                    'status'   => 500,
+                $response = [
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
                     'data'      => [],
                     'errors'    => [],
-                ]);
+                ];
             }
         } else {
-            return response()->json([
+            $response = [
                 'status'    => 404,
                 'message'   => 'Category not found.',
                 'data'      => [],
                 'errors'    => [],
-            ]);
+            ];
         }
+
+        return response()->json($response);
     }
 }

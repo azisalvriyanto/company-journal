@@ -91,4 +91,24 @@ class OperatingCostController extends Controller
         $query = new OperatingCosts;
         return $query->store($request);
     }
+
+    public function edit($id)
+    {
+        $data['query']              = OperatingCost::query()->findOrFail($id);
+        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
+
+        return view('operating-costs.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $query = new OperatingCosts;
+        return $query->update($request, $id);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $query = new OperatingCosts;
+        return $query->destroy($request, $id);
+    }
 }

@@ -102,12 +102,12 @@ class Items extends Controller
                     ];
                 } catch (\Exception $e) {
                     DB::rollback();
-                    return response()->json([
-                        'status'   => 500,
+                    $response = [
+                        'status'    => 500,
                         'message'   => $e->getMessage(),
                         'data'      => [],
                         'errors'    => [],
-                    ]);
+                    ];
                 }
             } else {
                 $response = [
@@ -135,29 +135,31 @@ class Items extends Controller
         if ($query) {
             try {
                 DB::beginTransaction();
-                $query->delete();
-                DB::commit();
 
-                return response()->json([
+                $query->delete();
+
+                DB::commit();
+                $response = [
                     'status'    => 200,
                     'message'   => 'Item deleted in successfully.',
                     'data'      => NULL
-                ]);
+                ];
             } catch (\Exception $e) {
                 DB::rollback();
-
-                return response()->json([
-                    'status'   => 500,
+                $response = [
+                    'status'    => 500,
                     'message'   => $e->getMessage(),
                     'data'      => NULL
-                ]);
+                ];
             }
         } else {
-            return response()->json([
+            $response = [
                 'status'    => 404,
                 'message'   => 'Item not found.',
                 'data'      => NULL
-            ]);
+            ];
         }
+
+        return response()->json($response);
     }
 }
