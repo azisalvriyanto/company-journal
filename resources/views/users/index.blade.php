@@ -151,15 +151,15 @@
                 <tr>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search name" data-id="1">
+                            placeholder="Search..." data-id="1">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search group" data-id="2">
+                            placeholder="Search..." data-id="2">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search email" data-id="3">
+                            placeholder="Search..." data-id="3">
                     </th>
                 </tr>
             </thead>

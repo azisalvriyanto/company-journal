@@ -38,29 +38,6 @@
                                     ]
                                 ]
                             ],
-                            // [
-                            //     'name'  => 'Master',
-                            //     'menus' => [
-                            //         [
-                            //             'name'      => 'Dashboards',
-                            //             'icon'      => 'bi-kanban',
-                            //             'url'       => NULL,
-                            //             'route'     => 'dashboards.',
-                            //             'sub_menus' => [
-                            //                 [
-                            //                     'name'  => 'Resume',
-                            //                     'url'       => route('dashboards.index'),
-                            //                     'route'     => 'dashboards.'
-                            //                 ],
-                            //                 [
-                            //                     'name'  => 'Rekapitulasi',
-                            //                     'url'       => route('dashboards.index'),
-                            //                     'route'     => 'dashboards.'
-                            //                 ],
-                            //             ]
-                            //         ]
-                            //     ]
-                            // ],
                         ];
 
                         $groups['reference'] = [

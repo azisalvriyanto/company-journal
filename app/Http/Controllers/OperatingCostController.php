@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Modals\OperatingCosts;
 
-use App\Models\Category;
 use App\Models\OperatingCost;
 use App\Models\UnitOfMeasurement;
 
@@ -19,7 +18,6 @@ class OperatingCostController extends Controller
             $owner = auth()->user()->parentCompany;
             $query = OperatingCost::query()
             ->with([
-                'category',
                 'unitOfMeasurement',
             ])
             ->select(['operating_costs.*'])
@@ -30,7 +28,7 @@ class OperatingCostController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('default_cost', function ($query) {
-                return number_format($query->default_cost, 5, '.', ',');
+                return number_format($query->default_cost, 10, '.', ',');
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
@@ -73,11 +71,24 @@ class OperatingCostController extends Controller
                     return $query->unitOfMeasurement->name;
                 },
             ])
-            ->rawColumns(['is_enable', 'detail_group','actions'])
+            ->rawColumns(['is_enable','actions'])
             ->addIndexColumn()
             ->toJson();
         }
 
         return view('operating-costs.index');
+    }
+
+    public function create()
+    {
+        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
+
+        return view('operating-costs.create', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $query = new OperatingCosts;
+        return $query->store($request);
     }
 }

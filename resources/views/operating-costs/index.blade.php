@@ -117,7 +117,7 @@
                     {
                         "data": "default_cost",
                         "name": "default_cost",
-                        "className": "text-right"
+                        "className": "text-end"
                     },
                     {
                         "data": "unit_of_measurement.name",
@@ -155,16 +155,16 @@
                             placeholder="Search..." data-id="1">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
+                            placeholder="Search..." data-id="2">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
+                            placeholder="Search..." data-id="3">
                     </th>
                     <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="5" data-target-table="datatableOperatingCost" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="4" data-target-table="datatableOperatingCost" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -308,19 +308,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Name</td>
-                        <td>:</td>
-                        <td>${thisTr.data('name')}</td>
+                        <td class="p-0">Name</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('name')}</td>
                     </tr>
                     <tr>
-                        <td>Category</td>
-                        <td>:</td>
-                        <td>${thisTr.data('category')}</td>
-                    </tr>
-                    <tr>
-                        <td>UoM</td>
-                        <td>:</td>
-                        <td>${thisTr.data('unit-of-measurement')}</td>
+                        <td class="p-0">UoM</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('unit-of-measurement')}</td>
                     </tr>
                 </tbody>
             </table>
@@ -329,7 +324,7 @@
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this list?${listNote ?? ''}`,
-                autoClose: 'cancel|5000',
+                // autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
                     cancel: {

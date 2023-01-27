@@ -160,15 +160,15 @@
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
+                            placeholder="Search..." data-id="2">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
+                            placeholder="Search..." data-id="3">
                     </th>
                     <th>
                         <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
+                            placeholder="Search..." data-id="4">
                     </th>
                     <th>
                         <div class="tom-select-custom">
