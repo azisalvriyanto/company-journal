@@ -3,7 +3,7 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.index') }}">Unit of Measurement</a>
+    <a class="list-separator-link" href="{{ route('items.unit-of-measurements.index') }}">Unit of Measurements</a>
 </li>
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('items.unit-of-measurements.create') }}">Create Unit of Measurement</a>

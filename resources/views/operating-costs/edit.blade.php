@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Item')
+@section('title', 'Edit ' . $query->name)
 
 @section('list-separator')
 <li class="list-inline-item">
