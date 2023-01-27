@@ -108,6 +108,27 @@
                                     'sub_menus' => NULL
                                 ],
                                 [
+                                    'name'      => 'Payments',
+                                    'icon'      => 'bi-credit-card',
+                                    'url'       => NULL,
+                                    'route'     => 'payments.',
+                                    'permissions'  => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus' => [
+                                        [
+                                            'name'  => 'Payment Methods',
+                                            'url'           => route('payments.payment-methods.index'),
+                                            'route'         => 'payments.payment-methods.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
+                                    ]
+                                ],
+                                [
                                     'name'      => 'User',
                                     'icon'      => 'bi-people',
                                     'url'       => route('users.index'),

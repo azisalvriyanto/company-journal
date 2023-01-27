@@ -28,7 +28,7 @@ class OperatingCosts extends Controller
                 $query                          = new OperatingCost;
                 $query->owner_id                = $request->owner;
                 $query->name                    = $request->name;
-                $query->default_cost            = (double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0;
+                $query->default_cost            = number_format((double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
                 $query->unit_of_measurement_id  = $request->unit_of_measurement;
                 $query->is_enable               = $request->is_enable ?? 0;
                 $query->save();
@@ -78,7 +78,7 @@ class OperatingCosts extends Controller
 
                 $query->owner_id                = $request->owner;
                 $query->name                    = $request->name;
-                $query->default_cost            = (double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0;
+                $query->default_cost            = number_format((double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
                 $query->unit_of_measurement_id  = $request->unit_of_measurement;
                 $query->is_enable               = $request->is_enable ?? 0;
                 $query->save();

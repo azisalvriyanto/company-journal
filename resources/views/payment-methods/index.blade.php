@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Operating Costs')
+@section('title', 'Payment Methods')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('operating-costs.index') }}">Operating Costs</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-methods.index') }}">Payment Methods</a>
 </li>
 @endsection
 
@@ -12,21 +12,21 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Operating Costs</h4>
+                <h4 class="card-header-title">Payment Methods</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('operating-costs.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('payments.payment-methods.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableOperatingCostExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatablePaymentMethodExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableOperatingCostExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatablePaymentMethodExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="datatable-custom">
-        <table id="datatableOperatingCost"
+        <table id="datatablePaymentMethod"
             class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
@@ -73,9 +73,9 @@
                 "entries": "#datatableEntries",
                 "deferRender": true,
                 "info": {
-                    "totalQty": "#datatableOperatingCostWithPaginationInfoTotalQty"
+                    "totalQty": "#datatablePaymentMethodWithPaginationInfoTotalQty"
                 },
-                "pagination": "datatableOperatingCostWithPagination",
+                "pagination": "datatablePaymentMethodWithPagination",
                 "dom": "Bfrtip",
                 "buttons": [
                     {
@@ -115,15 +115,6 @@
                         "name": "name"
                     },
                     {
-                        "data": "default_cost",
-                        "name": "default_cost",
-                        "className": "text-end"
-                    },
-                    {
-                        "data": "unit_of_measurement.name",
-                        "name": "unitOfMeasurement.name"
-                    },
-                    {
                         "data": "is_enable",
                         "name": "is_enable",
                         "className": "text-center"
@@ -144,8 +135,6 @@
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="1">Name</th>
-                    <th rowspan="1">Default Cost</th>
-                    <th rowspan="1">Unit Of Measurement</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
@@ -155,16 +144,8 @@
                             placeholder="Search..." data-id="1">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search text-end"
-                            placeholder="Search..." data-id="2">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="3">
-                    </th>
-                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="4" data-target-table="datatableOperatingCost" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatablePaymentMethod" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -200,13 +181,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatableOperatingCostWithPaginationInfoTotalQty"></span>
+                    <span id="datatablePaymentMethodWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatableOperatingCostWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatablePaymentMethodWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -263,7 +244,7 @@
                 `
             }
         });
-        const datatableOperatingCost = HSCore.components.HSDatatables.getItem('datatableOperatingCost');
+        const datatablePaymentMethod = HSCore.components.HSDatatables.getItem('datatablePaymentMethod');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -342,7 +323,7 @@
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatableOperatingCost.ajax.reload(null, false);
+                                    datatablePaymentMethod.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
