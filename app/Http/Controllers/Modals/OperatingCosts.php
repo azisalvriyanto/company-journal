@@ -86,7 +86,7 @@ class OperatingCosts extends Controller
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Unit of measurement updated in successfully.',
+                    'message'   => 'Operating cost updated in successfully.',
                     'data'      => $query,
                     'errors'    => [],
                 ];
@@ -102,7 +102,7 @@ class OperatingCosts extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Unit of measurement failed to update.',
+                'message'   => 'Operating cost failed to update.',
                 'data'      => [],
                 'errors'    => $validator->errors()->getMessages(),
             ];

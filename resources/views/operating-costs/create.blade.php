@@ -175,6 +175,7 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
+                                        content: `${res.message ?? ''}`,
                                         type: 'orange',
                                         buttons: {
                                             index: {

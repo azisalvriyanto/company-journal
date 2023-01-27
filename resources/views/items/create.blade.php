@@ -295,6 +295,7 @@
                                     await $.confirm({
                                         title: 'Confirmation!',
                                         type: 'orange',
+                                        content: `${res.message ?? ''}`,
                                         buttons: {
                                             index: {
                                                 text: 'Back',

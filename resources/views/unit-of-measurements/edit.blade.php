@@ -174,6 +174,7 @@
                                 await $.confirm({
                                     title: 'Confirmation!',
                                     type: 'orange',
+                                    content: `${res.message ?? ''}`,
                                     autoClose: 'close|3000',
                                     buttons: {
                                         index: {
