@@ -3,39 +3,40 @@
 namespace App\Http\Controllers\Modals;
 
 use App\Http\Controllers\Controller;
-use App\Models\BankAccount;
+use App\Models\PaymentTerm;
 
 use Illuminate\Http\Response;
 
 use DB;
 use Validator;
 
-class BankAccounts extends Controller
+class PaymentTerms extends Controller
 {
     public function store($request)
     {
         $validator = Validator::make($request->all(), [
-            'owner' => 'required|exists:users,id',
-            'bank'  => 'required|exists:banks,id',
-            'name'  => 'required|string',
+            'owner'         => 'required|exists:users,id',
+            'name'          => 'required|string',
+            'value'         => 'nullable|integer',
+            'deadline_type' => 'nullable|string',
         ]);
 
         if ($validator->passes()) {
             try {
                 DB::beginTransaction();
 
-                $query                          = new BankAccount;
-                $query->owner_id                = $request->owner;
-                $query->bank_id                 = $request->bank;
-                $query->name                    = $request->name;
-                $query->account_number          = $request->account_number;
-                $query->is_enable               = $request->is_enable ?? 0;
+                $query                  = new PaymentTerm;
+                $query->owner_id        = $request->owner;
+                $query->name            = $request->name;
+                $query->value           = $request->value ?? NULL;
+                $query->deadline_type   = $request->deadline_type ?? NULL;
+                $query->is_enable       = $request->is_enable ?? 0;
                 $query->save();
 
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Bank account created in successfully.',
+                    'message'   => 'Payment term created in successfully.',
                     'data'      => $query,
                     'errors'    => [],
                 ];
@@ -51,7 +52,7 @@ class BankAccounts extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Bank account failed to create.',
+                'message'   => 'Payment term failed to create.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -63,28 +64,29 @@ class BankAccounts extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'owner' => 'required|exists:users,id',
-            'bank'  => 'required|exists:banks,id',
-            'name'  => 'required|string',
+            'owner'         => 'required|exists:users,id',
+            'name'          => 'required|string',
+            'value'         => 'nullable|integer',
+            'deadline_type' => 'nullable|string',
         ]);
 
         if ($validator->passes()) {
-            $query = BankAccount::query()->find($id);
+            $query = PaymentTerm::query()->find($id);
             if ($query) {
                 try {
                     DB::beginTransaction();
 
-                    $query->owner_id                = $request->owner;
-                    $query->bank_id                 = $request->bank;
-                    $query->name                    = $request->name;
-                    $query->account_number          = $request->account_number;
-                    $query->is_enable               = $request->is_enable ?? 0;
+                    $query->owner_id        = $request->owner;
+                    $query->name            = $request->name;
+                    $query->value           = $request->value ?? NULL;
+                    $query->deadline_type   = $request->deadline_type ?? NULL;
+                    $query->is_enable       = $request->is_enable ?? 0;
                     $query->save();
 
                     DB::commit();
                     $response = [
                         'status'    => 200,
-                        'message'   => 'Bank account updated in successfully.',
+                        'message'   => 'Payment term updated in successfully.',
                         'data'      => $query,
                         'errors'    => [],
                     ];
@@ -100,7 +102,7 @@ class BankAccounts extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Bank account not found.',
+                    'message'   => 'Payment term not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -108,7 +110,7 @@ class BankAccounts extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Bank account failed to update.',
+                'message'   => 'Payment term failed to update.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -119,7 +121,7 @@ class BankAccounts extends Controller
 
     public function destroy($request, $id)
     {
-        $query = BankAccount::query()->find($id);
+        $query = PaymentTerm::query()->find($id);
         if ($query) {
             try {
                 DB::beginTransaction();
@@ -129,7 +131,7 @@ class BankAccounts extends Controller
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Bank account deleted in successfully.',
+                    'message'   => 'Payment term deleted in successfully.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -145,7 +147,7 @@ class BankAccounts extends Controller
         } else {
             $response = [
                 'status'    => 404,
-                'message'   => 'Bank account not found.',
+                'message'   => 'Payment term not found.',
                 'data'      => NULL,
                 'errors'    => [],
             ];

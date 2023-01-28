@@ -3,37 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Modals\Items;
-
-use App\Models\Category;
-use App\Models\Item;
-use App\Models\UnitOfMeasurement;
+use App\Http\Controllers\Modals\PaymentTerms;
+use App\Models\PaymentTerm;
 
 use DataTables;
 
-class ItemController extends Controller
+class PaymentTermController extends Controller
 {
     public function index(Request $request)
     {
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
-            $query = Item::query()
-            ->with([
-                'category',
-                'unitOfMeasurement',
-            ])
-            ->select(['items.*'])
-            ->whereIn('items.owner_id', [
+            $query = PaymentTerm::query()
+            ->select(['payment_terms.*'])
+            ->whereIn('payment_terms.owner_id', [
                 $owner->id,
                 $owner->parent_company_id
             ]);
 
             return DataTables::eloquent($query)
+            ->editColumn('value', function ($query) {
+                return $query->value ?? '<i class="text-muted font-italic">NULL</i>';
+            })
+            ->editColumn('deadline_type', function ($query) {
+                return $query->deadline_type ?? '<i class="text-muted font-italic">NULL</i>';
+            })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
-            })
-            ->editColumn('detail_group', function ($query) {
-                return $query->detail_group ?? '<i class="text-muted font-italic">NULL</i>';
             })
             ->addColumn('actions', function ($query) {
                 return '
@@ -48,7 +44,7 @@ class ItemController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('items.items.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('payments.payment-terms.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
                                 <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
@@ -64,60 +60,47 @@ class ItemController extends Controller
                     return $query->id;
                 },
                 'data-url' => function($query) {
-                    return route('items.items.show', $query->id);
+                    return route('payments.payment-terms.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
                 },
-                'data-category' => function($query) {
-                    return $query->category->name;
-                },
-                'data-unit-of-measurement' => function($query) {
-                    return $query->unitOfMeasurement->name;
-                },
             ])
-            ->rawColumns(['is_enable', 'detail_group','actions'])
+            ->rawColumns(['is_enable','actions'])
             ->addIndexColumn()
             ->toJson();
         }
 
-        return view('items.index');
+        return view('payment-terms.index');
     }
 
     public function create()
     {
-        $data['detailGroups'] = collect(Item::DETAIL_GROUPS)->sortBy('name');
-        $data['categories'] = Category::query()->orderBy('name')->get()->all();
-        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
-
-        return view('items.create', $data);
+        return view('payment-terms.create');
     }
 
     public function store(Request $request)
     {
-        $query = new Items;
+        $query = new PaymentTerms;
         return response()->json($query->store($request));
     }
 
     public function edit($id)
     {
-        $data['query']              = Item::query()->findOrFail($id);
-        $data['detailGroups']       = collect(Item::DETAIL_GROUPS)->sortBy('name');
-        $data['categories']         = Category::query()->orderBy('name')->get()->all();
-        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
+        $data['query'] = PaymentTerm::query()->findOrFail($id);
 
-        return view('items.edit', $data);
+        return view('payment-terms.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $query = new Items;
+        $query = new PaymentTerms;
         return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
-        $query = new Items;
+        $query = new PaymentTerms;
         return response()->json($query->destroy($request, $id));
     }
 }

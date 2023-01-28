@@ -118,6 +118,15 @@
                                     ],
                                     'sub_menus' => [
                                         [
+                                            'name'          => 'Payment Term',
+                                            'url'           => route('payments.payment-terms.index'),
+                                            'route'         => 'payments.payment-terms.',
+                                            'permissions'   => [
+                                                auth()->user()->hasRole('admin'),
+                                                auth()->user()->hasRole('user'),
+                                            ],
+                                        ],
+                                        [
                                             'name'          => 'Payment Method',
                                             'url'           => route('payments.payment-methods.index'),
                                             'route'         => 'payments.payment-methods.',

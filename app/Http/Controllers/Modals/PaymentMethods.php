@@ -94,7 +94,7 @@ class PaymentMethods extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Operating cost not found.',
+                    'message'   => 'Payment method not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];

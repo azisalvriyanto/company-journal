@@ -51,7 +51,7 @@ class UnitOfMeasurements extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Operating cost not found.',
+                    'message'   => 'Unit of measurement not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
