@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Modals\BankAccounts;
+use App\Models\Bank;
 use App\Models\BankAccount;
 
 use DataTables;
@@ -15,6 +16,9 @@ class BankAccountController extends Controller
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
             $query = BankAccount::query()
+            ->with([
+                'bank',
+            ])
             ->select(['bank_accounts.*'])
             ->whereIn('bank_accounts.owner_id', [
                 $owner->id,
@@ -22,6 +26,9 @@ class BankAccountController extends Controller
             ]);
 
             return DataTables::eloquent($query)
+            ->addColumn('bank_name', function ($query) {
+                return '<div>' . $query->bank->name . '</div>' . ($query->bank->short_name ? '<div class="small">' . $query->bank->short_name . '</div>' : '');
+            })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
             })
@@ -56,11 +63,17 @@ class BankAccountController extends Controller
                 'data-url' => function($query) {
                     return route('payments.bank-accounts.show', $query->id);
                 },
+                'data-bank-name' => function($query) {
+                    return $query->bank->name;
+                },
                 'data-name' => function($query) {
                     return $query->name;
                 },
+                'data-account-number' => function($query) {
+                    return $query->account_number;
+                },
             ])
-            ->rawColumns(['is_enable','actions'])
+            ->rawColumns(['bank_name', 'is_enable','actions'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -70,7 +83,8 @@ class BankAccountController extends Controller
 
     public function create()
     {
-        return view('bank-accounts.create');
+        $data['banks'] = Bank::query()->orderBy('name')->get()->all();
+        return view('bank-accounts.create', $data);
     }
 
     public function store(Request $request)
@@ -82,6 +96,7 @@ class BankAccountController extends Controller
     public function edit($id)
     {
         $data['query'] = BankAccount::query()->findOrFail($id);
+        $data['banks'] = Bank::query()->orderBy('name')->get()->all();
 
         return view('bank-accounts.edit', $data);
     }

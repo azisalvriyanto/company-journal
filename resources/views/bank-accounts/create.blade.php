@@ -41,9 +41,23 @@
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label for="bank-name" class="form-label">Bank Name</label>
+                        <label for="bank" class="form-label">Bank</label>
 
-                        <input id="bank-name" name="bank_name" type="text" class="form-control" placeholder="Bank Rakyat Indonesia, Bank Negara Indonesia, Bank Central Asia, etc.." value="" autocomplete="off">
+                        <div class="tom-select-custom">
+                            <select id="bank" name="bank" class="js-select form-select" autocomplete="off" id="bank"
+                                data-hs-tom-select-options='{
+                                    "searchInDropdown": true,
+                                    "hideSearch": false,
+                                    "placeholder": "Search..."
+                            }'>
+                                <option value="">Search...</option>
+                                @foreach($banks as $bank)
+                                <option value="{{ $bank['id'] }}">
+                                    {{ $bank['name'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
 

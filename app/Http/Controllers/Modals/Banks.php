@@ -15,7 +15,8 @@ class Banks extends Controller
     public function store($request)
     {
         $validator = Validator::make($request->all(), [
-            'name'  => 'required|string',
+            'name'          => 'required|string',
+            'short_name'    => 'nullable|string',
         ]);
 
         if ($validator->passes()) {
@@ -59,7 +60,8 @@ class Banks extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name'  => 'required|string',
+            'name'          => 'required|string',
+            'short_name'    => 'nullable|string',
         ]);
 
         if ($validator->passes()) {
@@ -92,7 +94,7 @@ class Banks extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Operating cost not found.',
+                    'message'   => 'Bank not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];

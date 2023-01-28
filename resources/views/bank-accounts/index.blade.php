@@ -112,7 +112,7 @@
                     },
                     {
                         "data": "bank_name",
-                        "name": "bank_name"
+                        "name": "bank.name"
                     },
                     {
                         "data": "name",
@@ -300,16 +300,26 @@
             <table class="table table-sm table-borderless">
                 <thead>
                     <tr>
-                        <td style="width: 20%;"></td>
+                        <td style="width: 30%;"></td>
                         <td style="width: 1px;"></td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="p-0">Bank Name</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('bank-name')}</td>
+                    </tr>
+                    <tr>
                         <td class="p-0">Name</td>
                         <td class="p-0 text-center">:</td>
                         <td class="p-0">${thisTr.data('name')}</td>
+                    </tr>
+                    <tr>
+                        <td class="p-0">Account Number</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('account-number')}</td>
                     </tr>
                 </tbody>
             </table>

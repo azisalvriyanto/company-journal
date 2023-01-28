@@ -77,6 +77,7 @@ class BankAccounts extends Controller
                     $query->owner_id                = $request->owner;
                     $query->bank_id                 = $request->bank;
                     $query->name                    = $request->name;
+                    $query->account_number          = $request->account_number;
                     $query->is_enable               = $request->is_enable ?? 0;
                     $query->save();
 

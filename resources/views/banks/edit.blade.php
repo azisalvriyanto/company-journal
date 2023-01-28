@@ -46,7 +46,7 @@
                     <div class="col-sm-12">
                         <label for="name" class="form-label">Name</label>
 
-                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="{{ $query->name }}" autocomplete="off">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="Bank Rakyat Indonesia, Bank Negara Indonesia, Bank Central Asia, etc." value="{{ $query->name }}" autocomplete="off">
                     </div>
                 </div>
 
