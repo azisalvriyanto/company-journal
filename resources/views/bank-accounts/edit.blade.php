@@ -18,7 +18,7 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Payment method information</h4>
+                <h4 class="card-header-title">Bank account information</h4>
             </div>
 
             <div class="card-body">
@@ -30,7 +30,7 @@
                                 <span class="text-dark">
                                     Availability
                                     <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Payment method availability switch toggler."></i>
+                                        data-bs-placement="top" title="Bank account availability switch toggler."></i>
                                 </span>
                             </span>
                             <span class="col-4 col-sm-3 text-end">
