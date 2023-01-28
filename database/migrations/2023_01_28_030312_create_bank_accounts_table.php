@@ -17,7 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('owner_id')->index();
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('bank_name');
+            $table->foreignUuid('bank_id')->index();
+            $table->foreign('bank_id')->references('id')->on('banks')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->string('account_number');
             $table->boolean('is_enable')->default(1);
