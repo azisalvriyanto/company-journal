@@ -27,5 +27,6 @@ Route::middleware(["auth"])->group(function () {
         Route::resource('banks', App\Http\Controllers\BankController::class);
         Route::resource('payment-methods', App\Http\Controllers\PaymentMethodController::class);
         Route::resource('bank-accounts', App\Http\Controllers\BankAccountController::class);
+        Route::resource('payment-terms', App\Http\Controllers\PaymentTermController::class);
     });
 });
