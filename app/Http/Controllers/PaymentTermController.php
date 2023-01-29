@@ -66,7 +66,7 @@ class PaymentTermController extends Controller
                     return $query->name;
                 },
             ])
-            ->rawColumns(['is_enable','actions'])
+            ->rawColumns(['value', 'deadline_type', 'is_enable','actions'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -76,7 +76,9 @@ class PaymentTermController extends Controller
 
     public function create()
     {
-        return view('payment-terms.create');
+        $data['deadlineTypes'] = collect(PaymentTerm::DEADLINE_TYPES)->sortBy('name');
+
+        return view('payment-terms.create', $data);
     }
 
     public function store(Request $request)
@@ -88,6 +90,7 @@ class PaymentTermController extends Controller
     public function edit($id)
     {
         $data['query'] = PaymentTerm::query()->findOrFail($id);
+        $data['deadlineTypes'] = collect(PaymentTerm::DEADLINE_TYPES)->sortBy('name');
 
         return view('payment-terms.edit', $data);
     }

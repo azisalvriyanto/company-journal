@@ -10,6 +10,21 @@ class PaymentTerm extends Model
 {
     use SoftDeletes, UsesUuid;
 
+    public const DEADLINE_TYPES = [
+        [
+            'id'    => "Day",
+            'name'  => "Day",
+        ],
+        [
+            'id'    => "Month",
+            'name'  => "Month",
+        ],
+        [
+            'id'    => "Year",
+            'name'  => "Year",
+        ]
+    ];
+
     protected $guarded = [];
 
     public function owner()

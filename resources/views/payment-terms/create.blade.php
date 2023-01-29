@@ -1,15 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Edit ' . $query->name)
+@section('title', 'Create Payment Term')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.bank-accounts.index') }}">Bank Accounts</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-terms.index') }}">Payment Terms</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.bank-accounts.show', $query->id) }}">{{ $query->name }}</a>
-</li>
-<li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.bank-accounts.edit', $query->id) }}">Edit</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-terms.create') }}">Create Payment Term</a>
 </li>
 @endsection
 
@@ -18,7 +15,7 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Bank account information</h4>
+                <h4 class="card-header-title">Payment term information</h4>
             </div>
 
             <div class="card-body">
@@ -30,7 +27,7 @@
                                 <span class="text-dark">
                                     Availability
                                     <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Bank account availability switch toggler."></i>
+                                        data-bs-placement="top" title="Payment term availability switch toggler."></i>
                                 </span>
                             </span>
                             <span class="col-4 col-sm-3 text-end">
@@ -44,39 +41,41 @@
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
-                        <label for="bank" class="form-label">Bank</label>
+                        <label for="name" class="form-label">Name</label>
+
+                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <label for="value" class="form-label">Value</label>
+
+                        <input id="value" name="value" type="text" class="form-control text-end" placeholder="" value="" autocomplete="off">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="deadline-type" class="form-label">Deadline Type</label>
 
                         <div class="tom-select-custom">
-                            <select id="bank" name="bank" class="js-select form-select" autocomplete="off"
+                            <select id="deadline-type" name="deadline_type" class="js-select form-select" autocomplete="off"
                                 data-hs-tom-select-options='{
-                                    "searchInDropdown": true,
-                                    "hideSearch": false,
-                                    "placeholder": "Search..."
+                                    "hideSearch": true,
+                                    "placeholder": "Deadline Type",
+	                                "allowEmptyOption": true,
+                                    "maxItems": 1,
+                                    "plugins": ["clear_button"],
+                                    "persist": false,
+                                    "create": true
                             }'>
-                                <option value="">Search...</option>
-                                @foreach($banks as $bank)
-                                <option value="{{ $bank['id'] }}" <?= ($bank['id'] == $query->bank_id ? 'selected' : '') ?>>
-                                    {{ $bank['name'] }}
+	                            <option value="">Null</option>
+                                @foreach($deadlineTypes as $deadlineType)
+                                <option value="{{ $deadlineType['id'] }}">
+                                    {{ $deadlineType['name'] }}
                                 </option>
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="name" class="form-label">Name</label>
-
-                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="{{ $query->name }}" autocomplete="off">
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label for="account-number" class="form-label">Account Number</label>
-
-                        <input id="account-number" name="account_number" type="text" class="form-control" placeholder="" value="{{ $query->account_number }}" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -88,14 +87,12 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col">
-                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
-                </div>
+                <div class="col"></div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-save">Save</button>
+                        <button type="button" class="btn btn-primary btn-create">Save</button>
                     </div>
                 </div>
             </div>
@@ -135,21 +132,20 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('payments.bank-accounts.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('payments.payment-terms.index') }}`);
                         }
                     },
                 }
             });
         });
 
-
-        $(document).on('click', '.btn-save', async function (e) {
+        $(document).on('click', '.btn-create', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('payments.bank-accounts.show', $query->id) }}`
+            const url           = `{{ route('payments.payment-terms.index') }}`
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to save this form?}`,
+                content: `Do you want to create this form?`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -160,11 +156,10 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Save',
+                        text: 'Yes, Create',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
-                            values['_method']   = `PUT`;
                             values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
                             $(`[name]`).map(function() {
                                 const parameter = $(this).attr('name');
@@ -184,100 +179,31 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
-                                        type: 'orange',
                                         content: `${res.message ?? ''}`,
-                                        autoClose: 'close|3000',
+                                        type: 'orange',
                                         buttons: {
                                             index: {
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.bank-accounts.index') }}`)
+                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}`);
                                                 }
                                             },
-                                            close: {
-                                                text: 'Still Edit',
+                                            reCreate: {
+                                                text: 'Recreate',
+                                                btnClass: 'btn-primary',
+                                                action: function () {
+                                                    window.location.reload();
+                                                }
+                                            },
+                                            edit: {
+                                                text: 'Edit',
                                                 btnClass: 'btn-success',
-                                                keys: ['enter', 'esc'],
                                                 action: function () {
+                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },
-                                    });
-                                } else {
-                                    $.confirm({
-                                        title: 'Failed',
-                                        type: 'red',
-                                        content: `${res.message ?? ''}`,
-                                        buttons: {
-                                            close: {
-                                                text: 'Close',
-                                                action: function () {
-                                                }
-                                            },
-                                        }
-                                    });
-                                }
-                            })
-                            .fail(function () {
-                                $.confirm({
-                                    title: 'Failed',
-                                    type: 'red',
-                                    content: 'There is some errors in app.',
-                                    autoClose: 'close|3000',
-                                    buttons: {
-                                        close: {
-                                            text: 'Close',
-                                            keys: ['enter', 'esc'],
-                                            action: function () {
-                                            }
-                                        },
-                                    }
-                                });
-                            });
-                        }
-                    },
-                }
-            });
-        });
-
-        $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('payments.bank-accounts.show', $query->id) }}`
-            await $.confirm({
-                title: 'Confirmation!',
-                content: `Do you want to delete this form?`,
-                autoClose: 'cancel|5000',
-                type: 'orange',
-                buttons: {
-                    cancel: {
-                        text: 'Cancel',
-                        keys: ['enter', 'esc'],
-                        action: function () {
-                        }
-                    },
-                    destroy: {
-                        text: 'Yes, Delete',
-                        btnClass: 'btn-danger',
-                        action: async function () {
-                            $.post(url, {
-                                _method: 'DELETE'
-                            })
-                            .done(async function(res) {
-                                if (res.status == 200) {
-                                    $.confirm({
-                                        title: 'Success',
-                                        type: 'green',
-                                        content: `${res.message ?? ''}`,
-                                        autoClose: 'close|3000',
-                                        buttons: {
-                                            close: {
-                                                text: 'Close',
-                                                keys: ['enter', 'esc'],
-                                                action: function () {
-                                                    window.location.replace(`{{ route('payments.bank-accounts.index') }}`);
-                                                }
-                                            },
-                                        }
                                     });
                                 } else {
                                     $.confirm({

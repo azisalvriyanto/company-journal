@@ -44,7 +44,7 @@
                         <label for="bank" class="form-label">Bank</label>
 
                         <div class="tom-select-custom">
-                            <select id="bank" name="bank" class="js-select form-select" autocomplete="off" id="bank"
+                            <select id="bank" name="bank" class="js-select form-select" autocomplete="off"
                                 data-hs-tom-select-options='{
                                     "searchInDropdown": true,
                                     "hideSearch": false,
