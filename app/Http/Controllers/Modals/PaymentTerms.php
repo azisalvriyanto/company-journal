@@ -18,7 +18,7 @@ class PaymentTerms extends Controller
             'owner'         => 'required|exists:users,id',
             'name'          => 'required|string',
             'value'         => 'nullable|integer',
-            'deadline_type' => 'nullable|string',
+            'deadline_type' => 'nullable|in:' . collect(PaymentTerm::DEADLINE_TYPES)->pluck('id')->implode(','),
         ]);
 
         if ($validator->passes()) {
@@ -67,7 +67,7 @@ class PaymentTerms extends Controller
             'owner'         => 'required|exists:users,id',
             'name'          => 'required|string',
             'value'         => 'nullable|integer',
-            'deadline_type' => 'nullable|string',
+            'deadline_type' => 'nullable|in:' . collect(PaymentTerm::DEADLINE_TYPES)->pluck('id')->implode(','),
         ]);
 
         if ($validator->passes()) {

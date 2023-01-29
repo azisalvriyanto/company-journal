@@ -20,7 +20,7 @@ class Items extends Controller
             'name'                  => 'required|string',
             'code'                  => 'nullable|string',
             'unit_of_measurement'   => 'required|exists:unit_of_measurements,id',
-            'detail_group'          => 'nullable|string',
+            'detail_group'          => 'required|in:' . collect(Item::DETAIL_GROUPS)->pluck('id')->implode(','),
         ]);
 
         if ($validator->passes()) {
@@ -74,7 +74,7 @@ class Items extends Controller
             'name'                  => 'required|string',
             'code'                  => 'nullable|string',
             'unit_of_measurement'   => 'required|exists:unit_of_measurements,id',
-            'detail_group'          => 'nullable|string',
+            'detail_group'          => 'required|in:' . collect(Item::DETAIL_GROUPS)->pluck('id')->implode(','),
         ]);
 
         if ($validator->passes()) {
