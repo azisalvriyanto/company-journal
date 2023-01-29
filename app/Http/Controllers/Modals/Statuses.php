@@ -16,17 +16,19 @@ class Statuses extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'          => 'required|string',
-            'color_code'    => 'nullable|string',
+            'background_color'  => 'required|string',
+            'font_color'        => 'required|string',
         ]);
 
         if ($validator->passes()) {
             try {
                 DB::beginTransaction();
 
-                $query              = new Status;
-                $query->name        = $request->name;
-                $query->color_code  = $request->color_code;
-                $query->is_enable   = $request->is_enable ?? 0;
+                $query                      = new Status;
+                $query->name                = $request->name;
+                $query->background_color    = $request->background_color;
+                $query->font_color          = $request->font_color;
+                $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
 
                 DB::commit();
@@ -60,8 +62,9 @@ class Statuses extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name'          => 'required|string',
-            'color_code'    => 'nullable|string',
+            'name'              => 'required|string',
+            'background_color'  => 'required|string',
+            'font_color'        => 'required|string',
         ]);
 
         if ($validator->passes()) {
@@ -70,9 +73,10 @@ class Statuses extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $query->name        = $request->name;
-                    $query->color_code  = $request->color_code;
-                    $query->is_enable   = $request->is_enable ?? 0;
+                    $query->name                = $request->name;
+                    $query->background_color    = $request->background_color;
+                    $query->font_color          = $request->font_color;
+                    $query->is_enable           = $request->is_enable ?? 0;
                     $query->save();
 
                     DB::commit();

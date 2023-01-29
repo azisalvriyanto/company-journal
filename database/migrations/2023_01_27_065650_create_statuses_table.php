@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('color_code')->dafault('#FFFFFF');
+            $table->string('background_color');
+            $table->string('font_color');
             $table->boolean('is_enable')->default(1);
             $table->timestamps();
             $table->softDeletes();
