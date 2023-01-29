@@ -15,8 +15,6 @@ Route::middleware(["auth"])->group(function () {
 
     Route::resource('users', App\Http\Controllers\UserController::class);
 
-    Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
-
     Route::group(['as' => 'items.', 'prefix' => 'items'], function () {
         Route::resource('categories', App\Http\Controllers\CategoryController::class);
         Route::resource('unit-of-measurements', App\Http\Controllers\UnitOfMeasurementController::class);
@@ -31,4 +29,7 @@ Route::middleware(["auth"])->group(function () {
         Route::resource('bank-accounts', App\Http\Controllers\BankAccountController::class);
         Route::resource('payment-terms', App\Http\Controllers\PaymentTermController::class);
     });
+
+    Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
+    Route::resource('statuses', App\Http\Controllers\StatusController::class);
 });

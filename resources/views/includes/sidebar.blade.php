@@ -24,7 +24,7 @@
                         $groups = [
                             'dashboard' => [
                                 'name'          => NULL,
-                                'permissions'  => [
+                                'permissions'   => [
                                     auth()->user()->hasRole('admin')
                                 ],
                                 'menus'         => [
@@ -32,8 +32,8 @@
                                         'name'          => 'Dashboard',
                                         'icon'          => 'bi-house-door',
                                         'url'           => route('dashboards.index'),
-                                        'permissions'   => NULL,
                                         'route'         => 'dashboards.',
+                                        'permissions'   => NULL,
                                         'sub_menus'     => NULL
                                     ]
                                 ]
@@ -41,12 +41,12 @@
                         ];
 
                         $groups['reference'] = [
-                            'name'  => 'Reference',
-                            'permissions'  => [
+                            'name'          => 'Reference',
+                            'permissions'   => [
                                 auth()->user()->hasRole('admin'),
                                 auth()->user()->hasRole('user'),
                             ],
-                            'menus' => [
+                            'menus'         => [
                                 [
                                     'name'          => 'Items',
                                     'icon'          => 'bi-kanban',
@@ -56,7 +56,7 @@
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
-                                    'sub_menus' => [
+                                    'sub_menus'     => [
                                         [
                                             'name'          => 'Category',
                                             'url'           => route('items.categories.index'),
@@ -94,7 +94,7 @@
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin')
                                     ],
-                                    'sub_menus' => NULL
+                                    'sub_menus'     => NULL
                                 ],
                                 [
                                     'name'          => 'Operating Cost',
@@ -105,18 +105,7 @@
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
-                                    'sub_menus' => NULL
-                                ],
-                                [
-                                    'name'          => 'Operation Type',
-                                    'icon'          => 'bi-wrench-adjustable-circle',
-                                    'url'           => route('operation-types.index'),
-                                    'route'         => 'operation-types.',
-                                    'permissions'   => [
-                                        auth()->user()->hasRole('admin'),
-                                        auth()->user()->hasRole('user'),
-                                    ],
-                                    'sub_menus' => NULL
+                                    'sub_menus'     => NULL
                                 ],
                                 [
                                     'name'          => 'Payments',
@@ -127,7 +116,7 @@
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
-                                    'sub_menus' => [
+                                    'sub_menus'     => [
                                         [
                                             'name'          => 'Payment Term',
                                             'url'           => route('payments.payment-terms.index'),
@@ -175,7 +164,39 @@
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
                                     ],
-                                    'sub_menus' => NULL
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
+                        $groups['core'] = [
+                            'name'          => 'Core',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Status',
+                                    'icon'          => 'bi-patch-check',
+                                    'url'           => route('statuses.index'),
+                                    'route'         => 'statuses.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                                [
+                                    'name'          => 'Operation Type',
+                                    'icon'          => 'bi-wrench-adjustable-circle',
+                                    'url'           => route('operation-types.index'),
+                                    'route'         => 'operation-types.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
                                 ],
                             ]
                         ];
