@@ -67,9 +67,9 @@
                     </div>
 
                     <div class="col-sm-4 mb-4">
-                        <label for="transaction-code" class="form-label">Transaction Code</label>
+                        <label for="code" class="form-label">Code</label>
 
-                        <input id="transaction-code" name="transaction_code" type="text" class="form-control" placeholder="" value="" autocomplete="off">
+                        <input id="code" name="code" type="text" class="form-control" placeholder="" value="" autocomplete="off">
                     </div>
                 </div>
             </div>

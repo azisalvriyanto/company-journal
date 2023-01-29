@@ -119,8 +119,8 @@
                         "name": "name"
                     },
                     {
-                        "data": "transaction_code",
-                        "name": "transaction_code"
+                        "data": "code",
+                        "name": "code"
                     },
                     {
                         "data": "is_enable",
@@ -144,7 +144,7 @@
                     <th rowspan="2">No</th>
                     <th rowspan="1">Group</th>
                     <th rowspan="1">Name</th>
-                    <th rowspan="1">Transaction Code</th>
+                    <th rowspan="1">Code</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>

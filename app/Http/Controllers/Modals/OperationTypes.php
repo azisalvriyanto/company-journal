@@ -15,20 +15,20 @@ class OperationTypes extends Controller
     public function store($request)
     {
         $validator = Validator::make($request->all(), [
-            'group'             => 'required|in:' . collect(OperationType::GROUPS)->pluck('id')->implode(','),   
-            'name'              => 'required|string',
-            'transaction_code'  => 'required|string',
+            'group' => 'required|in:' . collect(OperationType::GROUPS)->pluck('id')->implode(','),   
+            'name'  => 'required|string',
+            'code'  => 'required|string',
         ]);
 
         if ($validator->passes()) {
             try {
                 DB::beginTransaction();
 
-                $query                      = new OperationType;
-                $query->group               = $request->group;
-                $query->name                = $request->name;
-                $query->transaction_code    = $request->transaction_code;
-                $query->is_enable           = $request->is_enable ?? 0;
+                $query              = new OperationType;
+                $query->group       = $request->group;
+                $query->name        = $request->name;
+                $query->code        = $request->code;
+                $query->is_enable   = $request->is_enable ?? 0;
                 $query->save();
 
                 DB::commit();
@@ -62,9 +62,9 @@ class OperationTypes extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'group'             => 'required|in:' . collect(OperationType::GROUPS)->pluck('name')->implode(','),   
-            'name'              => 'required|string',
-            'transaction_code'  => 'required|string',
+            'group' => 'required|in:' . collect(OperationType::GROUPS)->pluck('id')->implode(','),   
+            'name'  => 'required|string',
+            'code'  => 'required|string',
         ]);
 
         if ($validator->passes()) {
@@ -73,10 +73,10 @@ class OperationTypes extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $query->group               = $request->group;
-                    $query->name                = $request->name;
-                    $query->transaction_code    = $request->transaction_code;
-                    $query->is_enable           = $request->is_enable ?? 0;
+                    $query->group       = $request->group;
+                    $query->name        = $request->name;
+                    $query->code        = $request->code;
+                    $query->is_enable   = $request->is_enable ?? 0;
                     $query->save();
 
                     DB::commit();
