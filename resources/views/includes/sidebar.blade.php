@@ -108,6 +108,17 @@
                                     'sub_menus' => NULL
                                 ],
                                 [
+                                    'name'          => 'Storage Operating Type',
+                                    'icon'          => 'bi-wrench-adjustable-circle',
+                                    'url'           => route('storage-operating-types.index'),
+                                    'route'         => 'storage-operating-types.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus' => NULL
+                                ],
+                                [
                                     'name'          => 'Payments',
                                     'icon'          => 'bi-credit-card',
                                     'url'           => NULL,
