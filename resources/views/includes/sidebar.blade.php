@@ -108,10 +108,10 @@
                                     'sub_menus' => NULL
                                 ],
                                 [
-                                    'name'          => 'Storage Operating Type',
+                                    'name'          => 'Operation Type',
                                     'icon'          => 'bi-wrench-adjustable-circle',
-                                    'url'           => route('storage-operating-types.index'),
-                                    'route'         => 'storage-operating-types.',
+                                    'url'           => route('operation-types.index'),
+                                    'route'         => 'operation-types.',
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),

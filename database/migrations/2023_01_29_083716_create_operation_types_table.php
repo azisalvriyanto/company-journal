@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('storage_operation_types', function (Blueprint $table) {
+        Schema::create('operation_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->enum('group', ['In', 'Out']);
             $table->string('name');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storage_operation_types');
+        Schema::dropIfExists('operation_types');
     }
 };

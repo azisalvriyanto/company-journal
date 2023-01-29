@@ -15,7 +15,7 @@ Route::middleware(["auth"])->group(function () {
 
     Route::resource('users', App\Http\Controllers\UserController::class);
 
-    Route::resource('storage-operating-types', App\Http\Controllers\StorageOperatingTypesController::class);
+    Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
 
     Route::group(['as' => 'items.', 'prefix' => 'items'], function () {
         Route::resource('categories', App\Http\Controllers\CategoryController::class);

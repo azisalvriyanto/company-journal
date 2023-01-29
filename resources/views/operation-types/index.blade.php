@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Banks')
+@section('title', 'Operation Types')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.index') }}">Banks</a>
+    <a class="list-separator-link" href="{{ route('operation-types.index') }}">Operation Types</a>
 </li>
 @endsection
 
@@ -12,21 +12,21 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Banks</h4>
+                <h4 class="card-header-title">Operation Types</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('payments.banks.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('operation-types.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableBankExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableOperationTypeExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableBankExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableOperationTypeExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="datatable-custom">
-        <table id="datatableBank"
+        <table id="datatableOperationType"
             class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
@@ -73,9 +73,9 @@
                 "entries": "#datatableEntries",
                 "deferRender": true,
                 "info": {
-                    "totalQty": "#datatableBankWithPaginationInfoTotalQty"
+                    "totalQty": "#datatableOperationTypeWithPaginationInfoTotalQty"
                 },
-                "pagination": "datatableBankWithPagination",
+                "pagination": "datatableOperationTypeWithPagination",
                 "dom": "Bfrtip",
                 "buttons": [
                     {
@@ -111,12 +111,16 @@
                         "className": "text-center"
                     },
                     {
+                        "data": "group",
+                        "name": "group"
+                    },
+                    {
                         "data": "name",
                         "name": "name"
                     },
                     {
-                        "data": "short_name",
-                        "name": "short_name"
+                        "data": "transaction_code",
+                        "name": "transaction_code"
                     },
                     {
                         "data": "is_enable",
@@ -138,8 +142,9 @@
             <thead class="thead-light">
                 <tr>
                     <th rowspan="2">No</th>
+                    <th rowspan="1">Group</th>
                     <th rowspan="1">Name</th>
-                    <th rowspan="1">Short Name</th>
+                    <th rowspan="1">Transaction Code</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
@@ -153,8 +158,12 @@
                             placeholder="Search..." data-id="2">
                     </th>
                     <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-id="3">
+                    </th>
+                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="3" data-target-table="datatableBank" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="4" data-target-table="datatableOperationType" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -190,13 +199,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatableBankWithPaginationInfoTotalQty"></span>
+                    <span id="datatableOperationTypeWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatableBankWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatableOperationTypeWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -253,7 +262,7 @@
                 `
             }
         });
-        const datatableBank = HSCore.components.HSDatatables.getItem('datatableBank');
+        const datatableOperationType = HSCore.components.HSDatatables.getItem('datatableOperationType');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -327,7 +336,7 @@
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatableBank.ajax.reload(null, false);
+                                    datatableOperationType.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
