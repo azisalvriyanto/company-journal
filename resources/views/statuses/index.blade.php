@@ -282,7 +282,7 @@
             <table class="table table-sm table-borderless">
                 <thead>
                     <tr>
-                        <td style="width: 20%;"></td>
+                        <td style="width: 30%;"></td>
                         <td style="width: 1px;"></td>
                         <td></td>
                     </tr>
@@ -294,9 +294,14 @@
                         <td class="p-0">${thisTr.data('name')}</td>
                     </tr>
                     <tr>
-                        <td class="p-0">Color Code</td>
+                        <td class="p-0">Background Color</td>
                         <td class="p-0 text-center">:</td>
-                        <td class="p-0">${thisTr.data('color-code')}</td>
+                        <td class="p-0">${thisTr.data('background-color')}</td>
+                    </tr>
+                    <tr>
+                        <td class="p-0">Font Color</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('font-color')}</td>
                     </tr>
                 </tbody>
             </table>
