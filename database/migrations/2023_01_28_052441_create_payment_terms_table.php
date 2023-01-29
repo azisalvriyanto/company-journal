@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->integer('value')->nullable();
-            $table->integer('deadline_type')->nullable();
+            $table->string('deadline_type')->nullable();
             $table->boolean('is_enable')->default(1);
             $table->timestamps();
             $table->softDeletes();

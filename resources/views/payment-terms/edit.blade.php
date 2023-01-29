@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Create Payment Term')
+@section('title', 'Edit ' . $query->name)
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('payments.payment-terms.index') }}">Payment Terms</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.payment-terms.create') }}">Create Payment Term</a>
+    <a class="list-separator-link" href="{{ route('payments.payment-terms.show', $query->id) }}">{{ $query->name }}</a>
+</li>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('payments.payment-terms.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -43,7 +46,7 @@
                     <div class="col-sm-12">
                         <label for="name" class="form-label">Name</label>
 
-                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="" autocomplete="off">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="{{ $query->name }}" autocomplete="off">
                     </div>
                 </div>
 
@@ -51,7 +54,7 @@
                     <div class="col-sm-6">
                         <label for="value" class="form-label">Value</label>
 
-                        <input id="value" name="value" type="text" class="form-control text-end" placeholder="NULL" value="" autocomplete="off">
+                        <input id="value" name="value" type="text" class="form-control text-end" placeholder="NULL" value="{{ $query->value }}" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
@@ -68,9 +71,9 @@
                                     "persist": false,
                                     "create": true
                             }'>
-	                            <option value="">NULL</option>
+	                            <option value="" <?= ($query->deadline_type == NULL ? 'selected' : '') ?>>NULL</option>
                                 @foreach($deadlineTypes as $deadlineType)
-                                <option value="{{ $deadlineType['id'] }}">
+                                <option value="{{ $deadlineType['id'] }}" <?= ($query->deadline_type == $deadlineType['id'] ? 'selected' : '') ?>>
                                     {{ $deadlineType['name'] }}
                                 </option>
                                 @endforeach
@@ -87,12 +90,14 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -139,13 +144,14 @@
             });
         });
 
-        $(document).on('click', '.btn-create', async function (e) {
+        $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('payments.payment-terms.index') }}`
+            const listNote      = '';
+            const url           = `{{ route('payments.payment-terms.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to create this form?`,
+                content: `Do you want to save this form?${listNote ?? ''}`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -156,10 +162,11 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Create',
+                        text: 'Yes, Save',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
+                            values['_method']   = `PUT`;
                             values['owner']     = `{{ auth()->user()->parentCompany->parent_company_id }}`;
                             $(`[name]`).map(function() {
                                 const parameter = $(this).attr('name');
@@ -179,31 +186,100 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
-                                        content: `${res.message ?? ''}`,
                                         type: 'orange',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
                                         buttons: {
                                             index: {
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}`);
+                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}`)
                                                 }
                                             },
-                                            reCreate: {
-                                                text: 'Recreate',
-                                                btnClass: 'btn-primary',
-                                                action: function () {
-                                                    window.location.reload();
-                                                }
-                                            },
-                                            edit: {
-                                                text: 'Edit',
+                                            close: {
+                                                text: 'Still Edit',
                                                 btnClass: 'btn-success',
+                                                keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-destroy', async function (e) {
+            const url = `{{ route('payments.payment-terms.show', $query->id) }}`
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to delete this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    destroy: {
+                        text: 'Yes, Delete',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            $.post(url, {
+                                _method: 'DELETE'
+                            })
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    $.confirm({
+                                        title: 'Success',
+                                        type: 'green',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                    window.location.replace(`{{ route('payments.payment-terms.index') }}`);
+                                                }
+                                            },
+                                        }
                                     });
                                 } else {
                                     $.confirm({

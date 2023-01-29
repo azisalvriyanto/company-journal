@@ -28,7 +28,7 @@ class PaymentTerms extends Controller
                 $query                  = new PaymentTerm;
                 $query->owner_id        = $request->owner;
                 $query->name            = $request->name;
-                $query->value           = $request->value ?? NULL;
+                $query->value           = is_numeric($request->value) ? $request->value : NULL;
                 $query->deadline_type   = $request->deadline_type ?? NULL;
                 $query->is_enable       = $request->is_enable ?? 0;
                 $query->save();
@@ -78,7 +78,7 @@ class PaymentTerms extends Controller
 
                     $query->owner_id        = $request->owner;
                     $query->name            = $request->name;
-                    $query->value           = $request->value ?? NULL;
+                    $query->value           = is_numeric($request->value) ? $request->value : NULL;
                     $query->deadline_type   = $request->deadline_type ?? NULL;
                     $query->is_enable       = $request->is_enable ?? 0;
                     $query->save();
