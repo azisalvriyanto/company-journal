@@ -188,6 +188,17 @@
                                     'sub_menus'     => NULL
                                 ],
                                 [
+                                    'name'          => 'Owner Group',
+                                    'icon'          => 'bi-diagram-3',
+                                    'url'           => route('owner-groups.index'),
+                                    'route'         => 'owner-groups.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                                [
                                     'name'          => 'Operation Type',
                                     'icon'          => 'bi-wrench-adjustable-circle',
                                     'url'           => route('operation-types.index'),

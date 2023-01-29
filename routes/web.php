@@ -30,6 +30,7 @@ Route::middleware(["auth"])->group(function () {
         Route::resource('payment-terms', App\Http\Controllers\PaymentTermController::class);
     });
 
-    Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
     Route::resource('statuses', App\Http\Controllers\StatusController::class);
+    Route::resource('owner-groups', App\Http\Controllers\OwnerGroupController::class);
+    Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
 });
