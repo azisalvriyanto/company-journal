@@ -33,7 +33,7 @@ class BankController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('payments.banks.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('banks.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
                                 <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
@@ -49,7 +49,7 @@ class BankController extends Controller
                     return $query->id;
                 },
                 'data-url' => function($query) {
-                    return route('payments.banks.show', $query->id);
+                    return route('banks.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;

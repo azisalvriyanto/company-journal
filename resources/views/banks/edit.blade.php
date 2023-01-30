@@ -3,13 +3,13 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.index') }}">Banks</a>
+    <a class="list-separator-link" href="{{ route('banks.index') }}">Banks</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.show', $query->id) }}">{{ $query->name }}</a>
+    <a class="list-separator-link" href="{{ route('banks.show', $query->id) }}">{{ $query->name }}</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.edit', $query->id) }}">Edit</a>
+    <a class="list-separator-link" href="{{ route('banks.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -110,7 +110,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('payments.banks.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('banks.index') }}`);
                         }
                     },
                 }
@@ -120,7 +120,7 @@
         $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
             const listNote      = '';
-            const url           = `{{ route('payments.banks.show', $query->id) }}`
+            const url           = `{{ route('banks.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -166,7 +166,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.banks.index') }}`)
+                                                    window.location.replace(`{{ route('banks.index') }}`)
                                                 }
                                             },
                                             close: {
@@ -216,7 +216,7 @@
         });
 
         $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('payments.banks.show', $query->id) }}`
+            const url = `{{ route('banks.show', $query->id) }}`
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this form?`,
@@ -248,7 +248,7 @@
                                                 text: 'Close',
                                                 keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.banks.index') }}`);
+                                                    window.location.replace(`{{ route('banks.index') }}`);
                                                 }
                                             },
                                         }

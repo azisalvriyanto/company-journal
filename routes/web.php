@@ -24,12 +24,12 @@ Route::middleware(["auth"])->group(function () {
     Route::resource('operating-costs', App\Http\Controllers\OperatingCostController::class);
 
     Route::group(['as' => 'payments.', 'prefix' => 'payments'], function () {
-        Route::resource('banks', App\Http\Controllers\BankController::class);
         Route::resource('payment-methods', App\Http\Controllers\PaymentMethodController::class);
         Route::resource('bank-accounts', App\Http\Controllers\BankAccountController::class);
         Route::resource('payment-terms', App\Http\Controllers\PaymentTermController::class);
     });
 
+    Route::resource('banks', App\Http\Controllers\BankController::class);
     Route::resource('statuses', App\Http\Controllers\StatusController::class);
     Route::resource('owner-groups', App\Http\Controllers\OwnerGroupController::class);
     Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);

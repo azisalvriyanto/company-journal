@@ -3,10 +3,10 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.index') }}">Banks</a>
+    <a class="list-separator-link" href="{{ route('banks.index') }}">Banks</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('payments.banks.create') }}">Create Bank</a>
+    <a class="list-separator-link" href="{{ route('banks.create') }}">Create Bank</a>
 </li>
 @endsection
 
@@ -108,7 +108,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('payments.banks.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('banks.index') }}`);
                         }
                     },
                 }
@@ -117,7 +117,7 @@
 
         $(document).on('click', '.btn-create', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('payments.banks.index') }}`
+            const url           = `{{ route('banks.index') }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -161,7 +161,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.banks.index') }}`);
+                                                    window.location.replace(`{{ route('banks.index') }}`);
                                                 }
                                             },
                                             reCreate: {
@@ -175,7 +175,7 @@
                                                 text: 'Edit',
                                                 btnClass: 'btn-success',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('payments.banks.index') }}/${res.data.id}/edit`);
+                                                    window.location.replace(`{{ route('banks.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },

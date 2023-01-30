@@ -136,15 +136,6 @@
                                             ],
                                         ],
                                         [
-                                            'name'          => 'Bank',
-                                            'url'           => route('payments.banks.index'),
-                                            'route'         => 'payments.banks.',
-                                            'permissions'   => [
-                                                auth()->user()->hasRole('admin'),
-                                                auth()->user()->hasRole('user'),
-                                            ],
-                                        ],
-                                        [
                                             'name'          => 'Bank Account',
                                             'url'           => route('payments.bank-accounts.index'),
                                             'route'         => 'payments.bank-accounts.',
@@ -203,6 +194,17 @@
                                     'icon'          => 'bi-wrench-adjustable-circle',
                                     'url'           => route('operation-types.index'),
                                     'route'         => 'operation-types.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                                [
+                                    'name'          => 'Bank',
+                                    'icon'          => 'bi-patch-check',
+                                    'url'           => route('banks.index'),
+                                    'route'         => 'banks.',
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
