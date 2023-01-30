@@ -18,37 +18,40 @@
     <div class="col-lg-8 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Unit of measurement information</h4>
+                <h4 class="card-header-title">Category information</h4>
             </div>
-            
 
             <div class="card-body">
-                <div class="mb-4">
-                    <label class="row form-check form-switch" for="is-enable">
-                        <span class="col-8 col-sm-9 ms-0">
-                            <span class="text-dark">
-                                Availability
-                                <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Unit of measurement availability switch toggler."></i>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="row form-check form-switch" for="is-enable">
+                            <span class="col-8 col-sm-9 ms-0">
+                                <span class="text-dark">
+                                    Availability
+                                    <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Category availability switch toggler."></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
-                        </span>
-                    </label>
+                            <span class="col-4 col-sm-3 text-end">
+                                <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 <hr class="my-4">
 
-                <div class="mb-4">
-                    <label for="name" class="form-label">
-                        Name
-                        <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Categories are the goods or services you sell."></i>
-                    </label>
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
+                        <label for="name" class="form-label">
+                            Name
+                            <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Categories are the goods or services you sell."></i>
+                        </label>
 
-                    <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
-                        aria-label="Shirt, t-shirts, etc." value="{{ $query->name }}" autocomplete="off">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="Shirt, t-shirts, etc."
+                            aria-label="Shirt, t-shirts, etc." value="{{ $query->name }}" autocomplete="off">
+                    </div>
                 </div>
             </div>
         </div>

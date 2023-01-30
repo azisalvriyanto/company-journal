@@ -23,7 +23,7 @@
 
             <div class="card-body">
 
-                <div class="row mb-4">
+                <div class="row">
                     <div class="col-sm-12">
                         <label class="row form-check form-switch" for="is-enable">
                             <span class="col-8 col-sm-9 ms-0">
@@ -42,16 +42,16 @@
 
                 <hr class="my-4">
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="name" class="form-label">Name</label>
 
                         <input id="name" name="name" type="text" class="form-control" placeholder="Bank Rakyat Indonesia, Bank Negara Indonesia, Bank Central Asia, etc." value="{{ $query->name }}" autocomplete="off">
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="short-name" class="form-label">Short Name</label>
 
                         <input id="short-name" name="short_name" type="text" class="form-control" placeholder="" value="{{ $query->short_name }}" autocomplete="off">

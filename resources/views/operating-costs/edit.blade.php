@@ -22,58 +22,57 @@
             </div>
 
             <div class="card-body">
-
-                <div class="mb-4">
-                    <label class="row form-check form-switch" for="is-enable">
-                        <span class="col-8 col-sm-9 ms-0">
-                            <span class="text-dark">
-                                Availability
-                                <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Operating cost availability switch toggler."></i>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="row form-check form-switch" for="is-enable">
+                            <span class="col-8 col-sm-9 ms-0">
+                                <span class="text-dark">
+                                    Availability
+                                    <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Operating cost availability switch toggler."></i>
+                                </span>
                             </span>
-                        </span>
-                        <span class="col-4 col-sm-3 text-end">
-                            <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
-                        </span>
-                    </label>
+                            <span class="col-4 col-sm-3 text-end">
+                                <input id="is-enable" name="is_enable" type="checkbox" class="form-check-input" {{ $query->is_enable ? 'checked=""' : '' }}>
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 <hr class="my-4">
 
-                <div class="mb-4">
-                    <label for="name" class="form-label">Name</label>
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
+                        <label for="name" class="form-label">Name</label>
 
-                    <input id="name" name="name" type="text" class="form-control" placeholder="Home Electricity, Labor, etc." value="{{ $query->name }}" autocomplete="off">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="Home Electricity, Labor, etc." value="{{ $query->name }}" autocomplete="off">
+                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="mb-4">
-                            <label for="default-cost" class="form-label">Default Cost</label>
+                    <div class="col-sm-6 mb-4">
+                        <label for="default-cost" class="form-label">Default Cost</label>
 
-                            <input id="default-cost" name="default_cost" type="text" class="form-control" placeholder="x,xx.xx" value="{{ $query->default_cost ?? '' }}">
-                        </div>
+                        <input id="default-cost" name="default_cost" type="text" class="form-control" placeholder="x,xx.xx" value="{{ $query->default_cost ?? '' }}">
                     </div>
 
-                    <div class="col-sm-6">
-                        <div class="mb-4">
-                            <label for="unit-of-measurement" class="form-label">Unit of Measurement</label>
+                    <div class="col-sm-6 mb-4">
+                        <label for="unit-of-measurement" class="form-label">Unit of Measurement</label>
 
-                            <div class="tom-select-custom">
-                                <select id="unit-of-measurement" name="unit_of_measurement"
-                                    class="js-select form-select" autocomplete="off" data-hs-tom-select-options='{
-                                        "searchInDropdown": true,
-                                        "hideSearch": false,
-                                        "placeholder": "Search..."
-                                }'>
-                                    <option value="">Search...</option>
-                                    @foreach($unitOfMeasurements as $unitOfMeasurement)
-                                    <option value="{{ $unitOfMeasurement['id'] }}" <?= ($unitOfMeasurement['id'] == $query->unit_of_measurement_id ? 'selected' : '') ?>>
-                                        {{ $unitOfMeasurement['name'] }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="tom-select-custom">
+                            <select id="unit-of-measurement" name="unit_of_measurement"
+                                class="js-select form-select" autocomplete="off" data-hs-tom-select-options='{
+                                    "searchInDropdown": true,
+                                    "hideSearch": false,
+                                    "placeholder": "Search..."
+                            }'>
+                                <option value="">Search...</option>
+                                @foreach($unitOfMeasurements as $unitOfMeasurement)
+                                <option value="{{ $unitOfMeasurement['id'] }}" <?= ($unitOfMeasurement['id'] == $query->unit_of_measurement_id ? 'selected' : '') ?>>
+                                    {{ $unitOfMeasurement['name'] }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

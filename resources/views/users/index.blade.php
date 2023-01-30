@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'User List')
+@section('title', 'Users')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('users.index') }}">User</a>
+    <a class="list-separator-link" href="{{ route('users.index') }}">Users</a>
 </li>
 @endsection
 

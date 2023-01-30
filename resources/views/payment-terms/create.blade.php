@@ -20,7 +20,7 @@
 
             <div class="card-body">
 
-                <div class="row mb-4">
+                <div class="row">
                     <div class="col-sm-12">
                         <label class="row form-check form-switch" for="is-enable">
                             <span class="col-8 col-sm-9 ms-0">
@@ -39,22 +39,22 @@
 
                 <hr class="my-4">
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="name" class="form-label">Name</label>
 
                         <input id="name" name="name" type="text" class="form-control" placeholder="" value="" autocomplete="off">
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6 mb-4">
                         <label for="value" class="form-label">Value</label>
 
                         <input id="value" name="value" type="text" class="form-control text-end" placeholder="NULL" value="" autocomplete="off">
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 mb-4">
                         <label for="deadline-type" class="form-label">Deadline Type</label>
 
                         <div class="tom-select-custom">

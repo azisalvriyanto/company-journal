@@ -24,7 +24,7 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div class="col-sm-12 mb-4">
+                    <div class="col-sm-12">
                         <label class="row form-check form-switch" for="is-enable">
                             <span class="col-8 col-sm-9 ms-0">
                                 <span class="text-dark">

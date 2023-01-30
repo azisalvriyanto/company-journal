@@ -20,7 +20,7 @@
 
             <div class="card-body">
 
-                <div class="row mb-4">
+                <div class="row">
                     <div class="col-sm-12">
                         <label class="row form-check form-switch" for="is-enable">
                             <span class="col-8 col-sm-9 ms-0">
@@ -39,8 +39,8 @@
 
                 <hr class="my-4">
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="bank" class="form-label">Bank</label>
 
                         <div class="tom-select-custom">
@@ -61,16 +61,16 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="name" class="form-label">Name</label>
 
                         <input id="name" name="name" type="text" class="form-control" placeholder="Enter your account name" value="" autocomplete="off">
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="account-number" class="form-label">Account Number</label>
 
                         <input id="account-number" name="account_number" type="text" class="form-control" placeholder="Enter your account number" value="" autocomplete="off">
