@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Modals\OwnerGroup;
-use App\Models\Status;
+use App\Http\Controllers\Modals\OwnerGroups;
+use App\Models\OwnerGroup;
 
 use DataTables;
 
@@ -13,8 +13,8 @@ class OwnerGroupController extends Controller
     public function index(Request $request)
     {
         if (request()->ajax()) {
-            $query = Status::query()
-            ->select(['owner-groups.*']);
+            $query = OwnerGroup::query()
+            ->select(['owner_groups.*']);
 
             return DataTables::eloquent($query)
             ->editColumn('is_enable', function ($query) {
@@ -70,26 +70,26 @@ class OwnerGroupController extends Controller
 
     public function store(Request $request)
     {
-        $query = new OwnerGroup;
+        $query = new OwnerGroups;
         return response()->json($query->store($request));
     }
 
     public function edit($id)
     {
-        $data['query'] = Status::query()->findOrFail($id);
+        $data['query'] = OwnerGroup::query()->findOrFail($id);
 
         return view('owner-groups.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $query = new OwnerGroup;
+        $query = new OwnerGroups;
         return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
-        $query = new OwnerGroup;
+        $query = new OwnerGroups;
         return response()->json($query->destroy($request, $id));
     }
 }
