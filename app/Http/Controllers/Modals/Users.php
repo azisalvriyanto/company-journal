@@ -19,7 +19,7 @@ class Users extends Controller
             'group'                 => 'required|in:' . collect(User::GROUPS)->pluck('id')->implode(','),
             'parent_company'        => 'required||exists:users,id',
             'name'                  => 'required|string',
-            'email'                 => 'nullable|email',
+            'email'                 => 'nullable|string|email|max:255|unique:users',
             'password'              => 'nullable|min:8|required_with:password_confirmation|string|confirmed',
         ]);
 
@@ -36,52 +36,55 @@ class Users extends Controller
                 }
                 if ($query->password) {
                     $query->password        = $request->password;
-                    $query->is_enable       = $request->is_enable ?? 0;
                 }
+                $query->is_enable       = $request->is_enable ?? 0;
                 $query->save();
 
-                foreach ($request->contact_address as $contactAddress) {
-                    $queryContactAddress                = new Contact;
-                    $queryContactAddress->owner_id      = $query->id;
-                    $queryContactAddress->group         = 'Contact';
-                    $queryContactAddress->name          = array_key_exists('name', $contactAddress)         ? $contactAddress['name']           : NULL;
-                    $queryContactAddress->email         = array_key_exists('email', $contactAddress)        ? $contactAddress['email']          : NULL;
-                    $queryContactAddress->phone         = array_key_exists('phone', $contactAddress)        ? $contactAddress['phone']          : NULL;
-                    $queryContactAddress->full_address  = array_key_exists('full_address', $contactAddress) ? $contactAddress['full_address']   : NULL;
-                    $queryContactAddress->save();
+                if ($request->contact_address) {
+                    foreach ($request->contact_address as $contactAddress) {
+                        $queryContactAddress                = new Contact;
+                        $queryContactAddress->owner_id      = $query->id;
+                        $queryContactAddress->group         = 'Contact';
+                        $queryContactAddress->name          = array_key_exists('name', $contactAddress)         ? $contactAddress['name']           : NULL;
+                        $queryContactAddress->phone         = array_key_exists('phone', $contactAddress)        ? $contactAddress['phone']          : NULL;
+                        $queryContactAddress->full_address  = array_key_exists('full_address', $contactAddress) ? $contactAddress['full_address']   : NULL;
+                        $queryContactAddress->save();
 
-                    if (array_key_exists('is_default', $contactAddress) && $contactAddress['is_default'] == 'true') {
-                        $query->default_contact_address_id = $queryContactAddress->id;
+                        if (array_key_exists('is_default', $contactAddress) && $contactAddress['is_default'] == 'true') {
+                            $query->default_contact_address_id = $queryContactAddress->id;
+                        }
                     }
                 }
 
-                foreach ($request->billing_address as $billingAddress) {
-                    $queryBillingAddress                = new Contact;
-                    $queryBillingAddress->owner_id      = $query->id;
-                    $queryBillingAddress->group         = 'Billing';
-                    $queryBillingAddress->name          = array_key_exists('name', $billingAddress)         ? $billingAddress['name']           : NULL;
-                    $queryBillingAddress->email         = array_key_exists('email', $billingAddress)        ? $billingAddress['email']          : NULL;
-                    $queryBillingAddress->phone         = array_key_exists('phone', $billingAddress)        ? $billingAddress['phone']          : NULL;
-                    $queryBillingAddress->full_address  = array_key_exists('full_address', $billingAddress) ? $billingAddress['full_address']   : NULL;
-                    $queryBillingAddress->save();
+                if ($request->billing_address) {
+                    foreach ($request->billing_address as $billingAddress) {
+                        $queryBillingAddress                = new Contact;
+                        $queryBillingAddress->owner_id      = $query->id;
+                        $queryBillingAddress->group         = 'Billing';
+                        $queryBillingAddress->name          = array_key_exists('name', $billingAddress)         ? $billingAddress['name']           : NULL;
+                        $queryBillingAddress->phone         = array_key_exists('phone', $billingAddress)        ? $billingAddress['phone']          : NULL;
+                        $queryBillingAddress->full_address  = array_key_exists('full_address', $billingAddress) ? $billingAddress['full_address']   : NULL;
+                        $queryBillingAddress->save();
 
-                    if (array_key_exists('is_default', $billingAddress) && $billingAddress['is_default'] == 'true') {
-                        $query->default_billing_address_id = $queryBillingAddress->id;
+                        if (array_key_exists('is_default', $billingAddress) && $billingAddress['is_default'] == 'true') {
+                            $query->default_billing_address_id = $queryBillingAddress->id;
+                        }
                     }
                 }
 
-                foreach ($request->shipping_address as $shippingAddress) {
-                    $queryShippingAddress                = new Contact;
-                    $queryShippingAddress->owner_id      = $query->id;
-                    $queryShippingAddress->group         = 'Shipping';
-                    $queryShippingAddress->name          = array_key_exists('name', $shippingAddress)         ? $shippingAddress['name']           : NULL;
-                    $queryShippingAddress->email         = array_key_exists('email', $shippingAddress)        ? $shippingAddress['email']          : NULL;
-                    $queryShippingAddress->phone         = array_key_exists('phone', $shippingAddress)        ? $shippingAddress['phone']          : NULL;
-                    $queryShippingAddress->full_address  = array_key_exists('full_address', $shippingAddress) ? $shippingAddress['full_address']   : NULL;
-                    $queryShippingAddress->save();
+                if ($request->shipping_address) {
+                    foreach ($request->shipping_address as $shippingAddress) {
+                        $queryShippingAddress                = new Contact;
+                        $queryShippingAddress->owner_id      = $query->id;
+                        $queryShippingAddress->group         = 'Shipping';
+                        $queryShippingAddress->name          = array_key_exists('name', $shippingAddress)         ? $shippingAddress['name']           : NULL;
+                        $queryShippingAddress->phone         = array_key_exists('phone', $shippingAddress)        ? $shippingAddress['phone']          : NULL;
+                        $queryShippingAddress->full_address  = array_key_exists('full_address', $shippingAddress) ? $shippingAddress['full_address']   : NULL;
+                        $queryShippingAddress->save();
 
-                    if (array_key_exists('is_default', $shippingAddress) && $shippingAddress['is_default'] == 'true') {
-                        $query->default_shipping_address_id = $queryShippingAddress->id;
+                        if (array_key_exists('is_default', $shippingAddress) && $shippingAddress['is_default'] == 'true') {
+                            $query->default_shipping_address_id = $queryShippingAddress->id;
+                        }
                     }
                 }
 
@@ -122,45 +125,171 @@ class Users extends Controller
 
     public function update($request, $id)
     {
+        $query = User::query()->find($id);
+        if ($query) {
+            $query = $query;
+        } else {
+            $response = [
+                'status'    => 404,
+                'message'   => 'User not found.',
+                'data'      => NULL,
+                'errors'    => [],
+            ];
+        }
+
         $validator = Validator::make($request->all(), [
-            'name'              => 'required|string',
-            'background_color'  => 'required|string',
-            'font_color'        => 'required|string',
+            'group'                 => 'required|in:' . collect(User::GROUPS)->pluck('id')->implode(','),
+            'parent_company'        => 'required||exists:users,id',
+            'name'                  => 'required|string',
+            'email'                 => 'nullable|string|email|max:255|unique:users,email,'.$query->id,
+            'password'              => 'nullable|min:8|required_with:password_confirmation|string|confirmed',
         ]);
 
         if ($validator->passes()) {
-            $query = User::query()->find($id);
-            if ($query) {
-                try {
-                    DB::beginTransaction();
+            try {
+                DB::beginTransaction();
 
-                    $query->name                = $request->name;
-                    $query->background_color    = $request->background_color;
-                    $query->font_color          = $request->font_color;
-                    $query->is_enable           = $request->is_enable ?? 0;
-                    $query->save();
-
-                    DB::commit();
-                    $response = [
-                        'status'    => 200,
-                        'message'   => 'User updated in successfully.',
-                        'data'      => $query,
-                        'errors'    => [],
-                    ];
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    $response = [
-                        'status'    => 500,
-                        'message'   => $e->getMessage(),
-                        'data'      => $query,
-                        'errors'    => [],
-                    ];
+                $query->name                = $request->name;
+                $query->group               = $request->group;
+                $query->parent_company_id   = $request->parent_company;
+                if ($query->email) {
+                    $query->email           = $request->email;
                 }
-            } else {
+                if ($query->password) {
+                    $query->password        = $request->password;
+                }
+                $query->is_enable       = $request->is_enable ?? 0;
+                $query->save();
+
+                $query->default_contact_address_id = NULL;
+                $contactAddressIds = $query->contacts->where('group', 'Contact')->pluck('id', 'id')->toArray();
+                if ($request->contact_address) {
+                    foreach ($request->contact_address as $contactAddressId => $contactAddress) {
+                        $queryContactAddress = Contact::query()
+                        ->whereOwnerId($query->id)
+                        ->whereId($contactAddressId)
+                        ->first();
+                        if ($queryContactAddress == NULL) {
+                            $queryContactAddress            = new Contact;
+                            $queryContactAddress->owner_id  = $query->id;
+                            $queryContactAddress->group     = 'Contact';
+                        } else {
+                            $queryContactAddress->group         = 'Contact';
+                        }
+
+                        $queryContactAddress->name          = array_key_exists('name', $contactAddress)         ? $contactAddress['name']           : NULL;
+                        $queryContactAddress->phone         = array_key_exists('phone', $contactAddress)        ? $contactAddress['phone']          : NULL;
+                        $queryContactAddress->full_address  = array_key_exists('full_address', $contactAddress) ? $contactAddress['full_address']   : NULL;
+                        $queryContactAddress->save();
+
+                        if (array_key_exists('is_default', $contactAddress) && $contactAddress['is_default'] == 'true') {
+                            $query->default_contact_address_id = $queryContactAddress->id;
+                        }
+
+                        if (in_array($queryContactAddress->id, $contactAddressIds)) {
+                            unset($contactAddressIds[$queryContactAddress->id]);
+                        }
+                    }
+                }
+
+                if ($contactAddressIds) {
+                    Contact::query()
+                    ->whereOwnerId($query->id)
+                    ->whereIn('id', $contactAddressIds)
+                    ->delete();
+                }
+
+                $query->default_billing_address_id = NULL;
+                $billingAddressIds = $query->contacts->where('group', 'Billing')->pluck('id', 'id')->toArray();
+                if ($request->billing_address) {
+                    foreach ($request->billing_address as $billingAddressId => $billingAddress) {
+                        $queryBillingAddress = Contact::query()
+                        ->whereOwnerId($query->id)
+                        ->whereId($billingAddressId)
+                        ->first();
+                        if ($queryBillingAddress == NULL) {
+                            $queryBillingAddress            = new Contact;
+                            $queryBillingAddress->owner_id  = $query->id;
+                            $queryBillingAddress->group     = 'Billing';
+                        } else {
+                            $queryBillingAddress->group     = 'Billing';
+                        }
+
+                        $queryBillingAddress->name          = array_key_exists('name', $billingAddress)         ? $billingAddress['name']           : NULL;
+                        $queryBillingAddress->phone         = array_key_exists('phone', $billingAddress)        ? $billingAddress['phone']          : NULL;
+                        $queryBillingAddress->full_address  = array_key_exists('full_address', $billingAddress) ? $billingAddress['full_address']   : NULL;
+                        $queryBillingAddress->save();
+
+                        if (array_key_exists('is_default', $billingAddress) && $billingAddress['is_default'] == 'true') {
+                            $query->default_billing_address_id = $queryBillingAddress->id;
+                        }
+
+                        if (in_array($queryBillingAddress->id, $billingAddressIds)) {
+                            unset($billingAddressIds[$queryBillingAddress->id]);
+                        }
+                    }
+                }
+
+                if ($billingAddressIds) {
+                    Contact::query()
+                    ->whereOwnerId($query->id)
+                    ->whereIn('id', $billingAddressIds)
+                    ->delete();
+                }
+
+                $query->default_shipping_address_id = NULL;
+                $shippingAddressIds = $query->contacts->where('group', 'Shipping')->pluck('id', 'id')->toArray();
+                if ($request->shipping_address) {
+                    foreach ($request->shipping_address as $shippingAddressId => $shippingAddress) {
+                        $queryShippingAddress = Contact::query()
+                        ->whereOwnerId($query->id)
+                        ->whereId($shippingAddressId)
+                        ->first();
+                        if ($queryShippingAddress == NULL) {
+                            $queryShippingAddress            = new Contact;
+                            $queryShippingAddress->owner_id  = $query->id;
+                            $queryShippingAddress->group     = 'Shipping';
+                        } else {
+                            $queryShippingAddress->group     = 'Shipping';
+                        }
+    
+                        $queryShippingAddress->name          = array_key_exists('name', $shippingAddress)         ? $shippingAddress['name']           : NULL;
+                        $queryShippingAddress->phone         = array_key_exists('phone', $shippingAddress)        ? $shippingAddress['phone']          : NULL;
+                        $queryShippingAddress->full_address  = array_key_exists('full_address', $shippingAddress)   ? $shippingAddress['full_address']   : NULL;
+                        $queryShippingAddress->save();
+    
+                        if (array_key_exists('is_default', $shippingAddress) && $shippingAddress['is_default'] == 'true') {
+                            $query->default_shipping_address_id = $queryShippingAddress->id;
+                        }
+    
+                        if (in_array($queryShippingAddress->id, $shippingAddressIds)) {
+                            unset($shippingAddressIds[$queryShippingAddress->id]);
+                        }
+                    }
+                }
+
+                if ($shippingAddressIds) {
+                    Contact::query()
+                    ->whereOwnerId($query->id)
+                    ->whereIn('id', $shippingAddressIds)
+                    ->delete();
+                }
+
+                $query->save();
+
+                DB::commit();
                 $response = [
-                    'status'    => 404,
-                    'message'   => 'User not found.',
-                    'data'      => NULL,
+                    'status'    => 200,
+                    'message'   => 'User updated in successfully.',
+                    'data'      => $query,
+                    'errors'    => [],
+                ];
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response = [
+                    'status'    => 500,
+                    'message'   => $e->getMessage(),
+                    'data'      => $query,
                     'errors'    => [],
                 ];
             }

@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Create User')
+@section('title', 'Edit ' . $query->name)
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('users.index') }}">Users</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('users.create') }}">Create User</a>
+    <a class="list-separator-link" href="{{ route('users.show', $query->id) }}">{{ $query->name }}</a>
+</li>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('users.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -50,7 +53,7 @@
                                     "placeholder": "Select..."
                             }'>
                                 @foreach($groups as $group)
-                                <option value="{{ $group['id'] }}" <?= ($group['id'] == 'User' ? 'selected' : '') ?>>
+                                <option value="{{ $group['id'] }}" <?= ($group['id'] == $query->group ? 'selected' : '') ?>>
                                     {{ $group['name'] }}
                                 </option>
                                 @endforeach
@@ -68,6 +71,11 @@
                                     "hideSearch": false,
                                     "placeholder": "Search..."
                             }'>
+                                <option
+                                    selected=""
+                                    value="{{ $query->parent_company_id }}"
+                                    data-name="{{ $query->parentCompany->name }}"
+                                ></option>
                             </select>
                         </div>
                     </div>
@@ -77,7 +85,7 @@
                     <div class="col-sm-12 mb-4">
                         <label for="name" class="form-label">Name</label>
 
-                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="" autocomplete="off">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="" value="{{ $query->name }}" autocomplete="off">
                     </div>
                 </div>
 
@@ -85,7 +93,7 @@
                     <div class="col-sm-12 mb-4">
                         <label for="email" class="form-label">Email</label>
 
-                        <input id="email" name="email" type="email" class="form-control" placeholder="" value="" autocomplete="off">
+                        <input id="email" name="email" type="email" class="form-control" placeholder="" value="{{ $query->email }}" autocomplete="off">
                     </div>
                 </div>
 
@@ -138,7 +146,7 @@
                                     "allowEmptyOption": true
                             }'>
                                 @foreach($ownerGroups as $ownerGroup)
-                                <option value="{{ $ownerGroup['id'] }}">
+                                <option value="{{ $ownerGroup['id'] }}" <?= (in_array($ownerGroup['id'], $query->ownerGroups->pluck('id')->toArray()) ? 'selected=""' : '') ?>>
                                     {{ $ownerGroup['name'] }}
                                 </option>
                                 @endforeach
@@ -163,7 +171,37 @@
                 </button>
             </div>
 
-            <div class="card-body"></div>
+            <div class="card-body">
+                @foreach($query->contacts->where('group', 'Contact')->all() as $contactAddress)
+                <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_contact_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                        <div name="contact_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                        <div name="contact_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                        <div name="contact_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                            <div name="contact_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_contact_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-inline list-separator">
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-edit list-separator-link text-warning">Edit</a>
+                                </li>
+                                @if($query->default_contact_address_id != $contactAddress->id)
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                                </li>
+                                @endif
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-remove list-separator-link text-danger">Remove</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
@@ -180,7 +218,37 @@
                 </button>
             </div>
 
-            <div class="card-body"></div>
+            <div class="card-body">
+                @foreach($query->contacts->where('group', 'Billing')->all() as $contactAddress)
+                <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_billing_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                        <div name="billing_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                        <div name="billing_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                        <div name="billing_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                            <div name="billing_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_billing_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-inline list-separator">
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-edit list-separator-link text-warning">Edit</a>
+                                </li>
+                                @if($query->default_billing_address_id != $contactAddress->id)
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                                </li>
+                                @endif
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-remove list-separator-link text-danger">Remove</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
@@ -197,7 +265,37 @@
                 </button>
             </div>
 
-            <div class="card-body"></div>
+            <div class="card-body">
+                @foreach($query->contacts->where('group', 'Shipping')->all() as $contactAddress)
+                <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_shipping_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                        <div name="shipping_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                        <div name="shipping_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                        <div name="shipping_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                            <div name="shipping_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_shipping_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-inline list-separator">
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-edit list-separator-link text-warning">Edit</a>
+                                </li>
+                                @if($query->default_shipping_address_id != $contactAddress->id)
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                                </li>
+                                @endif
+                                <li class="list-inline-item">
+                                    <a href="javascript:;" class="btn-address-remove list-separator-link text-danger">Remove</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
@@ -211,7 +309,7 @@
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -315,9 +413,9 @@
             });
         });
 
-        $(document).on('click', '.btn-create', async function (e) {
+        $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('users.index') }}`
+            const url           = `{{ route('users.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -336,6 +434,7 @@
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
+                            values['_method']   = `PUT`;
                             $(`[name]`).map(function() {
                                 const parameter = $(this).attr('name');
 
@@ -356,28 +455,22 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
-                                        content: `${res.message ?? ''}`,
                                         type: 'orange',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
                                         buttons: {
                                             index: {
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('users.index') }}`);
+                                                    window.location.replace(`{{ route('users.index') }}`)
                                                 }
                                             },
-                                            reCreate: {
-                                                text: 'Recreate',
-                                                btnClass: 'btn-primary',
-                                                action: function () {
-                                                    window.location.reload();
-                                                }
-                                            },
-                                            edit: {
-                                                text: 'Edit',
+                                            close: {
+                                                text: 'Still Edit',
                                                 btnClass: 'btn-success',
+                                                keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('users.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },
@@ -437,7 +530,6 @@
 		    "valueField": 'id',
 		    "labelField": 'name',
             "searchField": ['name'],
-		    "options": [],
             "load": function(query, callback) {
                 fetch(`{{ route("api.companies.index") }}?keyword=${encodeURIComponent(query)}`)
                 .then(response => response.json())
@@ -596,7 +688,7 @@
                             <div class="row mb-2">
                                 <div class="col-sm-12">
                                 <div name="${addressType}[${thisId}][name]" class="h3 mb-1">${ name.val() }</div>
-                                <div name="${addressType}[${thisId}][phone]">${ phone.val() }</div>
+                                <div name="${addressType}[${thisId}][phone]" >${ phone.val() }</div>
                                 <div name="${addressType}[${thisId}][full_address]" class="text-truncate">${ fullAddress.val() }</div>
                                     <div name="${addressType}[${thisId}][is_default]" hidden="">${ addresses.children().length+1 == 1 ? `true` : `false` }</div>
                                 </div>

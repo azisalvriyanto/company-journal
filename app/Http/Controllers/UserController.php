@@ -95,6 +95,21 @@ class UserController extends Controller
         return response()->json($query->store($request));
     }
 
+    public function edit($id)
+    {
+        $data['query'] = User::query()->findOrFail($id);
+        $data['groups'] = collect(User::GROUPS)->sortBy('name');
+        $data['ownerGroups'] = OwnerGroup::query()->orderBy('name')->get()->all();
+
+        return view('users.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $query = new Users;
+        return response()->json($query->update($request, $id));
+    }
+
     public function destroy(Request $request, $id)
     {
         $query = new Users;
