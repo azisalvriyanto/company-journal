@@ -197,31 +197,6 @@
 
 <script>
     (function () {
-        // HSCore.components.HSTomSelect.init(`select[name="detail_group"]`, {
-		//     "valueField": 'id',
-		//     "labelField": 'name',
-        //     "searchField": ['name'],
-		//     "options": [],
-        //     "load": function(query, callback) {
-        //         fetch(`{{ route("api.items.detail-groups.index") }}?keyword=${encodeURIComponent(query)}`)
-        //         .then(response => response.json())
-        //         .then(json => {
-        //             callback(json.data);
-        //         })
-        //         .catch(e => {
-        //             callback();
-        //         });
-        //     },
-        //     "render": {
-        //         option: function(data, escape) {
-        //             return `<div>${escape(data.name)}</div>`;
-        //         },
-        //         item: function(data, escape) {
-        //             return `<div>${escape(data.name)}</div>`;
-        //         }
-        //     }
-        // });
-
         HSCore.components.HSTomSelect.init('.js-select');
         HSCore.components.HSDropzone.init('.js-dropzone', {
             maxFiles: 1,

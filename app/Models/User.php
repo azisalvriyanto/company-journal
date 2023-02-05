@@ -13,8 +13,23 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, 
-    UsesUuid, HasRoleAndPermission;
+    use SoftDeletes, UsesUuid,
+    HasApiTokens, HasFactory, Notifiable, HasRoleAndPermission;
+
+    public const GROUPS = [
+        [
+            'id'    => "Company",
+            'name'  => "Company",
+        ],
+        [
+            'id'    => "Storage",
+            'name'  => "Storage",
+        ],
+        [
+            'id'    => "User",
+            'name'  => "User",
+        ]
+    ];
 
     protected $guarded = [];
 
@@ -31,5 +46,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'parent_company_id', 'id')
         ->withDefault($this->find('fdcbff21-696b-4fbb-a2eb-19badda653b0')->toArray());
+    }
+
+    public function ownerGroups()
+    {
+        return $this->belongsToMany(OwnerGroup::class, 'owner_owner_group', 'owner_id', 'owner_group_id');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'owner_id', 'id');
     }
 }

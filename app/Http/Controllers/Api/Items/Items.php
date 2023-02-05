@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Common;
+namespace App\Http\Controllers\Api\Items;
 
 use App\Http\Controllers\Controller;
 use App\Models\Item;

@@ -1,0 +1,215 @@
+<?php
+
+namespace App\Http\Controllers\Modals;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Contact;
+
+use Illuminate\Http\Response;
+
+use DB;
+use Validator;
+
+class Users extends Controller
+{
+    public function store($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'group'                 => 'required|in:' . collect(User::GROUPS)->pluck('id')->implode(','),
+            'parent_company'        => 'required||exists:users,id',
+            'name'                  => 'required|string',
+            'email'                 => 'nullable|email',
+            'password'              => 'nullable|min:8|required_with:password_confirmation|string|confirmed',
+        ]);
+
+        if ($validator->passes()) {
+            try {
+                DB::beginTransaction();
+
+                $query                      = new User;
+                $query->name                = $request->name;
+                $query->group               = $request->group;
+                $query->parent_company_id   = $request->parent_company;
+                if ($query->email) {
+                    $query->email           = $request->email;
+                }
+                if ($query->password) {
+                    $query->password        = $request->password;
+                    $query->is_enable       = $request->is_enable ?? 0;
+                }
+                $query->save();
+
+                foreach ($request->contact_address as $contactAddress) {
+                    $queryContactAddress                = new Contact;
+                    $queryContactAddress->owner_id      = $query->id;
+                    $queryContactAddress->group         = 'Contact';
+                    $queryContactAddress->name          = array_key_exists('name', $contactAddress)         ? $contactAddress['name']           : NULL;
+                    $queryContactAddress->email         = array_key_exists('email', $contactAddress)        ? $contactAddress['email']          : NULL;
+                    $queryContactAddress->phone         = array_key_exists('phone', $contactAddress)        ? $contactAddress['phone']          : NULL;
+                    $queryContactAddress->full_address  = array_key_exists('full_address', $contactAddress) ? $contactAddress['full_address']   : NULL;
+                    $queryContactAddress->save();
+
+                    if (array_key_exists('is_default', $contactAddress) && $contactAddress['is_default'] == 'true') {
+                        $query->default_contact_address_id = $queryContactAddress->id;
+                    }
+                }
+
+                foreach ($request->billing_address as $billingAddress) {
+                    $queryBillingAddress                = new Contact;
+                    $queryBillingAddress->owner_id      = $query->id;
+                    $queryBillingAddress->group         = 'Billing';
+                    $queryBillingAddress->name          = array_key_exists('name', $billingAddress)         ? $billingAddress['name']           : NULL;
+                    $queryBillingAddress->email         = array_key_exists('email', $billingAddress)        ? $billingAddress['email']          : NULL;
+                    $queryBillingAddress->phone         = array_key_exists('phone', $billingAddress)        ? $billingAddress['phone']          : NULL;
+                    $queryBillingAddress->full_address  = array_key_exists('full_address', $billingAddress) ? $billingAddress['full_address']   : NULL;
+                    $queryBillingAddress->save();
+
+                    if (array_key_exists('is_default', $billingAddress) && $billingAddress['is_default'] == 'true') {
+                        $query->default_billing_address_id = $queryBillingAddress->id;
+                    }
+                }
+
+                foreach ($request->shipping_address as $shippingAddress) {
+                    $queryShippingAddress                = new Contact;
+                    $queryShippingAddress->owner_id      = $query->id;
+                    $queryShippingAddress->group         = 'Shipping';
+                    $queryShippingAddress->name          = array_key_exists('name', $shippingAddress)         ? $shippingAddress['name']           : NULL;
+                    $queryShippingAddress->email         = array_key_exists('email', $shippingAddress)        ? $shippingAddress['email']          : NULL;
+                    $queryShippingAddress->phone         = array_key_exists('phone', $shippingAddress)        ? $shippingAddress['phone']          : NULL;
+                    $queryShippingAddress->full_address  = array_key_exists('full_address', $shippingAddress) ? $shippingAddress['full_address']   : NULL;
+                    $queryShippingAddress->save();
+
+                    if (array_key_exists('is_default', $shippingAddress) && $shippingAddress['is_default'] == 'true') {
+                        $query->default_shipping_address_id = $queryShippingAddress->id;
+                    }
+                }
+
+                $query->save();
+
+                $user = User::query()->find($query->id);
+                if ($request->owner_groups) {
+                    $user->ownerGroups()->sync($request->owner_groups);
+                }
+
+                DB::commit();
+                $response = [
+                    'status'    => 200,
+                    'message'   => 'User created in successfully.',
+                    'data'      => $query,
+                    'errors'    => [],
+                ];
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response = [
+                    'status'    => 500,
+                    'message'   => $e->getMessage(),
+                    'data'      => NULL,
+                    'errors'    => [],
+                ];
+            }
+        } else {
+            $response = [
+                'status'    => 500,
+                'message'   => 'User failed to create.',
+                'data'      => NULL,
+                'errors'    => $validator->errors()->getMessages(),
+            ];
+        }
+
+        return $response;
+    }
+
+    public function update($request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'              => 'required|string',
+            'background_color'  => 'required|string',
+            'font_color'        => 'required|string',
+        ]);
+
+        if ($validator->passes()) {
+            $query = User::query()->find($id);
+            if ($query) {
+                try {
+                    DB::beginTransaction();
+
+                    $query->name                = $request->name;
+                    $query->background_color    = $request->background_color;
+                    $query->font_color          = $request->font_color;
+                    $query->is_enable           = $request->is_enable ?? 0;
+                    $query->save();
+
+                    DB::commit();
+                    $response = [
+                        'status'    => 200,
+                        'message'   => 'User updated in successfully.',
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    $response = [
+                        'status'    => 500,
+                        'message'   => $e->getMessage(),
+                        'data'      => $query,
+                        'errors'    => [],
+                    ];
+                }
+            } else {
+                $response = [
+                    'status'    => 404,
+                    'message'   => 'User not found.',
+                    'data'      => NULL,
+                    'errors'    => [],
+                ];
+            }
+        } else {
+            $response = [
+                'status'    => 500,
+                'message'   => 'User failed to update.',
+                'data'      => NULL,
+                'errors'    => $validator->errors()->getMessages(),
+            ];
+        }
+
+        return $response;
+    }
+
+    public function destroy($request, $id)
+    {
+        $query = User::query()->find($id);
+        if ($query) {
+            try {
+                DB::beginTransaction();
+
+                $query->delete();
+
+                DB::commit();
+                $response = [
+                    'status'    => 200,
+                    'message'   => 'User deleted in successfully.',
+                    'data'      => NULL,
+                    'errors'    => [],
+                ];
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response = [
+                    'status'    => 500,
+                    'message'   => $e->getMessage(),
+                    'data'      => $query,
+                    'errors'    => [],
+                ];
+            }
+        } else {
+            $response = [
+                'status'    => 404,
+                'message'   => 'User not found.',
+                'data'      => NULL,
+                'errors'    => [],
+            ];
+        }
+
+        return $response;
+    }
+}

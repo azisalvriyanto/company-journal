@@ -365,6 +365,10 @@
     @include('includes.secondary-contents.welcome-message')
     <!-- End Welcome Message Modal -->
 
+    <!-- Other Modal -->
+    @yield('modal')
+    <!-- End Other Modal -->
+
     <!-- Go to -->
     <a class="js-go-to go-to position-fixed" href="javascript:;" style="visibility: hidden;" data-hs-go-to-options='{
         "offsetTop": 200,

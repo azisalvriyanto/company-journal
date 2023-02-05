@@ -11,7 +11,7 @@
 <div class="card mb-3 mb-lg-5">
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
-            <div class="col-md">
+            <div class="col-md mb-3">
                 <h4 class="card-header-title">Users</h4>
             </div>
 
@@ -63,107 +63,109 @@
         </div>
     </div>
 
-    <div class="datatable-custom">
-        <table id="datatableUser"
-            class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
-            data-hs-datatables-options='{
-                "orderCellsTop": true,
-                "isResponsive": false,
-                "isShowPaging": false,
-                "entries": "#datatableEntries",
-                "deferRender": true,
-                "info": {
-                    "totalQty": "#datatableUserWithPaginationInfoTotalQty"
-                },
-                "pagination": "datatableUserWithPagination",
-                "dom": "Bfrtip",
-                "buttons": [
-                    {
-                        "extend": "copy",
-                        "className": "d-none"
+    <div class="card-body p-0">
+        <div class="table-responsive datatable-custom">
+            <table id="datatableUser"
+                class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
+                data-hs-datatables-options='{
+                    "orderCellsTop": true,
+                    "isResponsive": false,
+                    "isShowPaging": false,
+                    "entries": "#datatableEntries",
+                    "deferRender": true,
+                    "info": {
+                        "totalQty": "#datatableUserWithPaginationInfoTotalQty"
                     },
-                    {
-                        "extend": "excel",
-                        "className": "d-none"
-                    },
-                    {
-                        "extend": "csv",
-                        "className": "d-none"
-                    },
-                    {
-                        "extend": "pdf",
-                        "className": "d-none"
-                    },
-                    {
-                        "extend": "print",
-                        "className": "d-none"
-                    }
-                ],
-                "processing": true,
-                "serverSide": true,
-                "ajax": "{{ request()->url() }}",
-                "columns": [
-                    {
-                        "data": "DT_RowIndex",
-                        "name": "id",
-                        "orderable": false,
-                        "searchable": false,
-                        "className": "text-center"
-                    },
-                    {
-                        "data": "name",
-                        "name": "name"
-                    },
-                    {
-                        "data": "group",
-                        "name": "group"
-                    },
-                    {
-                        "data": "email",
-                        "name": "email"
-                    },
-                    {
-                        "data": "is_enable",
-                        "name": "is_enable",
-                        "className": "text-center"
-                    },
-                    {
-                        "data": "actions",
-                        "name": "actions",
-                        "orderable": false,
-                        "searchable": false,
-                        "className": "text-center"
-                    }
-                ],
-                "order": [
-                    [1, "asc"]
-                ]
-            }'>
-            <thead class="thead-light">
-                <tr>
-                    <th rowspan="2">No</th>
-                    <th rowspan="1">Name</th>
-                    <th rowspan="1">Group</th>
-                    <th rowspan="1">Email</th>
-                    <th rowspan="2">Status</th>
-                    <th rowspan="2">Actions</th>
-                </tr>
-                <tr>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="1">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="2">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
-                            placeholder="Search..." data-id="3">
-                    </th>
-                </tr>
-            </thead>
-        </table>
+                    "pagination": "datatableUserWithPagination",
+                    "dom": "Bfrtip",
+                    "buttons": [
+                        {
+                            "extend": "copy",
+                            "className": "d-none"
+                        },
+                        {
+                            "extend": "excel",
+                            "className": "d-none"
+                        },
+                        {
+                            "extend": "csv",
+                            "className": "d-none"
+                        },
+                        {
+                            "extend": "pdf",
+                            "className": "d-none"
+                        },
+                        {
+                            "extend": "print",
+                            "className": "d-none"
+                        }
+                    ],
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": "{{ request()->url() }}",
+                    "columns": [
+                        {
+                            "data": "DT_RowIndex",
+                            "name": "id",
+                            "orderable": false,
+                            "searchable": false,
+                            "className": "text-center"
+                        },
+                        {
+                            "data": "name",
+                            "name": "name"
+                        },
+                        {
+                            "data": "group",
+                            "name": "group"
+                        },
+                        {
+                            "data": "email",
+                            "name": "email"
+                        },
+                        {
+                            "data": "is_enable",
+                            "name": "is_enable",
+                            "className": "text-center"
+                        },
+                        {
+                            "data": "actions",
+                            "name": "actions",
+                            "orderable": false,
+                            "searchable": false,
+                            "className": "text-center"
+                        }
+                    ],
+                    "order": [
+                        [1, "asc"]
+                    ]
+                }'>
+                <thead class="thead-light">
+                    <tr>
+                        <th rowspan="2">No</th>
+                        <th rowspan="1">Name</th>
+                        <th rowspan="1">Group</th>
+                        <th rowspan="1">Email</th>
+                        <th rowspan="2">Status</th>
+                        <th rowspan="2">Actions</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <input type="text" class="form-control form-control-sm datatable-search"
+                                placeholder="Search..." data-id="1">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm datatable-search"
+                                placeholder="Search..." data-id="2">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm datatable-search"
+                                placeholder="Search..." data-id="3">
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
     <div class="card-footer">

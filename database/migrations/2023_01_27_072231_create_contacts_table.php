@@ -18,6 +18,10 @@ return new class extends Migration
             $table->foreignUuid('owner_id')->index();
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('group')->default('Contact');
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('full_address')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

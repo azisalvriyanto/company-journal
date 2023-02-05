@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Modals\Users;
 
 use App\Models\User;
+use App\Models\OwnerGroup;
 
 use DataTables;
 
@@ -25,6 +27,10 @@ class UserController extends Controller
             return DataTables::eloquent($query)
             ->editColumn('email', function ($query) {
                 return $query->email ? $query->email : '<i class="text-muted">Empty</i>';
+            })
+            ->editColumn('group', function ($query) {
+                return '<div>' . $query->group . '</div><div class="small">' . ($query->ownerGroups ? $query->ownerGroups->implode('name', ', ') : '<i class="text-muted">Empty</i>') . '</div>';
+                return ;
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
@@ -67,7 +73,7 @@ class UserController extends Controller
                     return $query->email;
                 },
             ])
-            ->rawColumns(['email', 'is_enable', 'actions'])
+            ->rawColumns(['group', 'email', 'is_enable', 'actions'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -75,35 +81,23 @@ class UserController extends Controller
         return view('users.index');
     }
 
+    public function create()
+    {
+        $data['groups'] = collect(User::GROUPS)->sortBy('name');
+        $data['ownerGroups'] = OwnerGroup::query()->orderBy('name')->get()->all();
+
+        return view('users.create', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $query = new Users;
+        return response()->json($query->store($request));
+    }
+
     public function destroy(Request $request, $id)
     {
-        $query = User::query()->find($id);
-        if ($query) {
-            try {
-                DB::beginTransaction();
-                $query->delete();
-                DB::commit();
-
-                return response()->json([
-                    'status'    => 200,
-                    'message'   => 'User deleted in successfully.',
-                    'data'      => NULL
-                ]);
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response()->json([
-                    'status'   => 500,
-                    'message'   => $e->getMessage(),
-                    'data'      => NULL
-                ]);
-            }
-        } else {
-            return response()->json([
-                'status'    => 404,
-                'message'   => 'User not found.',
-                'data'      => NULL
-            ]);
-        }
+        $query = new Users;
+        return response()->json($query->destroy($request, $id));
     }
 }
