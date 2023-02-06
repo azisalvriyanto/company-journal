@@ -39,6 +39,37 @@ class Items extends Controller
                 $query->is_enable               = $request->is_enable ?? 0;
                 $query->save();
 
+                if ($request->item_scanning_code) {
+                    foreach ($request->item_scanning_code as $itemScanningCodeId => $itemScanningCode) {
+                        $queryItemScanningCode = ItemScanningCode::query()
+                        ->whereName($itemScanningCode['name'])
+                        ->first();
+                        if ($queryItemScanningCode) {
+                            if ($queryItemScanningCode->item_id != $query->id) {
+                                DB::rollback();
+                                $response = [
+                                    'status'    => 500,
+                                    'message'   => 'Code ' . $queryItemScanningCode->name . ' doesn\'t not exist.',
+                                    'data'      => $query,
+                                    'errors'    => [],
+                                ];
+
+                                return $response;
+                            }
+                        } else {
+                            $queryItemScanningCode = ItemScanningCode::query()
+                            ->find($itemScanningCodeId);
+                            if ($queryItemScanningCode == NULL) {
+                                $queryItemScanningCode      = new ItemScanningCode;
+                            }
+
+                            $queryItemScanningCode->item_id = $query->id;
+                            $queryItemScanningCode->name    = $itemScanningCode['name'];
+                            $queryItemScanningCode->save();
+                        }
+                    }
+                }
+
                 DB::commit();
                 $response = [
                     'status'    => 200,
@@ -109,6 +140,8 @@ class Items extends Controller
                                         'data'      => $query,
                                         'errors'    => [],
                                     ];
+
+                                    return $response;
                                 } else {
                                     if (in_array($queryItemScanningCode->id, $itemScanningCodeIds)) {
                                         unset($itemScanningCodeIds[$queryItemScanningCode->id]);

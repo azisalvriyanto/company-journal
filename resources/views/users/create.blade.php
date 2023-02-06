@@ -479,7 +479,7 @@
                     <a href="javascript:;" class="btn-address-edit list-separator-link text-warning">Edit</a>
                 </li>
                 <li class="list-inline-item">
-                    <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                    <a href="javascript:;" class="btn-address-set-default list-separator-link text-success">Make Primary Address</a>
                 </li>
                 <li class="list-inline-item">
                     <a href="javascript:;" class="btn-address-remove list-separator-link text-danger">Remove</a>
@@ -492,7 +492,7 @@
                 'border-right': '10px solid #377dff'
             });
             thisRow.find(`[name="${addressType}[${thisId}][is_default]"]`).html('true');
-            thisRow.find(`.btn-set-default-address`).closest(`.list-inline-item`).remove();
+            thisRow.find(`.btn-address-set-default`).closest(`.list-inline-item`).remove();
         }
 
         $(document).on('click', '.btn-address-create', async function (e) {
@@ -587,7 +587,7 @@
                                     ${
                                         $(`#btn-address-save`).attr('data-is-default') == 'true' ? `` : `
                                         <li class="list-inline-item">
-                                            <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                                            <a href="javascript:;" class="btn-address-set-default list-separator-link text-success">Make Primary Address</a>
                                         </li>
                                         `
                                     }
@@ -618,7 +618,7 @@
                                         ${
                                             addresses.children().length+1 == 1 ? `` : `
                                             <li class="list-inline-item">
-                                                <a href="javascript:;" class="btn-set-default-address list-separator-link text-success">Make Primary Address</a>
+                                                <a href="javascript:;" class="btn-address-set-default list-separator-link text-success">Make Primary Address</a>
                                             </li>
                                             `
                                         }
@@ -636,7 +636,7 @@
             }
         });
 
-        $(document).on('click', '.btn-set-default-address', async function (e) {
+        $(document).on('click', '.btn-address-set-default', async function (e) {
             const thisButton = $(this);
             const thisRow = thisButton.closest('.address');
 

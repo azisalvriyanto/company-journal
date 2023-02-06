@@ -188,7 +188,7 @@
                             <input id="name" name="item_scanning_code[{{ $itemScanningCode->id }}][name]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="{{ $itemScanningCode->name }}" autocomplete="off">
 
                             <div class="input-group-append input-group-text p-0">
-                                <button class="btn-remove-code btn btn-sm btn-danger">
+                                <button class="btn-code-remove btn btn-sm btn-danger">
                                     <i class="bi-trash"></i>    
                                 </button>
                             </div>
@@ -455,7 +455,7 @@
                             <input id="name" name="${thisParam}[${thisId}][name]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="" autocomplete="off">
 
                             <div class="input-group-append input-group-text p-0">
-                                <button class="btn-remove-code btn btn-sm btn-danger">
+                                <button class="btn-code-remove btn btn-sm btn-danger">
                                     <i class="bi-trash"></i>    
                                 </button>
                             </div>
@@ -465,7 +465,7 @@
             `)
         });
 
-        $(document).on('click', '.btn-remove-code', async function (e) {
+        $(document).on('click', '.btn-code-remove', async function (e) {
             const thisButton = $(this);
 
             await $.confirm({
