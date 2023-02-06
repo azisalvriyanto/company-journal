@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Modals;
 
 use App\Http\Controllers\Controller;
+use App\Models\OperationType;
+use App\Models\StorageOperationType;
 use App\Models\User;
 use App\Models\Contact;
 
@@ -34,10 +36,25 @@ class Users extends Controller
                 $query->code                = $request->code ?? NULL;
                 $query->email               = $request->email ?? NULL;
                 if ($query->email) {
-                    $query->password            = $request->password ?? NULL;
+                    $query->password        = $request->password ?? NULL;
                 }
                 $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
+
+                if ($query->group == 'Storage') {
+                    $operationTypes = OperationType::query()->whereIsEnable(TRUE)->get();
+                    foreach ($operationTypes as $operationType) {
+                        $queryStorageOperationType                      = new StorageOperationType;
+                        $queryStorageOperationType->storage_id          = $query->id;
+                        $queryStorageOperationType->operation_type_id   = $operationType->id;
+                        $queryStorageOperationType->name                = $operationType->group . ' - ' . $operationType->name;
+                        $queryStorageOperationType->prefix_format       = NULL;
+                        $queryStorageOperationType->suffix_format       = NULL;
+                        $queryStorageOperationType->sequence_size       = 10;
+                        $queryStorageOperationType->is_enable           = 1;
+                        $queryStorageOperationType->save();
+                    }
+                }
 
                 if ($request->contact_address) {
                     foreach ($request->contact_address as $contactAddress) {
@@ -147,6 +164,29 @@ class Users extends Controller
         if ($validator->passes()) {
             try {
                 DB::beginTransaction();
+
+                if ($request->group == 'Storage') {
+                    if ($query->group != $request->group) {
+                        $operationTypes = OperationType::query()->whereIsEnable(TRUE)->get();
+                        foreach ($operationTypes as $operationType) {
+                            $queryStorageOperationType                      = new StorageOperationType;
+                            $queryStorageOperationType->storage_id          = $query->id;
+                            $queryStorageOperationType->operation_type_id   = $operationType->id;
+                            $queryStorageOperationType->name                = $operationType->group . ' ~> ' . $operationType->name;
+                            $queryStorageOperationType->prefix_format       = NULL;
+                            $queryStorageOperationType->suffix_format       = NULL;
+                            $queryStorageOperationType->sequence_size       = 10;
+                            $queryStorageOperationType->is_enable           = 1;
+                            $queryStorageOperationType->save();
+                        }
+                    }
+                } else {
+                    if ($query->group == 'Storage') {
+                        StorageOperationType::query()
+                        ->whereStorageId($query->id)
+                        ->delete();
+                    }
+                }
 
                 $query->name                = $request->name;
                 $query->group               = $request->group ?? 'User';

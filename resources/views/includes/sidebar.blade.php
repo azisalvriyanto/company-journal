@@ -48,10 +48,21 @@
                             ],
                             'menus'         => [
                                 [
-                                    'name'          => 'Monthly Journals',
+                                    'name'          => 'Monthly Journal',
                                     'icon'          => 'bi-calendar4-range',
                                     'url'           => route('monthly-journals.index'),
                                     'route'         => 'monthly-journals.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                                [
+                                    'name'          => 'Storage Operation Type',
+                                    'icon'          => 'bi-device-hdd',
+                                    'url'           => route('storage-operation-types.index'),
+                                    'route'         => 'storage-operation-types.',
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),

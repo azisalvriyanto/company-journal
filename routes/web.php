@@ -14,6 +14,7 @@ Route::middleware(["auth"])->group(function () {
     Route::resource('dashboards', App\Http\Controllers\HomeController::class)->only(['index']);
 
     Route::resource('monthly-journals', App\Http\Controllers\MonthlyJournalController::class)->only(['index']);
+    Route::resource('storage-operation-types', App\Http\Controllers\StorageOperationTypeController::class);
 
     Route::resource('users', App\Http\Controllers\UserController::class);
 
@@ -23,7 +24,7 @@ Route::middleware(["auth"])->group(function () {
         Route::resource('items', App\Http\Controllers\ItemController::class);
     });
 
-    Route::resource('operating-costs', App\Http\Controllers\OperatingCostController::class);
+    Route::resource('operating-costs', App\Http\Controllers\OperatingCostController::class)->only(['index', 'edit', 'update']);
 
     Route::group(['as' => 'payments.', 'prefix' => 'payments'], function () {
         Route::resource('payment-methods', App\Http\Controllers\PaymentMethodController::class);
