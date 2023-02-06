@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Owner Groups')
+@section('title', 'Owner Types')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.index') }}">Owner Groups</a>
+    <a class="list-separator-link" href="{{ route('owner-types.index') }}">Owner Types</a>
 </li>
 @endsection
 
@@ -12,12 +12,12 @@
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
             <div class="col-md">
-                <h4 class="card-header-title">Owner Groups</h4>
+                <h4 class="card-header-title">Owner Types</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('owner-groups.create') }}">
+                    <a class="btn btn-primary btn-sm" href="{{ route('owner-types.create') }}">
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 

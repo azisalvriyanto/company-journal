@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Create Owner Group')
+@section('title', 'Create Owner Type')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.index') }}">Owner Groups</a>
+    <a class="list-separator-link" href="{{ route('owner-types.index') }}">Owner Types</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.create') }}">Create Owner Group</a>
+    <a class="list-separator-link" href="{{ route('owner-types.create') }}">Create Owner Type</a>
 </li>
 @endsection
 
@@ -15,7 +15,7 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Owner Group information</h4>
+                <h4 class="card-header-title">Owner Type information</h4>
             </div>
 
             <div class="card-body">
@@ -27,7 +27,7 @@
                                 <span class="text-dark">
                                     Availability
                                     <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Owner group availability switch toggler."></i>
+                                        data-bs-placement="top" title="Owner type availability switch toggler."></i>
                                 </span>
                             </span>
                             <span class="col-4 col-sm-3 text-end">
@@ -100,7 +100,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('owner-groups.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('owner-types.index') }}`);
                         }
                     },
                 }
@@ -109,7 +109,7 @@
 
         $(document).on('click', '.btn-create', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('owner-groups.index') }}`
+            const url           = `{{ route('owner-types.index') }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -153,7 +153,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('owner-groups.index') }}`);
+                                                    window.location.replace(`{{ route('owner-types.index') }}`);
                                                 }
                                             },
                                             reCreate: {
@@ -167,7 +167,7 @@
                                                 text: 'Edit',
                                                 btnClass: 'btn-success',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('owner-groups.index') }}/${res.data.id}/edit`);
+                                                    window.location.replace(`{{ route('owner-types.index') }}/${res.data.id}/edit`);
                                                 }
                                             },
                                         },

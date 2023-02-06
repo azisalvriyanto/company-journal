@@ -179,10 +179,10 @@
                                     'sub_menus'     => NULL
                                 ],
                                 [
-                                    'name'          => 'Owner Group',
+                                    'name'          => 'Owner Type',
                                     'icon'          => 'bi-diagram-3',
-                                    'url'           => route('owner-groups.index'),
-                                    'route'         => 'owner-groups.',
+                                    'url'           => route('owner-types.index'),
+                                    'route'         => 'owner-types.',
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),

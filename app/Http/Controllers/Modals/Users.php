@@ -88,8 +88,8 @@ class Users extends Controller
                 $query->save();
 
                 $user = User::query()->find($query->id);
-                if ($request->owner_groups) {
-                    $user->ownerGroups()->sync($request->owner_groups);
+                if ($request->owner_types) {
+                    $user->ownerTypes()->sync($request->owner_types);
                 }
 
                 DB::commit();
@@ -270,6 +270,11 @@ class Users extends Controller
                 }
 
                 $query->save();
+
+                $user = User::query()->find($query->id);
+                if ($request->owner_types) {
+                    $user->ownerTypes()->sync($request->owner_types);
+                }
 
                 DB::commit();
                 $response = [

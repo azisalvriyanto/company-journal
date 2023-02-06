@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('owner_groups', function (Blueprint $table) {
+        Schema::create('owner_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->boolean('is_enable')->default(1);
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owner_groups');
+        Schema::dropIfExists('owner_types');
     }
 };

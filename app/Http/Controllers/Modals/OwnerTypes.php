@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Modals;
 
 use App\Http\Controllers\Controller;
-use App\Models\OwnerGroup;
+use App\Models\OwnerType;
 
 use Illuminate\Http\Response;
 
 use DB;
 use Validator;
 
-class OwnerGroups extends Controller
+class OwnerTypes extends Controller
 {
     public function store($request)
     {
@@ -23,7 +23,7 @@ class OwnerGroups extends Controller
             try {
                 DB::beginTransaction();
 
-                $query              = new OwnerGroup;
+                $query              = new OwnerType;
                 $query->name        = $request->name;
                 $query->is_enable   = $request->is_enable ?? 0;
                 $query->save();
@@ -31,7 +31,7 @@ class OwnerGroups extends Controller
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Owner group created in successfully.',
+                    'message'   => 'Owner type created in successfully.',
                     'data'      => $query,
                     'errors'    => [],
                 ];
@@ -47,7 +47,7 @@ class OwnerGroups extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Owner group failed to create.',
+                'message'   => 'Owner type failed to create.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -64,7 +64,7 @@ class OwnerGroups extends Controller
         ]);
 
         if ($validator->passes()) {
-            $query = OwnerGroup::query()->find($id);
+            $query = OwnerType::query()->find($id);
             if ($query) {
                 try {
                     DB::beginTransaction();
@@ -76,7 +76,7 @@ class OwnerGroups extends Controller
                     DB::commit();
                     $response = [
                         'status'    => 200,
-                        'message'   => 'Owner group updated in successfully.',
+                        'message'   => 'Owner type updated in successfully.',
                         'data'      => $query,
                         'errors'    => [],
                     ];
@@ -92,7 +92,7 @@ class OwnerGroups extends Controller
             } else {
                 $response = [
                     'status'    => 404,
-                    'message'   => 'Owner group not found.',
+                    'message'   => 'Owner type not found.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -100,7 +100,7 @@ class OwnerGroups extends Controller
         } else {
             $response = [
                 'status'    => 500,
-                'message'   => 'Owner group failed to update.',
+                'message'   => 'Owner type failed to update.',
                 'data'      => NULL,
                 'errors'    => $validator->errors()->getMessages(),
             ];
@@ -111,7 +111,7 @@ class OwnerGroups extends Controller
 
     public function destroy($request, $id)
     {
-        $query = OwnerGroup::query()->find($id);
+        $query = OwnerType::query()->find($id);
         if ($query) {
             try {
                 DB::beginTransaction();
@@ -121,7 +121,7 @@ class OwnerGroups extends Controller
                 DB::commit();
                 $response = [
                     'status'    => 200,
-                    'message'   => 'Owner group deleted in successfully.',
+                    'message'   => 'Owner type deleted in successfully.',
                     'data'      => NULL,
                     'errors'    => [],
                 ];
@@ -137,7 +137,7 @@ class OwnerGroups extends Controller
         } else {
             $response = [
                 'status'    => 404,
-                'message'   => 'Owner group not found.',
+                'message'   => 'Owner type not found.',
                 'data'      => NULL,
                 'errors'    => [],
             ];

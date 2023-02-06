@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Modals\OwnerGroups;
-use App\Models\OwnerGroup;
+use App\Http\Controllers\Modals\OwnerTypes;
+use App\Models\OwnerType;
 
 use DataTables;
 
-class OwnerGroupController extends Controller
+class OwnerTypeController extends Controller
 {
     public function index(Request $request)
     {
         if (request()->ajax()) {
-            $query = OwnerGroup::query()
-            ->select(['owner_groups.*']);
+            $query = OwnerType::query()
+            ->select(['owner_types.*']);
 
             return DataTables::eloquent($query)
             ->editColumn('is_enable', function ($query) {
@@ -33,7 +33,7 @@ class OwnerGroupController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('owner-groups.edit', $query->id) . '">
+                                <a class="dropdown-item" href="' . route('owner-types.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
                                 <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
@@ -49,7 +49,7 @@ class OwnerGroupController extends Controller
                     return $query->id;
                 },
                 'data-url' => function($query) {
-                    return route('owner-groups.show', $query->id);
+                    return route('owner-types.show', $query->id);
                 },
                 'data-name' => function($query) {
                     return $query->name;
@@ -60,36 +60,36 @@ class OwnerGroupController extends Controller
             ->toJson();
         }
 
-        return view('owner-groups.index');
+        return view('owner-types.index');
     }
 
     public function create()
     {
-        return view('owner-groups.create');
+        return view('owner-types.create');
     }
 
     public function store(Request $request)
     {
-        $query = new OwnerGroups;
+        $query = new OwnerTypes;
         return response()->json($query->store($request));
     }
 
     public function edit($id)
     {
-        $data['query'] = OwnerGroup::query()->findOrFail($id);
+        $data['query'] = OwnerType::query()->findOrFail($id);
 
-        return view('owner-groups.edit', $data);
+        return view('owner-types.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $query = new OwnerGroups;
+        $query = new OwnerTypes;
         return response()->json($query->update($request, $id));
     }
 
     public function destroy(Request $request, $id)
     {
-        $query = new OwnerGroups;
+        $query = new OwnerTypes;
         return response()->json($query->destroy($request, $id));
     }
 }

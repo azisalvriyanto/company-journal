@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Modals\Users;
 
 use App\Models\User;
-use App\Models\OwnerGroup;
+use App\Models\OwnerType;
 
 use DataTables;
 
@@ -29,7 +29,7 @@ class UserController extends Controller
                 return $query->email ? $query->email : '<i class="text-muted">Empty</i>';
             })
             ->editColumn('group', function ($query) {
-                return $query->group . '<div class="small">' . ($query->ownerGroups ? $query->ownerGroups->implode('name', ', ') : '<i class="text-muted">Empty</i>') . '</div>';
+                return $query->group . '<div class="small">' . ($query->ownerTypes ? $query->ownerTypes->implode('name', ', ') : '<i class="text-muted">Empty</i>') . '</div>';
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
@@ -83,7 +83,7 @@ class UserController extends Controller
     public function create()
     {
         $data['groups'] = collect(User::GROUPS)->sortBy('name');
-        $data['ownerGroups'] = OwnerGroup::query()->orderBy('name')->get()->all();
+        $data['ownerTypes'] = OwnerType::query()->orderBy('name')->get()->all();
 
         return view('users.create', $data);
     }
@@ -98,7 +98,7 @@ class UserController extends Controller
     {
         $data['query'] = User::query()->findOrFail($id);
         $data['groups'] = collect(User::GROUPS)->sortBy('name');
-        $data['ownerGroups'] = OwnerGroup::query()->orderBy('name')->get()->all();
+        $data['ownerTypes'] = OwnerType::query()->orderBy('name')->get()->all();
 
         return view('users.edit', $data);
     }

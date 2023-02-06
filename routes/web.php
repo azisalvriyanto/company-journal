@@ -31,6 +31,6 @@ Route::middleware(["auth"])->group(function () {
 
     Route::resource('banks', App\Http\Controllers\BankController::class);
     Route::resource('statuses', App\Http\Controllers\StatusController::class);
-    Route::resource('owner-groups', App\Http\Controllers\OwnerGroupController::class);
+    Route::resource('owner-types', App\Http\Controllers\OwnerTypeController::class);
     Route::resource('operation-types', App\Http\Controllers\OperationTypeController::class);
 });

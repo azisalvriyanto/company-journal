@@ -48,9 +48,9 @@ class User extends Authenticatable
         ->withDefault($this->find('fdcbff21-696b-4fbb-a2eb-19badda653b0')->toArray());
     }
 
-    public function ownerGroups()
+    public function ownerTypes()
     {
-        return $this->belongsToMany(OwnerGroup::class, 'owner_owner_group', 'owner_id', 'owner_group_id');
+        return $this->belongsToMany(OwnerType::class, 'user_owner_type');
     }
 
     public function contacts()

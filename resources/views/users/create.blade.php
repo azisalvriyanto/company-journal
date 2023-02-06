@@ -133,10 +133,10 @@
 
                 <div class="row">
                     <div class="col-sm-12 mb-4">
-                        <label for="owner-groups" class="form-label">Owner Groups</label>
+                        <label for="owner-types" class="form-label">Owner Groups</label>
 
                         <div class="tom-select-custom tom-select-custom-with-tags">
-                            <select id="owner-groups" name="owner_groups[]" multiple class="form-select" autocomplete="off"
+                            <select id="owner-types" name="owner_types[]" multiple class="form-select" autocomplete="off"
                                 data-hs-tom-select-options='{
                                     "searchInDropdown": false,
                                     "hideSearch": true,
@@ -145,9 +145,9 @@
                         	        "maxItems": 3,
                                     "allowEmptyOption": true
                             }'>
-                                @foreach($ownerGroups as $ownerGroup)
-                                <option value="{{ $ownerGroup['id'] }}">
-                                    {{ $ownerGroup['name'] }}
+                                @foreach($ownerTypes as $ownerType)
+                                <option value="{{ $ownerType['id'] }}">
+                                    {{ $ownerType['name'] }}
                                 </option>
                                 @endforeach
                             </select>
@@ -466,7 +466,7 @@
             }
         });
 
-        HSCore.components.HSTomSelect.init(`select[name="owner_groups[]"]`);
+        HSCore.components.HSTomSelect.init(`select[name="owner_types[]"]`);
 
         const handleSetContactDefault = (thisRow) => {
             const addresses = thisRow.closest('.card-body');

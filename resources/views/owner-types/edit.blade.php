@@ -3,13 +3,13 @@
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.index') }}">Owner Groups</a>
+    <a class="list-separator-link" href="{{ route('owner-types.index') }}">Owner Types</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.show', $query->id) }}">{{ $query->name }}</a>
+    <a class="list-separator-link" href="{{ route('owner-types.show', $query->id) }}">{{ $query->name }}</a>
 </li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('owner-groups.edit', $query->id) }}">Edit</a>
+    <a class="list-separator-link" href="{{ route('owner-types.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -18,7 +18,7 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Owner group information</h4>
+                <h4 class="card-header-title">Owner type information</h4>
             </div>
 
             <div class="card-body">
@@ -30,7 +30,7 @@
                                 <span class="text-dark">
                                     Availability
                                     <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Owner group availability switch toggler."></i>
+                                        data-bs-placement="top" title="Owner type availability switch toggler."></i>
                                 </span>
                             </span>
                             <span class="col-4 col-sm-3 text-end">
@@ -105,7 +105,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('owner-groups.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('owner-types.index') }}`);
                         }
                     },
                 }
@@ -115,7 +115,7 @@
         $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
             const listNote      = '';
-            const url           = `{{ route('owner-groups.show', $query->id) }}`
+            const url           = `{{ route('owner-types.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -161,7 +161,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-secondary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('owner-groups.index') }}`)
+                                                    window.location.replace(`{{ route('owner-types.index') }}`)
                                                 }
                                             },
                                             close: {
@@ -211,7 +211,7 @@
         });
 
         $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('owner-groups.show', $query->id) }}`
+            const url = `{{ route('owner-types.show', $query->id) }}`
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this form?`,
@@ -243,7 +243,7 @@
                                                 text: 'Close',
                                                 keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('owner-groups.index') }}`);
+                                                    window.location.replace(`{{ route('owner-types.index') }}`);
                                                 }
                                             },
                                         }
