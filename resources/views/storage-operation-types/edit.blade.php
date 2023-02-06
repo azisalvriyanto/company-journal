@@ -105,6 +105,33 @@
     (function () {
         HSCore.components.HSTomSelect.init('.js-select');
 
+        $(document).on('click', '.btn-discard', async function (e) {
+            const thisButton    = $(this);
+            const listNote      = '';
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to discard this form?${listNote ?? ''}`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Discard',
+                        btnClass: 'btn-secondary',
+                        action: async function () {
+                            history.back() ?? window.location.replace(`{{ route('storage-operation-types.index') }}`);
+                        }
+                    },
+                }
+            });
+        });
+
         $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
             const listNote      = '';
