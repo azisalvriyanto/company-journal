@@ -33,7 +33,9 @@ class Users extends Controller
                 $query->parent_company_id   = $request->parent_company ?? NULL;
                 $query->code                = $request->code ?? NULL;
                 $query->email               = $request->email ?? NULL;
-                $query->password            = $request->password ?? NULL;
+                if ($query->email) {
+                    $query->password            = $request->password ?? NULL;
+                }
                 $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
 
@@ -151,7 +153,13 @@ class Users extends Controller
                 $query->parent_company_id   = $request->parent_company ?? NULL;
                 $query->code                = $request->code ?? NULL;
                 $query->email               = $request->email ?? NULL;
-                $query->password            = $request->password ?? NULL;
+                if ($query->email) {
+                    if ($request->password) {
+                        $query->password    = $request->password;
+                    }
+                } else {
+                    $query->password    = NULL;
+                }
                 $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
 
