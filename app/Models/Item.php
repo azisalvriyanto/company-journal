@@ -41,4 +41,9 @@ class Item extends Model
     {
         return $this->belongsTo(UnitOfMeasurement::class, 'unit_of_measurement_id', 'id');
     }
+
+    public function itemScanningCodes()
+    {
+        return $this->hasMany(ItemScanningCode::class);
+    }
 }

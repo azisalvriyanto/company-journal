@@ -180,7 +180,23 @@
                 </button>
             </div>
 
-            <div class="card-body"></div>
+            <div class="card-body">
+                @foreach($query->itemScanningCodes as $itemScanningCode)
+                <div class="row" data-id="{{ $itemScanningCode->id }}">
+                    <div class="col-sm-12 mb-4">
+                        <div class="input-group input-group-merge">
+                            <input id="name" name="item_scanning_code[{{ $itemScanningCode->id }}][name]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="{{ $itemScanningCode->name }}" autocomplete="off">
+
+                            <div class="input-group-append input-group-text p-0">
+                                <button class="btn-remove-code btn btn-sm btn-danger">
+                                    <i class="bi-trash"></i>    
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
@@ -259,7 +275,7 @@
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to save this form?}`,
+                content: `Do you want to save this form?`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -436,7 +452,7 @@
                 <div class="row" data-id="${thisId}">
                     <div class="col-sm-12 mb-4">
                         <div class="input-group input-group-merge">
-                            <input id="name" name="${thisParam}[${thisId}][code]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="" autocomplete="off">
+                            <input id="name" name="${thisParam}[${thisId}][name]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="" autocomplete="off">
 
                             <div class="input-group-append input-group-text p-0">
                                 <button class="btn-remove-code btn btn-sm btn-danger">
