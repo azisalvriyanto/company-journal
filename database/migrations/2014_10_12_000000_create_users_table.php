@@ -17,10 +17,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('group')->default('User');
             $table->string('name');
-            $table->string('code')->nullable();
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('code')->nullable();
             $table->uuid('parent_company_id')->nullable()->index();
             $table->boolean('is_enable')->default(1);
             $table->rememberToken();
