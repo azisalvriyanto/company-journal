@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Users')
+@section('title', 'Monthly Journals')
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('users.index') }}">Users</a>
+    <a class="list-separator-link" href="{{ route('monthly-journals.index') }}">Monthly Journals</a>
 </li>
 @endsection
 
@@ -11,22 +11,18 @@
 <div class="card mb-3 mb-lg-5">
     <div class="card-header">
         <div class="row justify-content-between align-items-center flex-grow-1">
-            <div class="col-md mb-3">
-                <h4 class="card-header-title">Users</h4>
+            <div class="col-md">
+                <h4 class="card-header-title">Monthly Journals</h4>
             </div>
 
             <div class="col-auto">
                 <div class="dropdown me-2">
-                    <a class="btn btn-primary btn-sm" href="{{ route('users.create') }}">
-                        <i class="bi-clipboard-plus-fill me-2"></i> Create
-                    </a>
-
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableUserExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatablePaymentTermExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableUserExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatablePaymentTermExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -63,109 +59,104 @@
         </div>
     </div>
 
-    <div class="card-body p-0">
-        <div class="table-responsive datatable-custom">
-            <table id="datatableUser"
-                class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
-                data-hs-datatables-options='{
-                    "orderCellsTop": true,
-                    "isResponsive": false,
-                    "isShowPaging": false,
-                    "entries": "#datatableEntries",
-                    "deferRender": true,
-                    "info": {
-                        "totalQty": "#datatableUserWithPaginationInfoTotalQty"
+    <div class="datatable-custom">
+        <table id="datatablePaymentTerm"
+            class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
+            data-hs-datatables-options='{
+                "orderCellsTop": true,
+                "isResponsive": false,
+                "isShowPaging": false,
+                "entries": "#datatableEntries",
+                "deferRender": true,
+                "info": {
+                    "totalQty": "#datatablePaymentTermWithPaginationInfoTotalQty"
+                },
+                "pagination": "datatablePaymentTermWithPagination",
+                "dom": "Bfrtip",
+                "buttons": [
+                    {
+                        "extend": "copy",
+                        "className": "d-none"
                     },
-                    "pagination": "datatableUserWithPagination",
-                    "dom": "Bfrtip",
-                    "buttons": [
-                        {
-                            "extend": "copy",
-                            "className": "d-none"
-                        },
-                        {
-                            "extend": "excel",
-                            "className": "d-none"
-                        },
-                        {
-                            "extend": "csv",
-                            "className": "d-none"
-                        },
-                        {
-                            "extend": "pdf",
-                            "className": "d-none"
-                        },
-                        {
-                            "extend": "print",
-                            "className": "d-none"
-                        }
-                    ],
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": "{{ request()->url() }}",
-                    "columns": [
-                        {
-                            "data": "DT_RowIndex",
-                            "name": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "className": "text-center"
-                        },
-                        {
-                            "data": "name",
-                            "name": "name"
-                        },
-                        {
-                            "data": "group",
-                            "name": "group"
-                        },
-                        {
-                            "data": "email",
-                            "name": "email"
-                        },
-                        {
-                            "data": "is_enable",
-                            "name": "is_enable",
-                            "className": "text-center"
-                        },
-                        {
-                            "data": "actions",
-                            "name": "actions",
-                            "orderable": false,
-                            "searchable": false,
-                            "className": "text-center"
-                        }
-                    ],
-                    "order": [
-                        [1, "asc"]
-                    ]
-                }'>
-                <thead class="thead-light">
-                    <tr>
-                        <th rowspan="2">No</th>
-                        <th rowspan="1">Name</th>
-                        <th rowspan="1">Group</th>
-                        <th rowspan="1">Email</th>
-                        <th rowspan="2">Status</th>
-                        <th rowspan="2">Actions</th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <input type="text" class="form-control form-control-sm datatable-search"
-                                placeholder="Search..." data-id="1">
-                        </th>
-                        <th>
-                            <input type="text" class="form-control form-control-sm datatable-search"
-                                placeholder="Search..." data-id="2">
-                        </th>
-                        <th>
-                            <input type="text" class="form-control form-control-sm datatable-search"
-                                placeholder="Search..." data-id="3">
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+                    {
+                        "extend": "excel",
+                        "className": "d-none"
+                    },
+                    {
+                        "extend": "csv",
+                        "className": "d-none"
+                    },
+                    {
+                        "extend": "pdf",
+                        "className": "d-none"
+                    },
+                    {
+                        "extend": "print",
+                        "className": "d-none"
+                    }
+                ],
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ request()->url() }}",
+                "columns": [
+                    {
+                        "data": "DT_RowIndex",
+                        "name": "id",
+                        "orderable": false,
+                        "searchable": false,
+                        "className": "text-center"
+                    },
+                    {
+                        "data": "name",
+                        "name": "name"
+                    },
+                    {
+                        "data": "status.name",
+                        "name": "status_id",
+                        "orderable": false,
+                        "searchable": false,
+                        "className": "text-center"
+                    },
+                    {
+                        "data": "actions",
+                        "name": "actions",
+                        "orderable": false,
+                        "searchable": false,
+                        "className": "text-center"
+                    }
+                ],
+                "order": [
+                    [1, "desc"]
+                ]
+            }'>
+            <thead class="thead-light">
+                <tr>
+                    <th rowspan="2">No</th>
+                    <th rowspan="1">Name</th>
+                    <th rowspan="1">Status</th>
+                    <th rowspan="2">Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="text" class="form-control form-control-sm datatable-search"
+                            placeholder="Search..." data-id="1">
+                    </th>
+                    <th>
+                        <div class="tom-select-custom">
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatablePaymentTerm" data-hs-tom-select-options='{
+                                "searchInDropdown": false,
+                                "hideSearch": true
+                            }'>
+                                <option value="null" selected="">Any</option>
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </th>
+                </tr>
+            </thead>    
+        </table>
     </div>
 
     <div class="card-footer">
@@ -189,13 +180,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatableUserWithPaginationInfoTotalQty"></span>
+                    <span id="datatablePaymentTermWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatableUserWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatablePaymentTermWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -224,8 +215,9 @@
 <script src="{{ asset('assets/vendor/datatables.net.extensions/select/select.min.js') }}"></script>
 
 <script>
-    // DataTables
     (function () {
+        HSCore.components.HSTomSelect.init('.js-select');
+
         HSCore.components.HSDatatables.init('.js-datatable', {
             select: {
                 style: 'multi',
@@ -251,7 +243,7 @@
                 `
             }
         });
-        const datatableUser = HSCore.components.HSDatatables.getItem('datatableUser');
+        const datatablePaymentTerm = HSCore.components.HSDatatables.getItem('datatablePaymentTerm');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -282,13 +274,26 @@
 
         $(document).on('click', '.datatable-btn-destroy', async function (e) {
             const thisButton    = $(this);
-            const thisTr        = $($(this).parentsUntil('tr').parent());
+            const thisTr        = thisButton.parentsUntil('tr').parent();
+            const url           = thisTr.data('url');
 
             const listNote      = `
-                </br>
-                </br>Name: ${thisTr.data('name')}
-                </br>Email: ${thisTr.data('email') ?? '<span class="text-muted">Empty</span>'}
-                </br>Group: ${thisTr.data('group')}
+            <table class="table table-sm table-borderless">
+                <thead>
+                    <tr>
+                        <td style="width: 20%;"></td>
+                        <td style="width: 1px;"></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-0">Name</td>
+                        <td class="p-0 text-center">:</td>
+                        <td class="p-0">${thisTr.data('name')}</td>
+                    </tr>
+                </tbody>
+            </table>
             `;
 
             await $.confirm({
@@ -297,21 +302,27 @@
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
                     destroy: {
                         text: 'Yes, Delete',
                         btnClass: 'btn-danger',
                         action: async function () {
-                            $.post(thisButton.data('url'), {
+                            $.post(url, {
                                 _method: 'DELETE'
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatableUser.ajax.reload(null, false);
+                                    datatablePaymentTerm.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
                                         type: 'green',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         autoClose: 'close|3000',
                                         buttons: {
                                             close: {
@@ -326,7 +337,7 @@
                                     $.confirm({
                                         title: 'Failed',
                                         type: 'red',
-                                        content: `${data.message ?? ''}`,
+                                        content: `${res.message ?? ''}`,
                                         buttons: {
                                             close: {
                                                 text: 'Close',
@@ -355,15 +366,9 @@
                             });
                         }
                     },
-                    cancel: {
-                        text: 'Cancel',
-                        keys: ['enter', 'esc'],
-                        action: function () {
-                        }
-                    },
                 }
             });
         });
-    })()
+    })();
 </script>
 @endsection

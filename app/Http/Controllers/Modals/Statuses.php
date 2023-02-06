@@ -15,7 +15,7 @@ class Statuses extends Controller
     public function store($request)
     {
         $validator = Validator::make($request->all(), [
-            'name'          => 'required|string',
+            'name'              => 'required|string',
             'background_color'  => 'required|string',
             'font_color'        => 'required|string',
         ]);

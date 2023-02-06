@@ -430,13 +430,10 @@
         $(document).on('change', '#group', async function (e) {
             const thisElement  = $(this);
             const value = thisElement.val();
-            const emailRow = $(`#email`).closest('.row');
             const passwordRow = $(`#password`).closest('.row');
             if (value == 'Company' || value == 'Storage') {
-                emailRow.prop('hidden', true);
                 passwordRow.prop('hidden', true);
             } else {
-                emailRow.prop('hidden', false);
                 passwordRow.prop('hidden', false);
             }
         });

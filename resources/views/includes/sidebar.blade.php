@@ -48,6 +48,17 @@
                             ],
                             'menus'         => [
                                 [
+                                    'name'          => 'Monthly Journals',
+                                    'icon'          => 'bi-calendar4-range',
+                                    'url'           => route('monthly-journals.index'),
+                                    'route'         => 'monthly-journals.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                                [
                                     'name'          => 'Items',
                                     'icon'          => 'bi-kanban',
                                     'url'           => NULL,

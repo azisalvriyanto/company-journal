@@ -18,7 +18,6 @@ class UserController extends Controller
             $company = auth()->user()->parentCompany;
             $query = User::query()
             ->select(['users.*'])
-            ->whereGroup('User')
             ->whereIn('parent_company_id', [
                 $company->id,
                 $company->parent_company_id
