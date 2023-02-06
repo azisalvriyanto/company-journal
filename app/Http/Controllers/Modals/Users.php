@@ -29,15 +29,12 @@ class Users extends Controller
 
                 $query                      = new User;
                 $query->name                = $request->name;
-                $query->group               = $request->group;
-                $query->parent_company_id   = $request->parent_company;
-                if ($query->email) {
-                    $query->email           = $request->email;
-                }
-                if ($query->password) {
-                    $query->password        = $request->password;
-                }
-                $query->is_enable       = $request->is_enable ?? 0;
+                $query->group               = $request->group ?? 'User';
+                $query->parent_company_id   = $request->parent_company ?? NULL;
+                $query->code                = $request->code ?? NULL;
+                $query->email               = $request->email ?? NULL;
+                $query->password            = $request->password ?? NULL;
+                $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
 
                 if ($request->contact_address) {
@@ -150,15 +147,12 @@ class Users extends Controller
                 DB::beginTransaction();
 
                 $query->name                = $request->name;
-                $query->group               = $request->group;
-                $query->parent_company_id   = $request->parent_company;
-                if ($query->email) {
-                    $query->email           = $request->email;
-                }
-                if ($query->password) {
-                    $query->password        = $request->password;
-                }
-                $query->is_enable       = $request->is_enable ?? 0;
+                $query->group               = $request->group ?? 'User';
+                $query->parent_company_id   = $request->parent_company ?? NULL;
+                $query->code                = $request->code ?? NULL;
+                $query->email               = $request->email ?? NULL;
+                $query->password            = $request->password ?? NULL;
+                $query->is_enable           = $request->is_enable ?? 0;
                 $query->save();
 
                 $query->default_contact_address_id = NULL;

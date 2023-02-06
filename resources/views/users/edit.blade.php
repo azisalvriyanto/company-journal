@@ -91,6 +91,14 @@
 
                 <div class="row">
                     <div class="col-sm-12 mb-4">
+                        <label for="code" class="form-label">Code</label>
+
+                        <input id="code" name="code" type="text" class="form-control" placeholder="" value="{{ $query->code }}" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 mb-4">
                         <label for="email" class="form-label">Email</label>
 
                         <input id="email" name="email" type="email" class="form-control" placeholder="" value="{{ $query->email }}" autocomplete="off">

@@ -29,8 +29,7 @@ class UserController extends Controller
                 return $query->email ? $query->email : '<i class="text-muted">Empty</i>';
             })
             ->editColumn('group', function ($query) {
-                return '<div>' . $query->group . '</div><div class="small">' . ($query->ownerGroups ? $query->ownerGroups->implode('name', ', ') : '<i class="text-muted">Empty</i>') . '</div>';
-                return ;
+                return $query->group . '<div class="small">' . ($query->ownerGroups ? $query->ownerGroups->implode('name', ', ') : '<i class="text-muted">Empty</i>') . '</div>';
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
