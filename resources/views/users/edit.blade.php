@@ -106,40 +106,6 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-6 mb-4">
-                        <label for="password" class="form-label">Password</label>
-
-                        <div class="input-group input-group-merge" data-hs-validation-validate-class>
-                            <input type="password" class="js-toggle-password form-control form-control-lg" name="password" id="password" placeholder="8+ characters required" aria-label="8+ characters required" required minlength="8" data-hs-toggle-password-options='{
-                                "target": "#changePassTarget-password",
-                                "defaultClass": "bi-eye-slash",
-                                "showClass": "bi-eye",
-                                "classChangeTarget": "#changePassIcon-password"
-                            }'>
-                            <a id="changePassTarget-password" class="input-group-append input-group-text" href="javascript:;">
-                                <i id="changePassIcon-password" class="bi-eye"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 mb-4">
-                        <label for="password-confirmation" class="form-label">Password Confirmation</label>
-
-                        <div class="input-group input-group-merge" data-hs-validation-validate-class>
-                            <input type="password" class="js-toggle-password form-control form-control-lg" name="password_confirmation" id="password-confirmation" placeholder="8+ characters required" aria-label="8+ characters required" required minlength="8" data-hs-toggle-password-options='{
-                                "target": "#changePassTarget-password-confirmation",
-                                "defaultClass": "bi-eye-slash",
-                                "showClass": "bi-eye",
-                                "classChangeTarget": "#changePassIcon-password-confirmation"
-                            }'>
-                            <a id="changePassTarget-password-confirmation" class="input-group-append input-group-text" href="javascript:;">
-                                <i id="changePassIcon-password-confirmation" class="bi-eye"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="col-sm-12 mb-4">
                         <label for="owner-groups" class="form-label">Owner Groups</label>
 
@@ -312,7 +278,9 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
@@ -427,7 +395,7 @@
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to create this form?`,
+                content: `Do you want to save this form?`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -438,7 +406,7 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Create',
+                        text: 'Yes, Save',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
@@ -482,6 +450,81 @@
                                                 }
                                             },
                                         },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-destroy', async function (e) {
+            const url = `{{ route('users.show', $query->id) }}`
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to delete this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    destroy: {
+                        text: 'Yes, Delete',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            $.post(url, {
+                                _method: 'DELETE'
+                            })
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    $.confirm({
+                                        title: 'Success',
+                                        type: 'green',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                    window.location.replace(`{{ route('users.index') }}`);
+                                                }
+                                            },
+                                        }
                                     });
                                 } else {
                                     $.confirm({
