@@ -118,7 +118,7 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card">
+        <div class="card mb-3 mb-lg-5">
             <div class="card-header">
                 <h4 class="card-header-title">Organization</h4>
             </div>
@@ -168,6 +168,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="card mb-3 mb-lg-5" data-id="item_scanning_code">
+            <div class="card-header">
+                <h4 class="card-header-title float-start">Item Scanning Code</h4>
+
+                <button class="btn-code-create btn btn-sm btn-soft-success float-end">
+                    <i class="bi bi-file-earmark-plus"></i>
+                    Create
+                </button>
+            </div>
+
+            <div class="card-body"></div>
         </div>
     </div>
 </div>
@@ -407,6 +420,56 @@
                                     }
                                 });
                             });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-code-create', async function (e) {
+            const thisRow = $(this).closest('.card');
+            const thisParam = thisRow.data('id');
+            const codes = thisRow.find('.card-body');
+            const thisId = codes.children().length && parseInt(codes.children().last().data('id')) ? parseInt(codes.children().last().data('id'))+1 : 1;
+
+            codes.append(`
+                <div class="row" data-id="${thisId}">
+                    <div class="col-sm-12 mb-4">
+                        <div class="input-group input-group-merge">
+                            <input id="name" name="${thisParam}[${thisId}][code]" type="text" class="form-control" placeholder="eg. 348121032" aria-label="eg. 348121032" value="" autocomplete="off">
+
+                            <div class="input-group-append input-group-text p-0">
+                                <button class="btn-remove-code btn btn-sm btn-danger">
+                                    <i class="bi-trash"></i>    
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `)
+        });
+
+        $(document).on('click', '.btn-remove-code', async function (e) {
+            const thisButton = $(this);
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: 'Do  you want to remove this list?',
+                autoClose: 'cancel|10000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Batal',
+                        keys: ['esc'],
+                        action: function () {
+                        }
+                    },
+                    destroy: {
+                        text: 'Ya, Hapus',
+                        keys: ['enter'],
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            thisButton.closest('.row').remove();
                         }
                     },
                 }
