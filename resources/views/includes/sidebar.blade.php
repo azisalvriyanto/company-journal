@@ -40,6 +40,27 @@
                             ],
                         ];
 
+                        $groups['operating-cost-tarnsaction'] = [
+                            'name'          => 'Operating Cost',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Transaction',
+                                    'icon'          => 'bi-bezier2',
+                                    'url'           => route('operating-cost-transactions.index'),
+                                    'route'         => 'operating-cost-transactions.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
                         $groups['reference'] = [
                             'name'          => 'Reference',
                             'permissions'   => [

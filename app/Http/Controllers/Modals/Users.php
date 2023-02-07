@@ -166,7 +166,7 @@ class Users extends Controller
                 DB::beginTransaction();
 
                 if ($request->group == 'Storage') {
-                    if ($query->group != $request->group) {
+                    if ($query->group != $request->group || $query->storageOperationTypes) {
                         $operationTypes = OperationType::query()->whereIsEnable(TRUE)->get();
                         foreach ($operationTypes as $operationType) {
                             $queryStorageOperationType                      = new StorageOperationType;

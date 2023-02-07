@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contact::class, 'owner_id', 'id');
     }
+
+    public function storageOperationTypes()
+    {
+        return $this->hasMany(StorageOperationType::class, 'storage_id', 'id');
+    }
 }

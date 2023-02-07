@@ -21,6 +21,9 @@ class StorageOperationTypeController extends Controller
             ->select(['storage_operation_types.*']);
 
             return DataTables::eloquent($query)
+            ->editColumn('operation_type.name', function ($query) {
+                return ($query->operationType->group == 'In' ? '<span class="me-1 badge bg-soft-success text-success" style="width: 40px;">In</span>' : ($query->operationType->group == 'Out' ? '<span class="me-1 badge bg-soft-danger text-danger" style="width: 40px;">Out</span>' : '<span class="me-1 badge bg-soft-secondary text-muted" style="width: 40px;">Undifened</span>')) . ' ' . $query->operationType->name;
+            })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
             })
@@ -56,7 +59,7 @@ class StorageOperationTypeController extends Controller
                     return $query->name;
                 },
             ])
-            ->rawColumns(['is_enable','actions'])
+            ->rawColumns(['operation_type.name', 'is_enable','actions'])
             ->addIndexColumn()
             ->toJson();
         }
