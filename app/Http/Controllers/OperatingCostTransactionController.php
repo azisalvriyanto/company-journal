@@ -25,13 +25,16 @@ class OperatingCostTransactionController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('transaction_time', function ($query) {
-                return $query->transaction_time . '<div class="small">' . date('l, F j, Y H:i:s', strtotime($query->transaction_time)) . '</div>';
+                return date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>';
             })
             ->editColumn('code', function ($query) {
                 return $query->code . '<div class="small">' . $query->internal_code . '</div>';
             })
             ->editColumn('total_price', function ($query) {
                 return number_format($query->total_price, 10, '.', ',');
+            })
+            ->editColumn('status.name', function ($query) {
+                return '<span class="badge ' . $query->status->background_color . ' ' . $query->status->font_color . '">' . $query->status->name . '</span>';
             })
             ->addColumn('actions', function ($query) {
                 return '
@@ -74,7 +77,7 @@ class OperatingCostTransactionController extends Controller
                     return number_format($query->total_price, 10, '.', ',');
                 },
             ])
-            ->rawColumns(['is_enable','actions'])
+            ->rawColumns(['transaction_time', 'code', 'total_price', 'status.name', 'actions'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -86,9 +89,7 @@ class OperatingCostTransactionController extends Controller
 
     public function create()
     {
-        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
-
-        return view('operating-cost-transactions.create', $data);
+        return view('operating-cost-transactions.create');
     }
 
     public function store(Request $request)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Modals;
 
 use App\Http\Controllers\Controller;
 use App\Models\MonthlyJournal;
+use App\Models\Status;
 
 use Illuminate\Http\Response;
 
@@ -46,7 +47,8 @@ class MonthlyJournals extends Controller
                 } else {
                     $query              = new MonthlyJournal;
                     $query->owner_id    = $request->owner;
-                    $query->name        = $request->name;
+                    $query->name        = date('Y-m', strtotime($request->name));
+                    $query->status_id   = Status::query()->whereName('Draft')->whereIsEnable(TRUE)->first()->id;
                     $query->save();
 
                     DB::commit();
