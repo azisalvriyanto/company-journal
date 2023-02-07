@@ -33,14 +33,14 @@
                                 <i class="bi-calendar-week"></i>
                             </div>
 
-                            <input type="text" id="time" name="time" class="flatpickr-custom-form-control form-control" placeholder="Select dates" data-input value="{{ date('F j, Y') }}">
+                            <input type="text" id="time" name="time" class="flatpickr-custom-form-control form-control" placeholder="Select dates" data-input value="{{ date('F j, Y', strtotime($query->transaction_time)) }}">
                         </div>
                     </div>
 
                     <div class="col-sm-6 mb-4">
                         <label for="internal-code" class="form-label">Internal Code</label>
 
-                        <input id="internal-code" name="internal_code" type="text" class="form-control" placeholder="" value="" autocomplete="off">
+                        <input id="internal-code" name="internal_code" type="text" class="form-control" placeholder="" value="{{ $query->internal_code }}" autocomplete="off">
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
                     <div class="col-sm-12 mb-4">
                         <label for="note" class="form-label">Note</label>
 
-                        <textarea id="note" name="note" class="form-control textarea"></textarea>
+                        <textarea id="note" name="note" class="form-control textarea">{{ $query->note }}</textarea>
                     </div>
                 </div>
             </div>
@@ -60,12 +60,14 @@
     <div class="card card-sm bg-dark border-dark mx-2">
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
-                <div class="col"></div>
+                <div class="col">
+                    <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
-                        <button type="button" class="btn btn-primary btn-create">Save</button>
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
             </div>
@@ -110,20 +112,20 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`);
                         }
                     },
                 }
             });
         });
 
-        $(document).on('click', '.btn-create', async function (e) {
+        $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('operating-cost-transactions.index') }}`
+            const url           = `{{ route('operating-cost-transactions.show', $query->id) }}`
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to create this form?`,
+                content: `Do you want to save this form?`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -134,10 +136,11 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Create',
+                        text: 'Yes, Save',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
+                            values['_method']   = `PUT`;
                             $(`[name]`).map(function() {
                                 const parameter = $(this).attr('name');
 
@@ -156,31 +159,100 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
-                                        content: `${res.message ?? ''}`,
                                         type: 'orange',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
                                         buttons: {
                                             index: {
                                                 text: 'Back',
-                                                btnClass: 'btn-secondary',
+                                                btnClass: 'btn-primary',
+                                                action: function () {
+                                                    window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`)
+                                                }
+                                            },
+                                            close: {
+                                                text: 'Still Edit',
+                                                btnClass: 'btn-success',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                }
+                                            },
+                                        },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-destroy', async function (e) {
+            const url = `{{ route('operating-costs.show', $query->id) }}`
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to delete this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    destroy: {
+                        text: 'Yes, Delete',
+                        btnClass: 'btn-danger',
+                        action: async function () {
+                            $.post(url, {
+                                _method: 'DELETE'
+                            })
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    $.confirm({
+                                        title: 'Success',
+                                        type: 'green',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
                                                 action: function () {
                                                     window.location.replace(`{{ route('operating-cost-transactions.index') }}`);
                                                 }
                                             },
-                                            reCreate: {
-                                                text: 'Recreate',
-                                                btnClass: 'btn-primary',
-                                                action: function () {
-                                                    window.location.reload();
-                                                }
-                                            },
-                                            edit: {
-                                                text: 'Edit',
-                                                btnClass: 'btn-success',
-                                                action: function () {
-                                                    window.location.replace(`{{ route('operating-cost-transactions.index') }}/${res.data.id}/edit`);
-                                                }
-                                            },
-                                        },
+                                        }
                                     });
                                 } else {
                                     $.confirm({

@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <div class="datatable-custom">
+    <div class="table-responsive datatable-custom">
         <table id="datatablePaymentTerm"
             class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{

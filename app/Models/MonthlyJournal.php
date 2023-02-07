@@ -24,4 +24,9 @@ class MonthlyJournal extends Model
     {
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

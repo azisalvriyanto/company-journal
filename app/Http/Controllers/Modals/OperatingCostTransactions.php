@@ -33,11 +33,11 @@ class OperatingCostTransactions extends Controller
                     'owner'  => auth()->user()->parent_company_id,
                     'name'   => date('Y-m', strtotime($time))
                 ]);
-                $monthlyJournals = new MonthlyJournals;
-                $monthlyJournals = $monthlyJournals->store($monthlyJournalRequest);
-                if ($monthlyJournals['status'] == 200) {
+                $monthlyJournal = new MonthlyJournals;
+                $monthlyJournal = $monthlyJournal->store($monthlyJournalRequest);
+                if ($monthlyJournal['status'] == 200) {
                     $query                      = new OperatingCostTransaction;
-                    $query->monthly_journal_id  = $monthlyJournals['data']->id;
+                    $query->monthly_journal_id  = $monthlyJournal['data']->id;
                     $query->transaction_time    = $time;
                     $query->internal_code       = $request->internal_code ?? NULL;
                     $query->note                = $request->note ?? NULL;
@@ -56,7 +56,7 @@ class OperatingCostTransactions extends Controller
                     ];
                 } else {
                     DB::rollback();
-                    $response = $monthlyJournals;
+                    $response = $monthlyJournal;
                 }
             } catch (\Exception $e) {
                 DB::rollback();
@@ -82,10 +82,9 @@ class OperatingCostTransactions extends Controller
     public function update($request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'owner'                 => 'required|exists:users,id',
-            'name'                  => 'required|string',
-            'default_cost'          => 'nullable|string',
-            'unit_of_measurement'   => 'required|exists:unit_of_measurements,id',
+            'time'          => 'required|string',
+            'internal_code' => 'nullable|string',
+            'note'          => 'nullable|string',
         ]);
 
         if ($validator->passes()) {
@@ -94,20 +93,35 @@ class OperatingCostTransactions extends Controller
                 try {
                     DB::beginTransaction();
 
-                    $query->owner_id                = $request->owner;
-                    $query->name                    = $request->name;
-                    $query->default_cost            = number_format((double) filter_var($request->default_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
-                    $query->unit_of_measurement_id  = $request->unit_of_measurement;
-                    $query->is_enable               = $request->is_enable ?? 0;
-                    $query->save();
+                    $time = date('Y-m-d 00:00:00', strtotime($request->time));
 
-                    DB::commit();
-                    $response = [
-                        'status'    => 200,
-                        'message'   => 'Operating cost transaction updated in successfully.',
-                        'data'      => $query,
-                        'errors'    => [],
-                    ];
+                    $monthlyJournalRequest = new Request;
+                    $monthlyJournalRequest->replace([
+                        'owner'  => auth()->user()->parent_company_id,
+                        'name'   => date('Y-m', strtotime($time))
+                    ]);
+                    $monthlyJournal = new MonthlyJournals;
+                    $monthlyJournal = $monthlyJournal->store($monthlyJournalRequest);
+                    if ($monthlyJournal['status'] == 200) {
+                        $query->monthly_journal_id  = $monthlyJournal['data']->id;
+                        $query->transaction_time    = $time;
+                        $query->code                = $query->id;
+                        $query->internal_code       = $request->internal_code ?? NULL;
+                        $query->note                = $request->note ?? NULL;
+                        $query->status_id           = Status::query()->whereName('Draft')->whereIsEnable(TRUE)->first()->id;
+                        $query->save();
+
+                        DB::commit();
+                        $response = [
+                            'status'    => 200,
+                            'message'   => 'Operating cost transaction updated in successfully.',
+                            'data'      => $query,
+                            'errors'    => [],
+                        ];
+                    } else {
+                        DB::rollback();
+                        $response = $monthlyJournal;
+                    }
                 } catch (\Exception $e) {
                     DB::rollback();
                     $response = [
@@ -144,15 +158,44 @@ class OperatingCostTransactions extends Controller
             try {
                 DB::beginTransaction();
 
-                $query->delete();
+                $monthlyJournalRequest = new Request;
+                $monthlyJournalRequest->replace([
+                    'owner'  => auth()->user()->parent_company_id,
+                    'name'   => date('Y-m', strtotime($query->transaction_time))
+                ]);
+                $monthlyJournal = new MonthlyJournals;
+                $monthlyJournal = $monthlyJournal->show($monthlyJournalRequest);
+                if ($monthlyJournal['status'] == 200) {
+                    if ($monthlyJournal['data']->status->name == 'Draft') {
+                        if ($query->status->name == 'Draft') {
+                            $query->delete();
 
-                DB::commit();
-                $response = [
-                    'status'    => 200,
-                    'message'   => 'Operating cost transaction deleted in successfully.',
-                    'data'      => NULL,
-                    'errors'    => [],
-                ];
+                            DB::commit();
+                            $response = [
+                                'status'    => 200,
+                                'message'   => 'Operating cost transaction deleted in successfully.',
+                                'data'      => NULL,
+                                'errors'    => [],
+                            ];
+                        } else {
+                            $response = [
+                                'status'    => 500,
+                                'message'   => 'Operating cost transactiol not writable.',
+                                'data'      => NULL,
+                                'errors'    => [],
+                            ];
+                        }
+                    } else {
+                        $response = [
+                            'status'    => 500,
+                            'message'   => 'Monthly journal not writable.',
+                            'data'      => NULL,
+                            'errors'    => [],
+                        ];
+                    }
+                } else {
+                    $response = $monthlyJournal;
+                }
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [

@@ -51,7 +51,6 @@ class MonthlyJournals extends Controller
                     $query->status_id   = Status::query()->whereName('Draft')->whereIsEnable(TRUE)->first()->id;
                     $query->save();
 
-                    DB::commit();
                     $response = [
                         'status'    => 200,
                         'message'   => 'Monthly journal created in successfully.',
@@ -60,6 +59,7 @@ class MonthlyJournals extends Controller
                     ];
                 }
 
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
                 $response = [
@@ -87,7 +87,7 @@ class MonthlyJournals extends Controller
         if ($query) {
             $response = [
                 'status'    => 200,
-                'message'   => NULL,
+                'message'   => '',
                 'data'      => $query,
                 'errors'    => [],
             ];

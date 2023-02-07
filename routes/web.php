@@ -13,7 +13,7 @@ Auth::routes();
 Route::middleware(["auth"])->group(function () {
     Route::resource('dashboards', App\Http\Controllers\HomeController::class)->only(['index']);
 
-    Route::resource('monthly-journals', App\Http\Controllers\MonthlyJournalController::class)->only(['index']);
+    Route::resource('monthly-journals', App\Http\Controllers\MonthlyJournalController::class)->only(['index', 'show']);
     Route::resource('storage-operation-types', App\Http\Controllers\StorageOperationTypeController::class)->only(['index', 'show', 'edit', 'update']);
 
     Route::resource('operating-cost-transactions', App\Http\Controllers\OperatingCostTransactionController::class);

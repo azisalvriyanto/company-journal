@@ -28,7 +28,7 @@ class OperatingCostTransactionController extends Controller
                 return date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>';
             })
             ->editColumn('code', function ($query) {
-                return $query->code . '<div class="small">' . $query->internal_code . '</div>';
+                return '<a class="text-primary" href="' . route('operating-cost-transactions.show', $query->id) . '">' . $query->code . '</a><div class="small">' . $query->internal_code . '</div>';
             })
             ->editColumn('total_price', function ($query) {
                 return number_format($query->total_price, 10, '.', ',');
@@ -52,8 +52,11 @@ class OperatingCostTransactionController extends Controller
                                 <a class="dropdown-item" href="' . route('operating-cost-transactions.edit', $query->id) . '">
                                     <i class="bi-pencil dropdown-item-icon"></i> Edit
                                 </a>
-                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
-                                    <i class="bi-trash dropdown-item-icon"></i> Delete
+                                <a class="dropdown-item datatable-btn-lock" href="javascript:;">
+                                    <i class="bi-trash dropdown-item-icon"></i> Lock
+                                </a>
+                                <a class="dropdown-item datatable-btn-cancel" href="javascript:;">
+                                    <i class="bi-trash dropdown-item-icon"></i> Cancel
                                 </a>
                             </div>
                         </div>
@@ -100,8 +103,7 @@ class OperatingCostTransactionController extends Controller
 
     public function edit($id)
     {
-        $data['query']              = OperatingCostTransaction::query()->findOrFail($id);
-        $data['unitOfMeasurements'] = UnitOfMeasurement::query()->orderBy('name')->get()->all();
+        $data['query'] = OperatingCostTransaction::query()->findOrFail($id);
 
         return view('operating-cost-transactions.edit', $data);
     }

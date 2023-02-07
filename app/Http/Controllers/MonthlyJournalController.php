@@ -25,9 +25,9 @@ class MonthlyJournalController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('name', function ($query) {
-                return $query->name . '<div class="small">' . date('M Y', strtotime($query->name)) . '</div>';
+                return $query->name . '<div class="small">' . date('F Y', strtotime($query->name)) . '</div>';
             })
-            ->editColumn('status', function ($query) {
+            ->editColumn('status.name', function ($query) {
                 return '<span class="badge ' . $query->status->background_color . ' ' . $query->status->font_color . '">' . $query->status->name . '</span>';
             })
             ->addColumn('actions', function ($query) {
@@ -44,13 +44,10 @@ class MonthlyJournalController extends Controller
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item datatable-btn-edit" href="javascript:;" data-value="Draft">
-                                    <i class="bi-pencil dropdown-item-icon"></i> Draft
+                                    <i class="bi-archive dropdown-item-icon"></i> Draft
                                 </a>
                                 <a class="dropdown-item datatable-btn-edit" href="javascript:;" data-value="Lock">
-                                    <i class="bi-pencil dropdown-item-icon"></i> Lock
-                                </a>
-                                <a class="dropdown-item datatable-btn-destroy" href="javascript:;">
-                                    <i class="bi-trash dropdown-item-icon"></i> Delete
+                                    <i class="bi-file-earmark-lock dropdown-item-icon"></i> Lock
                                 </a>
                             </div>
                         </div>
@@ -68,7 +65,7 @@ class MonthlyJournalController extends Controller
                     return $query->name;
                 },
             ])
-            ->rawColumns(['value', 'deadline_type', 'is_enable','actions'])
+            ->rawColumns(['name', 'status.name', 'actions'])
             ->addIndexColumn()
             ->toJson();
         }
