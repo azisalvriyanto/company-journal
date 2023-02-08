@@ -14,11 +14,11 @@ class OperatingCostTransactionDetail extends Model
 
     public function operatingCostTransaction()
     {
-        return $this->belongsTo(ConOperatingCostTransactiontact::class);
+        return $this->belongsTo(OperatingCostTransaction::class);
     }
 
     public function operatingCost()
     {
-        return $this->belongsTo(ConOperatingCost::class);
+        return $this->belongsTo(OperatingCost::class);
     }
 }

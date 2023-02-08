@@ -21,13 +21,12 @@ return new class extends Migration
             $table->foreignUuid('operating_cost_id')->index();
             $table->foreign('operating_cost_id')->references('id')->on('operating_costs')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->double('quantity', 50, 10)->default(0);
             $table->double('price', 50, 10)->default(0);
             $table->double('total_price', 50, 10)->default(0);
 
             $table->text('note')->nullable();
 
-            $table->foreignUuid('status_id')->index();
-            $table->foreign('status_id')->references('id')->on('statuses')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

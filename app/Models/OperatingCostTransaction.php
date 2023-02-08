@@ -32,18 +32,8 @@ class OperatingCostTransaction extends Model
         return $this->belongsTo(Status::class);
     }
 
-    // public function supplier()
-    // {
-    //     return $this->belongsTo(User::class, 'supplier_id', 'id');
-    // }
-
-    // public function supplierAddress()
-    // {
-    //     return $this->belongsTo(Contact::class, 'supplier_address_id', 'id');
-    // }
-
-    // public function paymentTerm()
-    // {
-    //     return $this->belongsTo(PaymentTerm::class);
-    // }
+    public function operatingCostTransactionDetails()
+    {
+        return $this->hasMany(OperatingCostTransactionDetail::class);
+    }
 }

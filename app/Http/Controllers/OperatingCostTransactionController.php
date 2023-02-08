@@ -25,13 +25,10 @@ class OperatingCostTransactionController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('transaction_time', function ($query) {
-                return date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>';
-            })
-            ->editColumn('code', function ($query) {
-                return '<a class="text-primary" href="' . route('operating-cost-transactions.show', $query->id) . '">' . $query->code . '</a><div class="small">' . $query->internal_code . '</div>';
+                return '<a class="text-primary" href="' . route('operating-cost-transactions.show', $query->id) . '">' . date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>' . '</a>';
             })
             ->editColumn('total_price', function ($query) {
-                return number_format($query->total_price, 10, '.', ',');
+                return number_format($query->total_price, 0, '.', ',');
             })
             ->editColumn('status.name', function ($query) {
                 return '<span class="badge ' . $query->status->background_color . ' ' . $query->status->font_color . '">' . $query->status->name . '</span>';
@@ -99,6 +96,13 @@ class OperatingCostTransactionController extends Controller
     {
         $query = new OperatingCostTransactions;
         return response()->json($query->store($request));
+    }
+
+    public function show($id)
+    {
+        $data['query'] = OperatingCostTransaction::query()->findOrFail($id);
+
+        return view('operating-cost-transactions.show', $data);
     }
 
     public function edit($id)

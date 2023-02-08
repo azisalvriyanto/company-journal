@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Create Operating Cost Transaction')
+@section('title', 'Edit ' . date('F j, Y', strtotime($query->transaction_time)))
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('operating-cost-transactions.index') }}">Operating Cost Transactions</a>
 </li>
+<li class="list-inline-item text-end">
+    <a class="list-separator-link" href="{{ route('operating-cost-transactions.show', $query->id) }}">{{ date('F j, Y', strtotime($query->transaction_time)) }}</a>
+</li>
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('operating-cost-transactions.create') }}">Create Operating Cost Transaction</a>
+    <a class="list-separator-link" href="{{ route('operating-cost-transactions.edit', $query->id) }}">Edit</a>
 </li>
 @endsection
 
@@ -21,7 +24,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6 mb-4">
-                        <label for="time" class="form-label">Name</label>
+                        <label for="time" class="form-label">Time</label>
 
                         <div id="transactionDateFlatpickr" class="js-flatpickr flatpickr-custom input-group"
                             data-hs-flatpickr-options='{
@@ -67,6 +70,7 @@
                 <div class="col-auto">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
+                        <button type="button" class="btn btn-soft-success btn-show">Show</button>
                         <button type="button" class="btn btn-primary btn-save">Save</button>
                     </div>
                 </div>
@@ -110,6 +114,32 @@
                     },
                     okay: {
                         text: 'Yes, Discard',
+                        btnClass: 'btn-secondary',
+                        action: async function () {
+                            history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.index') }}`);
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-show', async function (e) {
+            const thisButton    = $(this);
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Don't you want to save this form?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['enter', 'esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Show',
                         btnClass: 'btn-secondary',
                         action: async function () {
                             history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`);
@@ -164,7 +194,7 @@
                                         autoClose: 'close|3000',
                                         buttons: {
                                             index: {
-                                                text: 'Back',
+                                                text: 'Show',
                                                 btnClass: 'btn-primary',
                                                 action: function () {
                                                     window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`)
