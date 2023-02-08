@@ -30,10 +30,11 @@ class OperatingCostTransactionDetails extends Controller
                             foreach($request->operating_cost_transaction_details as $operatingCostTransactionDetail) {
                                 $queryOperatingCostTransactionDetail                                = new OperatingCostTransactionDetail;
                                 $queryOperatingCostTransactionDetail->operating_cost_transaction_id = $operatingCostTransactionDetailId;
-                                $queryOperatingCostTransactionDetail->operating_cost_id             = array_key_exists('operating_cost', $operatingCostTransactionDetail)   ? $operatingCostTransactionDetail['operating_cost'] : NULL;
+                                $queryOperatingCostTransactionDetail->operating_cost_id             = array_key_exists('operating_cost', $operatingCostTransactionDetail) ? $operatingCostTransactionDetail['operating_cost'] : NULL;
                                 $queryOperatingCostTransactionDetail->quantity                      = number_format((double) filter_var(array_key_exists('quantity', $operatingCostTransactionDetail)    ? $operatingCostTransactionDetail['quantity']   : 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
                                 $queryOperatingCostTransactionDetail->price                         = number_format((double) filter_var(array_key_exists('price', $operatingCostTransactionDetail)       ? $operatingCostTransactionDetail['price']      : 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
                                 $queryOperatingCostTransactionDetail->total_price                   = number_format($queryOperatingCostTransactionDetail->quantity*$queryOperatingCostTransactionDetail->price, 0, '.', '');
+                                $queryOperatingCostTransactionDetail->note                          = array_key_exists('note', $operatingCostTransactionDetail) ? $operatingCostTransactionDetail['note'] : NULL;
                                 $queryOperatingCostTransactionDetail->save();
 
                                 if (in_array($queryOperatingCostTransactionDetail->id, $operatingCostTransactionDetailIds)) {
