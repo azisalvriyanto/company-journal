@@ -132,11 +132,11 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th rowspan="1" colspan="1">Actions</th>
-                                        <th rowspan="1" colspan="1" style="min-width: 20%;">Name</th>
-                                        <th rowspan="1" colspan="1" style="min-width: 15%;">Quantity</th>
-                                        <th rowspan="1" colspan="1" style="min-width: 15%;">Price</th>
-                                        <th rowspan="1" colspan="1">Total Price</th>
-                                        <th rowspan="1" colspan="1" style="min-width: 25%;">Note</th>
+                                        <th rowspan="1" colspan="1" style="min-width: 20rem;">Name</th>
+                                        <th rowspan="1" colspan="1" style="min-width: 10rem;">Quantity</th>
+                                        <th rowspan="1" colspan="1" style="min-width: 15rem;">Price</th>
+                                        <th rowspan="1" colspan="1" style="min-width: 15rem;">Total Price</th>
+                                        <th rowspan="1" colspan="1" style="min-width: 20rem;;">Note</th>
                                     </tr>
                                 </thead>
                                 <tfoot class="thead-light">

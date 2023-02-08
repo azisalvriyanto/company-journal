@@ -57,11 +57,11 @@ class OperatingCostTransactionDetailController extends Controller
                 if ($query->operatingCostTransaction->status->name == 'Draft') {
                     return '
                         <div class="form-group">
-                            <input id="price" name="operating_cost_transaction_details[' . $query->id . '][price]" type="text" class="input-count form-control text-end" placeholder="" value="' . number_format($query->total_price, 2, '.', '') . '" autocomplete="off">
+                            <input id="price" name="operating_cost_transaction_details[' . $query->id . '][price]" type="text" class="input-count form-control text-end" placeholder="" value="' . number_format($query->price, 2, '.', '') . '" autocomplete="off">
                         </div>
                     ';
                 } else {
-                    return number_format($query->total_price, 2, '.', ',');
+                    return number_format($query->price, 2, '.', ',');
                 }
             })
             ->editColumn('total_price', function ($query) {
