@@ -42,7 +42,7 @@
                         <label for="internal-code" class="form-label">Status</label>
 
                         <div>
-                            <span class="badge {{ $query->status->background_color . ' ' . $query->status->font_color }}" style="width: 100px;">{{ $query->status->name }}</span>
+                            <span class="badge {{ $query->status->background_color . ' ' . $query->status->font_color }}" style="min-width: 100px;">{{ $query->status->name }}</span>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     <div class="col-sm-12 mb-4">
                         <label for="note" class="form-label">Note</label>
 
-                        <div>{!! $query->note ?? '<span class="text-muted">Empty</span>' !!}</div>
+                        <div>{!! $query->note ?? '<span class="text-muted fst-italic">Empty</span>' !!}</div>
                     </div>
                 </div>
             </div>
