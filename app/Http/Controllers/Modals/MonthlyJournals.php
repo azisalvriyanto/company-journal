@@ -81,9 +81,16 @@ class MonthlyJournals extends Controller
         return $response;
     }
 
-    public function show($id)
+    public function show($request)
     {
-        $query = MonthlyJournal::query()->find($id);
+        $query = MonthlyJournal::query()
+        ->with([
+            'owner',
+            'status'
+        ])
+        ->whereOwnerId($request->owner)
+        ->whereName($request->name)
+        ->first();
         if ($query) {
             $response = [
                 'status'    => 200,

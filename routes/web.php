@@ -17,6 +17,7 @@ Route::middleware(["auth"])->group(function () {
     Route::resource('storage-operation-types', App\Http\Controllers\StorageOperationTypeController::class)->only(['index', 'show', 'edit', 'update']);
 
     Route::resource('operating-cost-transactions.details', App\Http\Controllers\OperatingCostTransactionDetailController::class);
+    Route::put('operating-cost-transactions/{operating_cost_transaction}/status', [App\Http\Controllers\OperatingCostTransactionController::class, 'updateStatus'])->name('operating-cost-transactions.status');
     Route::resource('operating-cost-transactions', App\Http\Controllers\OperatingCostTransactionController::class);
 
     Route::group(['as' => 'items.', 'prefix' => 'items'], function () {

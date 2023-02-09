@@ -21,12 +21,12 @@
                         <i class="bi-clipboard-plus-fill me-2"></i> Create
                     </a>
 
-                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatablePaymentTermExportDropdown"
+                    <button type="button" class="btn btn-white btn-sm dropdown-toggle" id="datatableOperatingCostTransactionExportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi-download me-2"></i> Export
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatablePaymentTermExportDropdown"
+                    <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="datatableOperatingCostTransactionExportDropdown"
                         style="">
                         <span class="dropdown-header">Options</span>
                         <a class="dropdown-item datatable-export" data-id="copy" href="javascript:;">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="table-responsive datatable-custom">
-        <table id="datatablePaymentTerm"
+        <table id="datatableOperatingCostTransaction"
             class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
             data-hs-datatables-options='{
                 "orderCellsTop": true,
@@ -73,9 +73,9 @@
                 "entries": "#datatableEntries",
                 "deferRender": true,
                 "info": {
-                    "totalQty": "#datatablePaymentTermWithPaginationInfoTotalQty"
+                    "totalQty": "#datatableOperatingCostTransactionWithPaginationInfoTotalQty"
                 },
-                "pagination": "datatablePaymentTermWithPagination",
+                "pagination": "datatableOperatingCostTransactionWithPagination",
                 "dom": "Bfrtip",
                 "buttons": [
                     {
@@ -165,7 +165,7 @@
                     </th>
                     <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatablePaymentTerm" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="2" data-target-table="datatableOperatingCostTransaction" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
@@ -202,13 +202,13 @@
 
                     <span class="text-secondary me-2">of</span>
 
-                    <span id="datatablePaymentTermWithPaginationInfoTotalQty"></span>
+                    <span id="datatableOperatingCostTransactionWithPaginationInfoTotalQty"></span>
                 </div>
             </div>
 
             <div class="col-sm-auto">
                 <div class="d-flex justify-content-center justify-content-sm-end">
-                    <nav id="datatablePaymentTermWithPagination" aria-label="Activity pagination"></nav>
+                    <nav id="datatableOperatingCostTransactionWithPagination" aria-label="Activity pagination"></nav>
                 </div>
             </div>
         </div>
@@ -265,7 +265,7 @@
                 `
             }
         });
-        const datatablePaymentTerm = HSCore.components.HSDatatables.getItem('datatablePaymentTerm');
+        const datatableOperatingCostTransaction = HSCore.components.HSDatatables.getItem('datatableOperatingCostTransaction');
 
         $(document).on('keyup', `.datatable-search`, function(e) {
             const datatable = $(this).parentsUntil('table').parent().attr('id');
@@ -349,7 +349,7 @@
                             })
                             .done(async function(res) {
                                 if (res.status == 200) {
-                                    datatablePaymentTerm.ajax.reload(null, false);
+                                    datatableOperatingCostTransaction.ajax.reload(null, false);
 
                                     $.confirm({
                                         title: 'Success',
@@ -364,6 +364,88 @@
                                                 }
                                             },
                                         }
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
+        $(document).on('click', '.datatable-btn-status', async function (e) {
+            const thisButton    = $(this);
+            const thisTr        = thisButton.parentsUntil('tr').parent();
+            const url           = `${thisTr.data('url')}/status`;
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to change status this list to be ${thisButton.data('name')}?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Change',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: async function () {
+                            var values          = [];
+                            values['_method']   = `PUT`;
+                            values['status']    = thisButton.data('id');
+                            values = JSON.parse(JSON.stringify(Object.assign({}, values)));
+
+                            $.post(url, values)
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    await $.confirm({
+                                        title: 'Confirmation!',
+                                        type: 'orange',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                    datatableOperatingCostTransaction.ajax.reload(null, false);
+                                                }
+                                            },
+                                        },
                                     });
                                 } else {
                                     $.confirm({

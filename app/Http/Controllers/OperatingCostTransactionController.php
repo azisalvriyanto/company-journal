@@ -15,6 +15,7 @@ class OperatingCostTransactionController extends Controller
     {
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
+            $statuses = collect(OperatingCostTransaction::STATUSES())->keyBy('name');
             $query = OperatingCostTransaction::query()
             ->with([
                 'monthlyJournal',
@@ -33,7 +34,7 @@ class OperatingCostTransactionController extends Controller
             ->editColumn('status.name', function ($query) {
                 return '<span class="badge ' . $query->status->background_color . ' ' . $query->status->font_color . '">' . $query->status->name . '</span>';
             })
-            ->addColumn('actions', function ($query) {
+            ->addColumn('actions', function ($query) use ($statuses) {
                 return '
                     <div class="btn-group" role="group">
                         <span class="btn btn-white btn-sm">
@@ -46,15 +47,31 @@ class OperatingCostTransactionController extends Controller
                             <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-' . $query->id . '">
                                 <span class="dropdown-header">Options</span>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="' . route('operating-cost-transactions.edit', $query->id) . '">
-                                    <i class="bi-pencil dropdown-item-icon"></i> Edit
-                                </a>
-                                <a class="dropdown-item datatable-btn-lock" href="javascript:;">
-                                    <i class="bi-trash dropdown-item-icon"></i> Lock
-                                </a>
-                                <a class="dropdown-item datatable-btn-cancel" href="javascript:;">
-                                    <i class="bi-trash dropdown-item-icon"></i> Cancel
-                                </a>
+                                ' . (
+                                    $query->status->name == 'Draft' ? '
+                                    <a class="dropdown-item" href="' . route('operating-cost-transactions.edit', $query->id) . '">
+                                        <i class="bi bi-pencil dropdown-item-icon"></i> Edit
+                                    </a>
+                                    ' : '
+                                ' ) . '
+                                ' . (
+                                    $query->status->name == 'Draft' ? '' : '
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Draft']['id'] . '" data-name="Draft">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Draft
+                                    </a>
+                                ' ) . '
+                                ' . (
+                                    $query->status->name == 'Cancel' ? '' : '
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Cancel']['id'] . '" data-name="Cancel">
+                                        <i class="bi bi-file-earmark-x dropdown-item-icon"></i> Cancel
+                                    </a>
+                                ' ) . '
+                                ' . (
+                                    $query->status->name == 'Lock' ? '' : '
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Lock']['id'] . '" data-name="Lock">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Lock
+                                    </a>
+                                ' ) . '
                             </div>
                         </div>
                     </div>
@@ -101,6 +118,7 @@ class OperatingCostTransactionController extends Controller
     public function show($id)
     {
         $data['query'] = OperatingCostTransaction::query()->findOrFail($id);
+        $data['statuses'] = collect(OperatingCostTransaction::STATUSES())->keyBy('name');
 
         return view('operating-cost-transactions.show', $data);
     }
@@ -116,6 +134,12 @@ class OperatingCostTransactionController extends Controller
     {
         $query = new OperatingCostTransactions;
         return response()->json($query->update($request, $id));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $query = new OperatingCostTransactions;
+        return response()->json($query->updateStatus($request, $id));
     }
 
     public function destroy(Request $request, $id)

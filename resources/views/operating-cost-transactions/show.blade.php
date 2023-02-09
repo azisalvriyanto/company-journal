@@ -63,12 +63,14 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title float-start">Operating Cost</h4>
+                <h4 class="card-header-title float-start">Operating cost</h4>
 
+                @if ($query->status->name == 'Draft')
                 <button class="btn-details-create btn btn-sm btn-soft-success float-end">
                     <i class="bi bi-file-earmark-plus"></i>
                     Create
                 </button>
+                @endif
             </div>
 
             <div class="card-body p-0">
@@ -159,10 +161,12 @@
                 <div class="row justify-content-center justify-content-sm-between align-items-sm-center">
                     <div class="col-sm"></div>
                     <div class="col-sm-auto">
+                        @if ($query->status->name == 'Draft')
                         <button class="btn-details-create btn btn-sm btn-soft-success float-end">
                             <i class="bi bi-file-earmark-plus"></i>
                             Create
                         </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -175,14 +179,78 @@
         <div class="card-body">
             <div class="row justify-content-center justify-content-sm-between">
                 <div class="col">
+                    @if ($query->status->name == 'Draft')
                     <button type="button" class="btn btn-ghost-danger btn-destroy">Delete</button>
+                    @endif
                 </div>
 
                 <div class="col-auto">
                     <div class="d-flex gap-3">
+                        @if ($query->status->name == 'Draft')
                         <button type="button" class="btn btn-ghost-light btn-discard">Discard</button>
+                        <div class="btn-group" role="group">
+                            <span class="btn btn-white">
+                                More
+                            </span>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-white btn-icon dropdown-toggle dropdown-toggle-empty h-100" id="datatableMore-{{ $query->id }}" data-bs-toggle="dropdown" aria-expanded="false"></button>
+
+                                <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-{{ $query->id }}">
+                                    <span class="dropdown-header">Options</span>
+                                    <div class="dropdown-divider"></div>
+                                    @if($query->status->name != 'Draft')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Draft']['id'] }}" data-name="Draft">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Draft
+                                    </a>
+                                    @endif
+                                    @if($query->status->name != 'Cancel')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Cancel']['id'] }}" data-name="Cancel">
+                                        <i class="bi bi-file-earmark-x dropdown-item-icon"></i> Cancel
+                                    </a>
+                                    @endif
+                                    @if($query->status->name != 'Lock')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Lock']['id'] }}" data-name="Lock">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Lock
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-soft-warning btn-edit">Edit</button>
                         <button type="button" class="btn btn-primary btn-save">Save</button>
+                        @else
+                        <a class="btn btn-ghost-light btn-discard" href="{{ route('operating-cost-transactions.index') }}">Discard</a>
+                        <div class="btn-group" role="group">
+                            <span class="btn btn-white">
+                                More
+                            </span>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-white btn-icon dropdown-toggle dropdown-toggle-empty h-100" id="datatableMore-{{ $query->id }}" data-bs-toggle="dropdown" aria-expanded="false"></button>
+
+                                <div class="dropdown-menu dropdown-menu-end mt-1" aria-labelledby="datatableMore-{{ $query->id }}">
+                                    <span class="dropdown-header">Options</span>
+                                    <div class="dropdown-divider"></div>
+                                    @if($query->status->name != 'Draft')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Draft']['id'] }}" data-name="Draft">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Draft
+                                    </a>
+                                    @endif
+                                    @if($query->status->name != 'Cancel')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Cancel']['id'] }}" data-name="Cancel">
+                                        <i class="bi bi-file-earmark-x dropdown-item-icon"></i> Cancel
+                                    </a>
+                                    @endif
+                                    @if($query->status->name != 'Lock')
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="{{ $statuses['Lock']['id'] }}" data-name="Lock">
+                                        <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Lock
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -326,6 +394,88 @@
             });
         });
 
+        $(document).on('click', '.datatable-btn-status', async function (e) {
+            const thisButton    = $(this);
+            const thisTr        = thisButton.parentsUntil('tr').parent();
+            const url           = `{{ route('operating-cost-transactions.show', $query->id) }}/status`;
+
+            await $.confirm({
+                title: 'Confirmation!',
+                content: `Do you want to change status this list to be ${thisButton.data('name')}?`,
+                autoClose: 'cancel|5000',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        keys: ['esc'],
+                        action: function () {
+                        }
+                    },
+                    okay: {
+                        text: 'Yes, Change',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: async function () {
+                            var values          = [];
+                            values['_method']   = `PUT`;
+                            values['status']    = thisButton.data('id');
+                            values = JSON.parse(JSON.stringify(Object.assign({}, values)));
+
+                            $.post(url, values)
+                            .done(async function(res) {
+                                if (res.status == 200) {
+                                    await $.confirm({
+                                        title: 'Confirmation!',
+                                        type: 'orange',
+                                        content: `${res.message ?? ''}`,
+                                        autoClose: 'close|3000',
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                keys: ['enter', 'esc'],
+                                                action: function () {
+                                                    location.reload();
+                                                }
+                                            },
+                                        },
+                                    });
+                                } else {
+                                    $.confirm({
+                                        title: 'Failed',
+                                        type: 'red',
+                                        content: `${res.message ?? ''}`,
+                                        buttons: {
+                                            close: {
+                                                text: 'Close',
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            })
+                            .fail(function () {
+                                $.confirm({
+                                    title: 'Failed',
+                                    type: 'red',
+                                    content: 'There is some errors in app.',
+                                    autoClose: 'close|3000',
+                                    buttons: {
+                                        close: {
+                                            text: 'Close',
+                                            keys: ['enter', 'esc'],
+                                            action: function () {
+                                            }
+                                        },
+                                    }
+                                });
+                            });
+                        }
+                    },
+                }
+            });
+        });
+
         $(document).on('click', '.btn-edit', async function (e) {
             const thisButton    = $(this);
 
@@ -354,7 +504,7 @@
 
         $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('operating-cost-transactions.details.index', ['operating_cost_transaction' => $query->id]) }}`
+            const url           = `{{ route('operating-cost-transactions.details.index', ['operating_cost_transaction' => $query->id]) }}`;
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -399,7 +549,7 @@
                                                 text: 'Back',
                                                 btnClass: 'btn-primary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`)
+                                                    window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`);
                                                 }
                                             },
                                             close: {
@@ -449,7 +599,7 @@
         });
 
         $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('operating-costs.show', $query->id) }}`
+            const url = `{{ route('operating-cost-transactions.show', $query->id) }}`
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this form?`,

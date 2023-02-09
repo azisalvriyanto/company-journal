@@ -18,8 +18,7 @@ class OperatingCostTransaction extends Model
             'Draft',
             'Cancel',
             'Lock',
-            'Close',
-        ])->get()->keyBy('name')->toArray();
+        ])->whereIsEnable(TRUE)->get()->toArray();
     }
 
     public function monthlyJournal()

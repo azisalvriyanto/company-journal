@@ -72,7 +72,7 @@ class OperatingCostTransactionDetailController extends Controller
                         </div>
                     ';
                 } else {
-                    return number_format($query->total_price, 0, '.', '');
+                    return number_format($query->total_price, 0, '.', ',');
                 }
             })
             ->editColumn('note', function ($query) {

@@ -151,6 +151,75 @@ class OperatingCostTransactions extends Controller
         return $response;
     }
 
+    public function updateStatus($request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status'    => 'required|in:' . collect(OperatingCostTransaction::STATUSES())->pluck('id')->implode(','),
+        ]);
+
+        if ($validator->passes()) {
+            $query = OperatingCostTransaction::query()->find($id);
+            if ($query) {
+                if ($query->monthlyJournal->status->name == 'Draft') {
+                    $statuses = OperatingCostTransaction::STATUSES();
+                    if (!is_bool(array_search($request->status, array_column($statuses, 'id')))) {
+                        try {
+                            $query->status_id           = Status::query()->whereId($request->status)->whereIsEnable(TRUE)->first()->id;
+                            $query->save();
+
+                            DB::commit();
+                            $response = [
+                                'status'    => 200,
+                                'message'   => 'Operating cost transaction status updated in successfully.',
+                                'data'      => $query,
+                                'errors'    => [],
+                            ];
+                        } catch (\Exception $e) {
+                            DB::rollback();
+                            $response = [
+                                'status'    => 500,
+                                'message'   => $e->getMessage(),
+                                'data'      => $query,
+                                'errors'    => [],
+                            ];
+                        }
+                    } else {
+                        DB::rollback();
+                        $response = [
+                            'status'    => 500,
+                            'message'   => 'Operating cost transaction status not found.',
+                            'data'      => $query,
+                            'errors'    => [],
+                        ];
+                    }
+                } else {
+                    $response = [
+                        'status'    => 500,
+                        'message'   => 'Monthly journal not writable.',
+                        'data'      => NULL,
+                        'errors'    => [],
+                    ];
+                }
+            } else {
+                $response = [
+                    'status'    => 404,
+                    'message'   => 'Operating cost transaction not found.',
+                    'data'      => NULL,
+                    'errors'    => [],
+                ];
+            }
+        } else {
+            $response = [
+                'status'    => 500,
+                'message'   => 'Operating cost transaction failed to update.',
+                'data'      => NULL,
+                'errors'    => $validator->errors()->getMessages(),
+            ];
+        }
+
+        return $response;
+    }
+
     public function destroy($request, $id)
     {
         $query = OperatingCostTransaction::query()->find($id);
@@ -168,24 +237,45 @@ class OperatingCostTransactions extends Controller
                 if ($monthlyJournal['status'] == 200) {
                     if ($monthlyJournal['data']->status->name == 'Draft') {
                         if ($query->status->name == 'Draft') {
-                            $query->delete();
+                            $operatingCostTransactions = OperatingCostTransaction::query()
+                            ->with([
+                                'monthlyJournal',
+                                'status',
+                            ])
+                            ->select(['operating_cost_transactions.*'])
+                            ->whereRelation('monthlyJournal', 'owner_id', $monthlyJournal['data']->owner->id)
+                            ->whereDate('created_at', '>', $query->created_at)
+                            ->get();
+                            if ($operatingCostTransactions->count() == 0) {
+                                $query->delete();
 
-                            DB::commit();
-                            $response = [
-                                'status'    => 200,
-                                'message'   => 'Operating cost transaction deleted in successfully.',
-                                'data'      => NULL,
-                                'errors'    => [],
-                            ];
+                                DB::commit();
+                                $response = [
+                                    'status'    => 200,
+                                    'message'   => 'Operating cost transaction deleted in successfully.',
+                                    'data'      => NULL,
+                                    'errors'    => [],
+                                ];
+                            } else {
+                                DB::rollback();
+                                $response = [
+                                    'status'    => 500,
+                                    'message'   => 'Operating cost transaction can\'t be deleted.',
+                                    'data'      => NULL,
+                                    'errors'    => [],
+                                ];
+                            }
                         } else {
+                            DB::rollback();
                             $response = [
                                 'status'    => 500,
-                                'message'   => 'Operating cost transactiol not writable.',
+                                'message'   => 'Operating cost transaction not writable.',
                                 'data'      => NULL,
                                 'errors'    => [],
                             ];
                         }
                     } else {
+                        DB::rollback();
                         $response = [
                             'status'    => 500,
                             'message'   => 'Monthly journal not writable.',
@@ -194,6 +284,7 @@ class OperatingCostTransactions extends Controller
                         ];
                     }
                 } else {
+                    DB::rollback();
                     $response = $monthlyJournal;
                 }
             } catch (\Exception $e) {
