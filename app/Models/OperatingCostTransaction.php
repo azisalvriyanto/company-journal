@@ -16,8 +16,9 @@ class OperatingCostTransaction extends Model
     {
         return Status::query()->whereIn('name', [
             'Draft',
-            'Cancel',
             'Lock',
+            'Cancel',
+            'Close',
         ])->whereIsEnable(TRUE)->get()->toArray();
     }
 

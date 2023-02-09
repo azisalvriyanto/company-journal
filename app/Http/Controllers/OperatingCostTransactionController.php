@@ -61,15 +61,15 @@ class OperatingCostTransactionController extends Controller
                                     </a>
                                 ' ) . '
                                 ' . (
-                                    $query->status->name == 'Cancel' ? '' : '
-                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Cancel']['id'] . '" data-name="Cancel">
-                                        <i class="bi bi-file-earmark-x dropdown-item-icon"></i> Cancel
-                                    </a>
-                                ' ) . '
-                                ' . (
                                     $query->status->name == 'Lock' ? '' : '
                                     <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Lock']['id'] . '" data-name="Lock">
                                         <i class="bi bi-file-earmark-lock dropdown-item-icon"></i> Lock
+                                    </a>
+                                ' ) . '
+                                ' . (
+                                    $query->status->name == 'Cancel' ? '' : '
+                                    <a class="dropdown-item datatable-btn-status" href="javascript:;" data-id="' . $statuses['Cancel']['id'] . '" data-name="Cancel">
+                                        <i class="bi bi-file-earmark-x dropdown-item-icon"></i> Cancel
                                     </a>
                                 ' ) . '
                             </div>
