@@ -146,7 +146,7 @@
                                         <th rowspan="1" colspan="1"></th>
                                         <th rowspan="1" colspan="1">Total</th>
                                         <th rowspan="1" colspan="3">
-                                            <span name="operating_cost_transaction[total_price]" class="h1">{{ number_format($query->operatingCostTransactionDetails->sum('total_price'), 0, '.', ',') }}</span>
+                                            <span name="operating_cost_transaction[total_price]" class="h1">{{ number_format($query->total_price, 0, '.', ',') }}</span>
                                         </th>
                                         <th rowspan="1" colspan="1"></th>
                                     </tr>
