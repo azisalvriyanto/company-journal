@@ -18,7 +18,7 @@ class OperationTypeController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('group', function ($query) {
-                return $query->group == 'In' ? '<span class="badge bg-soft-success text-success">In</span>' : ($query->group == 'Out' ? '<span class="badge bg-soft-danger text-danger">Out</span>' : '<span class="badge bg-soft-secondary text-muted">Undifened</span>');
+                return $query->group == 'In' ? '<span class="badge bg-soft-success text-success" style="min-width: 40px;">In</span>' : ($query->group == 'Out' ? '<span class="badge bg-soft-danger text-danger" style="min-width: 40px;">Out</span>' : '<span class="badge bg-soft-secondary text-muted" style="min-width: 40px;">Undifened</span>');
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';

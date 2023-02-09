@@ -22,7 +22,7 @@ class StorageOperationTypeController extends Controller
 
             return DataTables::eloquent($query)
             ->editColumn('operation_type.name', function ($query) {
-                return ($query->operationType->group == 'In' ? '<span class="me-1 badge bg-soft-success text-success" style="width: 40px;">In</span>' : ($query->operationType->group == 'Out' ? '<span class="me-1 badge bg-soft-danger text-danger" style="width: 40px;">Out</span>' : '<span class="me-1 badge bg-soft-secondary text-muted" style="width: 40px;">Undifened</span>')) . ' ' . $query->operationType->name;
+                return ($query->operationType->group == 'In' ? '<span class="me-1 badge bg-soft-success text-success" style="min-width: 40px;">In</span>' : ($query->operationType->group == 'Out' ? '<span class="me-1 badge bg-soft-danger text-danger" style="min-width: 40px;">Out</span>' : '<span class="me-1 badge bg-soft-secondary text-muted" style="min-width: 40px;">Undifened</span>')) . ' ' . $query->operationType->name;
             })
             ->editColumn('is_enable', function ($query) {
                 return $query->is_enable ? '<span class="badge bg-soft-success text-success">Enable</span>' : '<span class="badge bg-soft-danger text-danger">Disable</span>';
