@@ -40,6 +40,27 @@
                             ],
                         ];
 
+                        $groups['billing'] = [
+                            'name'          => 'Billing',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Billing',
+                                    'icon'          => 'bi-bezier2',
+                                    'url'           => route('billings.index'),
+                                    'route'         => 'billings.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
                         $groups['operating-cost-tarnsaction'] = [
                             'name'          => 'Operating Cost',
                             'permissions'   => [
