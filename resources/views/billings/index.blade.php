@@ -181,7 +181,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
                             placeholder="Search..." data-id="1">
                     </th>
                     <th>
@@ -197,19 +197,19 @@
                             placeholder="Search..." data-id="4">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
                             placeholder="Search..." data-id="5">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
                             placeholder="Search..." data-id="6">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
                             placeholder="Search..." data-id="7">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search"
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
                             placeholder="Search..." data-id="8">
                     </th>
                     <th>
