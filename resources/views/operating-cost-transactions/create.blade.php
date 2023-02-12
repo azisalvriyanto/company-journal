@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6 mb-4">
-                        <label for="time" class="form-label">Name</label>
+                        <label for="time" class="form-label">Time</label>
 
                         <div id="transactionDateFlatpickr" class="js-flatpickr flatpickr-custom input-group"
                             data-hs-flatpickr-options='{

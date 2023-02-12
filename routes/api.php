@@ -25,5 +25,6 @@ Route::group(['as' => 'api.'], function () {
     });
 
     Route::apiResource('companies', App\Http\Controllers\Api\Companies::class);
+    Route::apiResource('suppliers', App\Http\Controllers\Api\Suppliers::class);
     Route::apiResource('operating-costs', App\Http\Controllers\Api\OperatingCosts::class);
 });

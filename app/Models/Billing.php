@@ -28,12 +28,12 @@ class Billing extends Model
 
     public function supplier()
     {
-        return $this->hasMany(Supplier::class);
+        return $this->belongsTo(User::class, 'supplier_id', 'id');
     }
 
     public function supplierAddress()
     {
-        return $this->hasMany(SupplierAddress::class);
+        return $this->belongsTo(Contact::class, 'supplier_address_id', 'id');
     }
 
     public function paymentTerm()

@@ -58,6 +58,36 @@ class User extends Authenticatable
         return $this->hasMany(Contact::class, 'owner_id', 'id');
     }
 
+    public function contactAddress()
+    {
+        return $this->belongsTo(Contact::class, 'default_contact_address_id', 'id');
+    }
+
+    public function contactAddresses()
+    {
+        return $this->hasMany(Contact::class, 'owner_id', 'id')->whereGroup('Contact');
+    }
+
+    public function billingAddress()
+    {
+        return $this->belongsTo(Contact::class, 'default_billing_address_id', 'id');
+    }
+
+    public function billingAddresses()
+    {
+        return $this->hasMany(Contact::class, 'owner_id', 'id')->whereGroup('Billing');
+    }
+
+    public function shippingAddress()
+    {
+        return $this->belongsTo(Contact::class, 'default_shipping_address_id', 'id');
+    }
+
+    public function shippingAddresses()
+    {
+        return $this->hasMany(Contact::class, 'owner_id', 'id')->whereGroup('Shipping');
+    }
+
     public function storageOperationTypes()
     {
         return $this->hasMany(StorageOperationType::class, 'storage_id', 'id');

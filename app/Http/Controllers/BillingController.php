@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Modals\Billings;
 
 use App\Models\Billing;
+use App\Models\PaymentTerm;
 
 use DataTables;
 
@@ -20,6 +21,7 @@ class BillingController extends Controller
             ->with([
                 'monthlyJournal',
                 'status',
+                'supplier'
             ])
             ->select(['billings.*'])
             ->whereRelation('monthlyJournal', 'owner_id', $owner->id);
@@ -118,7 +120,14 @@ class BillingController extends Controller
 
     public function create()
     {
-        return view('billings.create');
+        $owner = auth()->user()->parentCompany;
+        $data['paymentTerms'] = PaymentTerm::query()
+        ->whereIn('payment_terms.owner_id', [
+            $owner->id,
+            $owner->parent_company_id
+        ])->orderBy('value')->get()->all();
+
+        return view('billings.create', $data);
     }
 
     public function store(Request $request)
@@ -138,6 +147,12 @@ class BillingController extends Controller
     public function edit($id)
     {
         $data['query'] = Billing::query()->findOrFail($id);
+        $owner = auth()->user()->parentCompany;
+        $data['paymentTerms'] = PaymentTerm::query()
+        ->whereIn('payment_terms.owner_id', [
+            $owner->id,
+            $owner->parent_company_id
+        ])->orderBy('value')->get()->all();
 
         return view('billings.edit', $data);
     }

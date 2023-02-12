@@ -150,10 +150,11 @@
                 <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_contact_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
                     <div class="row mb-2">
                         <div class="col-sm-12">
-                        <div name="contact_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
-                        <div name="contact_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
-                        <div name="contact_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                            <div name="contact_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_contact_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            <div name="contact_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                            <div name="contact_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                            <div name="contact_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                                <div name="contact_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_contact_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -197,10 +198,11 @@
                 <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_billing_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
                     <div class="row mb-2">
                         <div class="col-sm-12">
-                        <div name="billing_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
-                        <div name="billing_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
-                        <div name="billing_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                            <div name="billing_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_billing_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            <div name="billing_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                            <div name="billing_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                            <div name="billing_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                                <div name="billing_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_billing_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -244,10 +246,11 @@
                 <div data-id="{{ $contactAddress->id }}" class="address mb-5" style="border-right: 10px solid <?= ($query->default_shipping_address_id == $contactAddress->id ? '#377dff' : 'transparent')?> ;">
                     <div class="row mb-2">
                         <div class="col-sm-12">
-                        <div name="shipping_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
-                        <div name="shipping_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
-                        <div name="shipping_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                            <div name="shipping_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_shipping_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            <div name="shipping_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
+                            <div name="shipping_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
+                            <div name="shipping_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
+                                <div name="shipping_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_shipping_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
