@@ -322,7 +322,7 @@
 
                         <div class="d-flex justify-content-start">
                             <!-- List Separator -->
-                            <ul class="list-inline list-separator">
+                            <ul class="list-inline list-separator d-flex align-items-center">
                                 @yield('list-separator')
                             </ul>
                             <!-- End List Separator -->

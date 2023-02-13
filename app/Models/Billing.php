@@ -38,7 +38,7 @@ class Billing extends Model
 
     public function paymentTerm()
     {
-        return $this->hasMany(PaymentTerm::class);
+        return $this->belongsTo(PaymentTerm::class);
     }
 
     public function status()

@@ -154,8 +154,8 @@ class Billings extends Controller
             'time'              => 'required|string',
             'due_time'          => 'required|string',
             'payment_term'      => 'required|exists:payment_terms,id',
-            'supplier'          => 'required|exists:suppliers,id',
-            'supplier_address'  => 'required|exists:supplier_addresses,id',
+            'supplier'          => 'required|exists:users,id',
+            'supplier_address'  => 'required|exists:contacts,id',
             'internal_code'     => 'nullable|string',
             'note'              => 'nullable|string',
         ]);
