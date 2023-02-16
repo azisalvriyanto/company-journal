@@ -144,6 +144,11 @@
                         "className": "text-end"
                     },
                     {
+                        "data": "total_tax",
+                        "name": "total_tax",
+                        "className": "text-end"
+                    },
+                    {
                         "data": "total_bill",
                         "name": "total_bill",
                         "className": "text-end"
@@ -175,6 +180,7 @@
                     <th rowspan="1">Total Price</th>
                     <th rowspan="1">Total Shipping</th>
                     <th rowspan="1">Total Discount</th>
+                    <th rowspan="1">Total Tax</th>
                     <th rowspan="1">Total Bill</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
@@ -213,8 +219,12 @@
                             placeholder="Search..." data-id="8">
                     </th>
                     <th>
+                        <input type="text" class="form-control form-control-sm datatable-search text-end"
+                            placeholder="Search..." data-id="9">
+                    </th>
+                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="9" data-target-table="datatableBilling" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="10" data-target-table="datatableBilling" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
