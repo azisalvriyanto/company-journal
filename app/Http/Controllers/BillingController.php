@@ -30,6 +30,9 @@ class BillingController extends Controller
             ->editColumn('transaction_time', function ($query) {
                 return '<a class="text-primary" href="' . route('billings.show', $query->id) . '">' . date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>' . '</a>';
             })
+            ->editColumn('transaction_due_time', function ($query) {
+                return $query->paymentTerm->name . ' / ' . date('Y-m-d', strtotime($query->transaction_due_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_due_time)) . '</div>';
+            })
             ->editColumn('sub_total', function ($query) {
                 return number_format($query->sub_total, 0, '.', ',');
             })
@@ -42,8 +45,11 @@ class BillingController extends Controller
             ->editColumn('total_tax', function ($query) {
                 return number_format($query->total_tax, 0, '.', ',');
             })
-            ->editColumn('total_price', function ($query) {
-                return number_format($query->total_price, 0, '.', ',');
+            ->editColumn('subtotal', function ($query) {
+                return number_format($query->subtotal, 0, '.', ',');
+            })
+            ->editColumn('total_bill', function ($query) {
+                return number_format($query->total_bill, 0, '.', ',');
             })
             ->editColumn('status.name', function ($query) {
                 return '<span class="badge ' . $query->status->background_color . ' ' . $query->status->font_color . '">' . $query->status->name . '</span>';
@@ -108,7 +114,7 @@ class BillingController extends Controller
                     return number_format($query->total_price, 10, '.', ',');
                 },
             ])
-            ->rawColumns(['transaction_time', 'code', 'total_price', 'status.name', 'actions'])
+            ->rawColumns(['transaction_time', 'transaction_due_time', 'code', 'total_price', 'total_shipping', 'status.name', 'actions'])
             ->addIndexColumn()
             ->toJson();
         }

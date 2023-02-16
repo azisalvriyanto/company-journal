@@ -15,9 +15,9 @@ use Validator;
 
 class OperatingCostTransactionDetails extends Controller
 {
-    public function store($request, $operatingCostTransactionDetailId)
+    public function store($request, $operatingCostTransactionId)
     {
-        $query = OperatingCostTransaction::query()->find($operatingCostTransactionDetailId);
+        $query = OperatingCostTransaction::query()->find($operatingCostTransactionId);
         if ($query) {
             $monthlyJournal = $query->monthlyJournal;
             if ($monthlyJournal->status->name == 'Draft') {
@@ -25,11 +25,11 @@ class OperatingCostTransactionDetails extends Controller
                     try {
                         DB::beginTransaction();
 
-                        $operatingCostTransactionDetailIds = $query->operatingCostTransactionDetails->pluck('id', 'id')->toArray();
+                        $operatingCostTransactionIds = $query->operatingCostTransactionDetails->pluck('id', 'id')->toArray();
                         if ($request->operating_cost_transaction_details) {
                             foreach($request->operating_cost_transaction_details as $operatingCostTransactionDetail) {
                                 $queryOperatingCostTransactionDetail                                = new OperatingCostTransactionDetail;
-                                $queryOperatingCostTransactionDetail->operating_cost_transaction_id = $operatingCostTransactionDetailId;
+                                $queryOperatingCostTransactionDetail->operating_cost_transaction_id = $operatingCostTransactionId;
                                 $queryOperatingCostTransactionDetail->operating_cost_id             = array_key_exists('operating_cost', $operatingCostTransactionDetail) ? $operatingCostTransactionDetail['operating_cost'] : NULL;
                                 $queryOperatingCostTransactionDetail->quantity                      = number_format((double) filter_var(array_key_exists('quantity', $operatingCostTransactionDetail)    ? $operatingCostTransactionDetail['quantity']   : 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
                                 $queryOperatingCostTransactionDetail->price                         = number_format((double) filter_var(array_key_exists('price', $operatingCostTransactionDetail)       ? $operatingCostTransactionDetail['price']      : 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
@@ -37,26 +37,24 @@ class OperatingCostTransactionDetails extends Controller
                                 $queryOperatingCostTransactionDetail->note                          = array_key_exists('note', $operatingCostTransactionDetail) ? $operatingCostTransactionDetail['note'] : NULL;
                                 $queryOperatingCostTransactionDetail->save();
 
-                                if (in_array($queryOperatingCostTransactionDetail->id, $operatingCostTransactionDetailIds)) {
-                                    unset($operatingCostTransactionDetailIds[$queryOperatingCostTransactionDetail->id]);
+                                if (in_array($queryOperatingCostTransactionDetail->id, $operatingCostTransactionIds)) {
+                                    unset($operatingCostTransactionIds[$queryOperatingCostTransactionDetail->id]);
                                 }
                             }
                         }
 
-                        if ($operatingCostTransactionDetailIds) {
+                        if ($operatingCostTransactionIds) {
                             OperatingCostTransactionDetail::query()
-                            ->whereOperatingCostTransactionId($operatingCostTransactionDetailId)
-                            ->whereIn('id', $operatingCostTransactionDetailIds)
+                            ->whereOperatingCostTransactionId($operatingCostTransactionId)
+                            ->whereIn('id', $operatingCostTransactionIds)
                             ->delete();
                         }
 
-
                         $operatingCostTransactionDetails = OperatingCostTransactionDetail::query()
-                        ->whereOperatingCostTransactionId($operatingCostTransactionDetailId)
+                        ->whereOperatingCostTransactionId($operatingCostTransactionId)
                         ->get();
                         $query->total_price = $operatingCostTransactionDetails->sum('total_price');
                         $query->save();
-
 
                         DB::commit();
                         $response = [

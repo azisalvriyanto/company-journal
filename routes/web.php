@@ -13,6 +13,8 @@ Auth::routes();
 Route::middleware(["auth"])->group(function () {
     Route::resource('dashboards', App\Http\Controllers\HomeController::class)->only(['index']);
 
+    Route::resource('billings.items', App\Http\Controllers\BillingItemController::class);
+    Route::put('billings/{operating_cost_transaction}/status', [App\Http\Controllers\BillingController::class, 'updateStatus'])->name('billings.status');
     Route::resource('billings', App\Http\Controllers\BillingController::class);
 
     Route::resource('operating-cost-transactions.details', App\Http\Controllers\OperatingCostTransactionDetailController::class);

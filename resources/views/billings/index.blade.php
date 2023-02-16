@@ -129,18 +129,18 @@
                         "name": "code"
                     },
                     {
-                        "data": "total_price",
-                        "name": "total_price",
-                        "className": "text-end"
-                    },
-                    {
-                        "data": "total_discount",
-                        "name": "total_discount",
+                        "data": "subtotal",
+                        "name": "subtotal",
                         "className": "text-end"
                     },
                     {
                         "data": "total_shipping",
                         "name": "total_shipping",
+                        "className": "text-end"
+                    },
+                    {
+                        "data": "total_discount",
+                        "name": "total_discount",
                         "className": "text-end"
                     },
                     {
@@ -173,8 +173,8 @@
                     <th rowspan="1">Supplier</th>
                     <th rowspan="1">Code</th>
                     <th rowspan="1">Total Price</th>
-                    <th rowspan="1">Total Discount</th>
                     <th rowspan="1">Total Shipping</th>
+                    <th rowspan="1">Total Discount</th>
                     <th rowspan="1">Total Bill</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>

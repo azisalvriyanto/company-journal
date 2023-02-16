@@ -1,12 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Show ' . date('F j, Y', strtotime($query->transaction_time)))
+@section('title', 'Show ' . $query->supplier->name . ' Transaction on ' . date('F j, Y', strtotime($query->transaction_time)))
 
 @section('list-separator')
 <li class="list-inline-item">
-    <a class="list-separator-link" href="{{ route('operating-cost-transactions.index') }}">Operating Cost Transactions</a>
+    <a class="list-separator-link" href="{{ route('billings.index') }}">Billings</a>
 </li>
-<li class="list-inline-item text-end">
-    <a class="list-separator-link" href="{{ route('operating-cost-transactions.show', $query->id) }}">{{ date('F j, Y', strtotime($query->transaction_time)) }}</a>
+<li class="list-inline-item">
+    <a class="list-separator-link" href="{{ route('billings.show', $query->id) }}">
+        {{ $query->supplier->name }}
+        <div class="small">{{ date('F j, Y', strtotime($query->transaction_time)) }}</div>
+    </a>
 </li>
 @endsection
 
@@ -15,7 +18,7 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="float-start card-header-title">Operating cost transaction information</h4>
+                <h4 class="float-start card-header-title">Billing information</h4>
 
                 <span class="float-end badge {{ $query->status->background_color . ' ' . $query->status->font_color }}" style="min-width: 100px;">
                     <span class="legend-indicator {{ str_replace('soft-', '', $query->status->background_color) }}"></span>
@@ -25,22 +28,68 @@
 
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-4 mb-4">
-                        <label for="time" class="form-label">Time</label>
+                    <div class="col-sm-5 mb-4">
+                        <div class="row">
+                            <div class="col-sm-12 mb-4">
+                                <label for="due-time" class="form-label">Time</label>
 
-                        <div>{{ date('F j, Y', strtotime($query->transaction_time)) }}</div>
+                                <div>{{ date('F j, Y', strtotime($query->transaction_time)) }}</div>
+                            </div>
+
+                            <div class="col-sm-12 mb-4">
+                                <label for="payment-term" class="form-label">Payment Term</label>
+
+                                <div>{!! $query->paymentTerm ? $query->paymentTerm->name : '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                            </div>
+
+                            <div class="col-sm-12 mb-4">
+                                <label for="due-time" class="form-label">Due Time</label>
+
+                                <div>{{ date('F j, Y', strtotime($query->transaction_due_time)) }}</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-4">
+                                <label for="internal-code" class="form-label">Code</label>
+
+                                <div>{!! $query->code ?? '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 mb-4">
+                                <label for="internal-code" class="form-label">Internal Code</label>
+
+                                <div>{!! $query->internal_code ?? '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-sm-4 mb-4">
-                        <label for="internal-code" class="form-label">Code</label>
-
-                        <div>{!! $query->code ?? '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                    <div class="col-sm-1 mb-4">
                     </div>
 
-                    <div class="col-sm-4 mb-4">
-                        <label for="internal-code" class="form-label">Internal Code</label>
+                    <div class="col-sm-6 mb-4">
+                        <div class="row">
+                            <div class="col-sm-12 mb-4">
+                                <label for="supplier" class="form-label">Supplier</label>
 
-                        <div>{!! $query->internal_code ?? '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                                <div>{!! $query->supplier ? $query->supplier->name : '<span class="text-muted fst-italic">Empty</span>' !!}</div>
+                            </div>
+
+                            <div class="col-sm-12 mb-4">
+                                <label for="supplier-address" class="form-label">Supplier Address</label>
+
+                                @if($query->supplierAddress)
+                                <div>
+                                    <div class="h4 w-100 mb-1">{{ $query->supplierAddress->name }}</div>
+                                    <div>{!! $query->supplierAddress->phone ?? '<span class="text-muted fst-italic">-</span>' !!}</div>
+                                    <div class="text-break">{!! $query->supplierAddress->full_address ?? '<span class="text-muted fst-italic">-</span>' !!}</div>
+                                </div>
+                                @else
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -60,10 +109,10 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title float-start">Operating cost</h4>
+                <h4 class="card-header-title float-start">Billing</h4>
 
                 @if ($query->status->name == 'Draft')
-                <button class="btn-details-create btn btn-sm btn-soft-success float-end">
+                <button class="btn-items-create btn btn-sm btn-soft-success float-end">
                     <i class="bi bi-file-earmark-plus"></i>
                     Create
                 </button>
@@ -74,7 +123,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="datatable-custom table-responsive">
-                            <table id="datatableOperatingCost"
+                            <table id="datatableBilling"
                                 class="js-datatable table table-sm table-bordered table-hover table-thead-bordered table-nowrap table-align-middle card-table w-100"
                                 data-hs-datatables-options='{
                                     "orderCellsTop": true,
@@ -83,7 +132,7 @@
                                     "deferRender": true,
                                     "processing": true,
                                     "serverSide": true,
-                                    "ajax": "{{ route("operating-cost-transactions.details.index", ["operating_cost_transaction" => $query->id]) }}",
+                                    "ajax": "{{ route("billings.items.index", ["billing" => $query->id]) }}",
                                     "columns": [
                                         {
                                             "data": "actions",
@@ -93,8 +142,8 @@
                                             "className": "text-center"
                                         },
                                         {
-                                            "data": "operating_cost.name",
-                                            "name": "operatingCost.name"
+                                            "data": "item.name",
+                                            "name": "item.name"
                                         },
                                         {
                                             "data": "quantity",
@@ -140,10 +189,95 @@
                                 </thead>
                                 <tfoot class="thead-light">
                                     <tr>
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end h4">Subtotal</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            <span name="billing[subtotal]" class="h4" <?= ($query->status->name == 'Draft' ? 'style="padding: 0rem 1rem;"' : '') ?>>{{ number_format($query->subtotal, 0, '.', ',') }}</span>
+                                        </th>
                                         <th rowspan="1" colspan="1"></th>
-                                        <th rowspan="1" colspan="1">Total</th>
-                                        <th rowspan="1" colspan="3">
-                                            <span name="operating_cost_transaction[total_price]" class="h1">{{ number_format($query->total_price, 0, '.', ',') }}</span>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end">Total Shipping</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            @if($query->status->name == 'Draft')
+                                            <input name="billing[total_shipping]" type="text" class="input-count form-control text-end" placeholder="0" value="{{ number_format($query->total_shipping, 0, '.', '') }}" aria-label="0" autocomplete="off">
+                                            @else
+                                            <span>{{ number_format($query->total_shipping, 0, '.', ',') }}</span>
+                                            @endif
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end">Total Discount</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            @if($query->status->name == 'Draft')
+                                            <input name="billing[total_discount]" type="text" class="input-count form-control text-end" placeholder="0" value="{{ number_format($query->total_discount, 0, '.', '') }}" aria-label="0" autocomplete="off">
+                                            @else
+                                            <span>{{ number_format($query->total_discount, 0, '.', ',') }}</span>
+                                            @endif
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    @if($query->status->name == 'Draft')
+                                    <tr>
+                                        <th rowspan="1" colspan="3" class="pb-0"></th>
+                                        <th rowspan="1" colspan="1" class="pb-0 text-end">Total Tax</th>
+                                        <th rowspan="1" colspan="1" class="pb-0 text-end">
+                                            <div class="tom-select-custom tom-select-custom-end">
+                                                <div id="taxSelect" class="input-group">
+                                                    <input name="billing[total_tax_value]" type="text" class="input-count form-control text-end" placeholder="0.00" value="{{ number_format($query->total_tax_value, 0, '.', '') }}" aria-label="0.00" autocomplete="off" style="min-width: 4rem;">
+                                                    <select name="billing[total_tax_type]" class="input-count js-select form-select" data-hs-tom-select-options='{
+                                                        "searchInDropdown": false,
+                                                        "hideSearch": true
+                                                    }'>
+                                                        <option value="Flat" {{ $query->total_tax_type == 'Flat' ? 'selected' : ($query->total_tax_type == 'Percent' ? '' : 'selected') }}>Flat (Value)</option>
+                                                        <option value="Percent" {{ $query->total_tax_type == 'Percent' ? 'selected' : '' }}>Percent (%)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="1" colspan="4" class="pt-0"></th>
+                                        <th rowspan="1" colspan="1" class="pt-0 text-end">
+                                            <span name="billing[total_tax]" style="padding: 0rem 1rem;">{{ number_format($query->total_tax, 0, '.', ',') }}</span>
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end">Total Tax</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            <span>{{ number_format($query->total_tax, 0, '.', ',') }}</span>
+                                        </th>
+                                        <th rowspan="1" colspan="1">{{ $query->total_tax_type == 'Percent' ? number_format($query->total_tax_value, 2, '.', ',') . '%' : '' }}</th>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end h2">Total Bill</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            <span name="billing[total_bill]" class="h2" <?= ($query->status->name == 'Draft' ? 'style="padding: 0rem 1rem;"' : '') ?>>{{ number_format($query->total_bill, 0, '.', ',') }}</span>
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    <tr hidden="">
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end">Amount Paid</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            <span name="billing[total_amount_paid]" <?= ($query->status->name == 'Draft' ? 'style="padding: 0rem 1rem;"' : '') ?>>{{ number_format($query->total_amount_paid, 0, '.', ',') }}</span>
+                                        </th>
+                                        <th rowspan="1" colspan="1"></th>
+                                    </tr>
+                                    <tr hidden="">
+                                        <th rowspan="1" colspan="3"></th>
+                                        <th rowspan="1" colspan="1" class="text-end h1">Due Balance</th>
+                                        <th rowspan="1" colspan="1" class="text-end">
+                                            <span name="billing[total_due_balance]" class="h1" <?= ($query->status->name == 'Draft' ? 'style="padding: 0rem 1rem;"' : '') ?>>{{ number_format($query->total_due_balance, 0, '.', ',') }}</span>
                                         </th>
                                         <th rowspan="1" colspan="1"></th>
                                     </tr>
@@ -159,7 +293,7 @@
                     <div class="col-sm"></div>
                     <div class="col-sm-auto">
                         @if ($query->status->name == 'Draft')
-                        <button class="btn-details-create btn btn-sm btn-soft-success float-end">
+                        <button class="btn-items-create btn btn-sm btn-soft-success float-end">
                             <i class="bi bi-file-earmark-plus"></i>
                             Create
                         </button>
@@ -217,7 +351,7 @@
                         <button type="button" class="btn btn-soft-warning btn-edit">Edit</button>
                         <button type="button" class="btn btn-primary btn-save">Save</button>
                         @else
-                        <a class="btn btn-ghost-light btn-discard" href="{{ route('operating-cost-transactions.index') }}">Discard</a>
+                        <a class="btn btn-ghost-light btn-discard" href="{{ route('billings.index') }}">Discard</a>
                         <div class="btn-group" role="group">
                             <span class="btn btn-white">
                                 More
@@ -257,6 +391,8 @@
 @endsection
 
 @section('style')
+<!-- CSS Select -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css') }}">
 @endsection
 
 @section('javascript')
@@ -266,6 +402,7 @@
 <script>
     (function () {
         HSCore.components.HSTomSelect.init('.js-select');
+        HSCore.components.HSFlatpickr.init('.js-flatpickr');
 
         HSCore.components.HSDatatables.init('.js-datatable', {
             select: {
@@ -293,16 +430,20 @@
             }
         });
 
-        const datatableOperatingCost = HSCore.components.HSDatatables.getItem('datatableOperatingCost');
+        const datatableBilling = HSCore.components.HSDatatables.getItem('datatableBilling');
 
-        datatableOperatingCost.on('draw.dt', async function (e, settings, json, xhr) {
-            const listTransaction = $("#datatableOperatingCost tbody").children();
+        datatableBilling.on('draw.dt', async function (e, settings, json, xhr) {
+            const listTransaction = $("#datatableBilling tbody").children();
             await listTransaction.each(async function(index, transaction) {
                 const thisRow = $(transaction);
                 const thisId = thisRow.attr('data-id');
 
-                handleGenerateOperatingCost(thisId);
+                handleGenerateItem(thisId);
             });
+
+            @if($query->status->name == 'Draft')
+            handleCalculating();
+            @endif
         });
 
         const handleSetNumber = (number) => {
@@ -316,13 +457,14 @@
             });
         }
 
-        const handleGenerateOperatingCost = async (thisId) => {
-            HSCore.components.HSTomSelect.init(`select[name="operating_cost_transaction_details[${thisId}][operating_cost]"]`, {
+        var billingItem = [];
+        const handleGenerateItem = async (thisId, options=null, items=null) => {
+            HSCore.components.HSTomSelect.init(`select[name="billing_items[${thisId}][item]"]`, {
                 "valueField": 'id',
                 "labelField": 'name',
                 "searchField": ['name'],
                 "load": function(query, callback) {
-                    fetch(`{{ route("api.operating-costs.index") }}?owner={{ auth()->user()->parentCompany->parent_company_id }}&keyword=${encodeURIComponent(query)}`)
+                    fetch(`{{ route("api.items.items.index") }}?owner={{ auth()->user()->parentCompany->parent_company_id }}&keyword=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(json => {
                         callback(json.data);
@@ -338,31 +480,55 @@
                     item: function(data, escape) {
                         return `<div>${escape(data.name)}</div>`;
                     }
-                }
-            });
+                },
+            }, `billing-item-${thisId}`);
+
+            @if($query->status->name == 'Draft')
+            billingItem[thisId] = HSCore.components.HSTomSelect.getItem(`billing-item-${thisId}`);
+            @endif
         }
 
         const handleCalculating = async () => {
-            const listTransaction = $("#datatableOperatingCost tbody").children();
+            const listTransaction = $("#datatableBilling tbody").children();
 
-            var totalTotalPrice = 0;
+            var subTotal = 0;
             await listTransaction.each(async function(index, transaction) {
                 const thisRow = $(transaction);
                 const thisId = thisRow.attr('data-id');
 
-                $(transaction).attr('data-quantity',    $(`[name="operating_cost_transaction_details[${thisId}][quantity]"]`).val()    ?? $(transaction).attr('data-quantity'));
-                $(transaction).attr('data-price',       $(`[name="operating_cost_transaction_details[${thisId}][price]"]`).val()       ?? $(transaction).attr('data-price'));
+                $(transaction).attr('data-quantity',    $(`[name="billing_items[${thisId}][quantity]"]`).val()    ?? $(transaction).attr('data-quantity'));
+                $(transaction).attr('data-price',       $(`[name="billing_items[${thisId}][price]"]`).val()       ?? $(transaction).attr('data-price'));
 
                 const quantity = $(transaction).attr('data-quantity');
                 const price = $(transaction).attr('data-price');
                 const totalPrice = quantity*price;
 
                 $(transaction).attr('data-total-price', totalPrice)
-                $(`[name="operating_cost_transaction_details[${thisId}][total_price]"]`).html(handleNumberFormat(totalPrice, 0));
+                $(`[name="billing_items[${thisId}][total_price]"]`).html(handleNumberFormat(totalPrice, 0));
 
-                totalTotalPrice += totalPrice;
-                $(`[name="operating_cost_transaction[total_price]"]`).html(handleNumberFormat(totalTotalPrice, 0));
+                subTotal += totalPrice;
             });
+
+            $(`[name="billing[subtotal]"]`).html(handleNumberFormat(subTotal, 0));
+
+            const totalShipping = handleSetNumber($(`[name="billing[total_shipping]"]`).val());
+            const totalDiscount = handleSetNumber($(`[name="billing[total_discount]"]`).val());
+            subTotal = subTotal + totalShipping - totalDiscount;
+
+            const totalTaxValue = handleSetNumber($(`[name="billing[total_tax_value]"]`).val());
+            const totalTaxType = $(`[name="billing[total_tax_type]"]`).val();
+            const totalTax = handleSetNumber(totalTaxType == 'Percent' ? subTotal*(totalTaxValue/100) : totalTaxValue);
+            if (totalTaxType == 'Percent') {
+                $(`[name="billing[total_tax]"]`).html(handleNumberFormat(totalTax, 0));
+            } else {
+                $(`[name="billing[total_tax]"]`).html('');
+            }
+
+            const totalBill = subTotal + totalTax;
+            $(`[name="billing[total_bill]"]`).html(handleNumberFormat(totalBill, 0));
+
+            const totalAmountPaid = handleSetNumber($(`[name="billing[total_amount_paid]"]`).html());
+            $(`[name="billing[total_due_balance]"]`).html(handleNumberFormat(totalBill - totalAmountPaid, 0));
         };
 
         $(document).on('click', '.btn-discard', async function (e) {
@@ -385,7 +551,7 @@
                         text: 'Yes, Discard',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.index') }}`);
+                            history.back() ?? window.location.replace(`{{ route('billings.index') }}`);
                         }
                     },
                 }
@@ -395,7 +561,7 @@
         $(document).on('click', '.datatable-btn-status', async function (e) {
             const thisButton    = $(this);
             const thisTr        = thisButton.parentsUntil('tr').parent();
-            const url           = `{{ route('operating-cost-transactions.show', $query->id) }}/status`;
+            const url           = `{{ route('billings.show', $query->id) }}/status`;
 
             await $.confirm({
                 title: 'Confirmation!',
@@ -493,7 +659,7 @@
                         text: 'Yes, Edit',
                         btnClass: 'btn-secondary',
                         action: async function () {
-                            history.back() ?? window.location.replace(`{{ route('operating-cost-transactions.edit', $query->id) }}`);
+                            history.back() ?? window.location.replace(`{{ route('billings.edit', $query->id) }}`);
                         }
                     },
                 }
@@ -502,11 +668,11 @@
 
         $(document).on('click', '.btn-save', async function (e) {
             const thisButton    = $(this);
-            const url           = `{{ route('operating-cost-transactions.details.index', ['operating_cost_transaction' => $query->id]) }}`;
+            const url           = `{{ route('billings.items.index', ['billing' => $query->id]) }}`;
 
             await $.confirm({
                 title: 'Confirmation!',
-                content: `Do you want to save this form?`,
+                content: `Do you want to create this form?`,
                 autoClose: 'cancel|5000',
                 type: 'orange',
                 buttons: {
@@ -517,7 +683,7 @@
                         }
                     },
                     okay: {
-                        text: 'Yes, Save',
+                        text: 'Yes, Create',
                         btnClass: 'btn-primary',
                         action: async function () {
                             var values          = [];
@@ -526,9 +692,11 @@
 
                                 let value = '';
                                 if ($(this).attr('type') == 'checkbox') {
-                                    value = $(this).is(":checked") ? 1 : 0;
-                                } else {
+                                    value = $(this).is(':checked') ? 1 : 0;
+                                } else if ($(this).hasClass('form-control') || $(this).hasClass('form-select')) {
                                     value = $(this).val();
+                                } else {
+                                    value = $(this).attr("value") ? $(this).val() : $(this).html();
                                 }
                                 values[parameter] = value;
                             });
@@ -539,15 +707,14 @@
                                 if (res.status == 200) {
                                     await $.confirm({
                                         title: 'Confirmation!',
-                                        type: 'orange',
                                         content: `${res.message ?? ''}`,
-                                        autoClose: 'close|3000',
+                                        type: 'orange',
                                         buttons: {
-                                            index: {
-                                                text: 'Back',
+                                            show: {
+                                                text: 'Show',
                                                 btnClass: 'btn-primary',
                                                 action: function () {
-                                                    window.location.replace(`{{ route('operating-cost-transactions.show', $query->id) }}`);
+                                                    window.location.replace(`{{ route('billings.show', $query->id) }}`)
                                                 }
                                             },
                                             close: {
@@ -597,7 +764,7 @@
         });
 
         $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('operating-cost-transactions.show', $query->id) }}`
+            const url = `{{ route('billings.show', $query->id) }}`
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this form?`,
@@ -629,7 +796,7 @@
                                                 text: 'Close',
                                                 keys: ['enter', 'esc'],
                                                 action: function () {
-                                                    window.location.replace(`{{ route('operating-cost-transactions.index') }}`);
+                                                    window.location.replace(`{{ route('billings.index') }}`);
                                                 }
                                             },
                                         }
@@ -671,8 +838,8 @@
             });
         });
 
-        $(document).on('click', '.btn-details-create', async function (e) {
-            const listTransaction = $("#datatableOperatingCost tbody");
+        $(document).on('click', '.btn-items-create', async function (e) {   
+            const listTransaction = $("#datatableBilling tbody");
             const lastTransaction = listTransaction.children().last();
 
             var thisId = 0;
@@ -691,14 +858,14 @@
                     data-total-price="0"
                 >
                     <td class="text-center">
-                        <button type="button" class="btn-details-remove btn btn-xs btn-danger">
+                        <button type="button" class="btn-items-remove btn btn-xs btn-danger">
                             <i class="bi bi-trash3 me-1"></i>
                             Remove
                         </button>
                     </td>
                     <td>
                         <div class="tom-select-custom">
-                            <select name="operating_cost_transaction_details[${thisId}][operating_cost]" class="form-select" autocomplete="off"
+                            <select name="billing_items[${thisId}][item]" class="form-select form-item" autocomplete="off"
                                 data-hs-tom-select-options='{
                                     "searchInDropdown": true,
                                     "hideSearch": false,
@@ -707,32 +874,33 @@
                         </div>
                     </td>
                     <td>
-                        <div class="form-group">
-                            <input id="price" name="operating_cost_transaction_details[${thisId}][quantity]" type="text" class="input-count form-control text-end" placeholder="" value="" autocomplete="off">
+                        <div class="input-group input-group-merge">
+                            <input name="billing_items[${thisId}][quantity]" type="text" class="input-count form-control text-end" placeholder="" value="" autocomplete="off" style="min-width: 10rem;">
+                            <div name="billing_items[${thisId}][unit_of_measurement]" class="input-group-append input-group-text"></div>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input id="price" name="operating_cost_transaction_details[${thisId}][price]" type="text" class="input-count form-control text-end" placeholder="" value="" autocomplete="off">
+                            <input id="price" name="billing_items[${thisId}][price]" type="text" class="input-count form-control text-end" placeholder="" value="" autocomplete="off" style="min-width: 10rem;">
                         </div>
                     </td>
                     <td class="text-end">
                         <div class="form-group">
-                            <label name="operating_cost_transaction_details[${thisId}][total_price]">0</label>
+                            <span name="billing_items[${thisId}][total_price]" style="padding: 0rem 1rem;">0</span>
                         </div>
                     </td>
                     <td class="text-end">
                         <div class="form-group">
-                            <textarea class="form-control" name="operating_cost_transaction_details[${thisId}][note]" rows="1"></textarea>
+                            <textarea class="form-control" name="billing_items[${thisId}][note]" rows="1"></textarea>
                         </div>
                     </td>
                 </tr>
             `);
 
-            handleGenerateOperatingCost(thisId);
+            await handleGenerateItem(thisId);
         });
 
-        $(document).on('click', '.btn-details-remove', async function (e) {
+        $(document).on('click', '.btn-items-remove', async function (e) {
             const thisButton = $(this);
             await $.confirm({
                 title: 'Confirmation!',
@@ -756,11 +924,36 @@
                     },
                 }
             });
+
+            handleCalculating();
+        });
+
+        $(document).on('change', '.form-item', async function (e) {
+            const thisId = $(this).closest('tr').attr('data-id');
+            const thisValue = $(`select[name="billing_items[${thisId}][item]"]`).val();
+
+            console.log(billingItem[thisId].options[thisValue])
+            let unitOfMeasurement = '';
+            if (billingItem[thisId].options[thisValue]?.unit_of_measurement) {
+                unitOfMeasurement = billingItem[thisId].options[thisValue].unit_of_measurement.code;
+            } else if (billingItem[thisId].options[thisValue]?.unit_of_measurement_code) {
+                unitOfMeasurement = billingItem[thisId].options[thisValue].unit_of_measurement_code;
+            }
+
+            $(`div[name="billing_items[${thisId}][unit_of_measurement]"]`).html(unitOfMeasurement);
         });
 
         $(document).on('input', '.input-count', async function (e) {
             handleCalculating();
         });
+
+        $(document).on('change', '.input-count', async function (e) {
+            handleCalculating();
+        });
+
+        @if($query->status->name == 'Draft')
+        handleCalculating();
+        @endif
     })();
 </script>
 @endsection

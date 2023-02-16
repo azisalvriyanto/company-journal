@@ -10,7 +10,9 @@ class Items extends Controller
 {
     public function index(Request $request)
     {
-        $query  = Item::with('category', 'unitOfMeasurement');
+        $query  = Item::query()
+        ->with('category', 'unitOfMeasurement')
+        ->whereOwnerId($request->owner);
         if ($request->keyword) {
             $query  = $query->where('name', 'like', '%' . $request->keyword . '%');
         }

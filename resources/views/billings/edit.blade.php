@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Edit ' . $query->supplier->name . ' Transaction in ' . date('F j, Y', strtotime($query->transaction_time)))
+@section('title', 'Edit ' . $query->supplier->name . ' Transaction on ' . date('F j, Y', strtotime($query->transaction_time)))
 
 @section('list-separator')
 <li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('billings.index') }}">Billings</a>
 </li>
-<li class="list-inline-item text-end">
+<li class="list-inline-item">
     <a class="list-separator-link" href="{{ route('billings.show', $query->id) }}">
         {{ $query->supplier->name }}
         <div class="small">{{ date('F j, Y', strtotime($query->transaction_time)) }}</div>
@@ -21,7 +21,12 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Billing information</h4>
+                <h4 class="float-start card-header-title">Billing information</h4>
+
+                <span class="float-end badge {{ $query->status->background_color . ' ' . $query->status->font_color }}" style="min-width: 100px;">
+                    <span class="legend-indicator {{ str_replace('soft-', '', $query->status->background_color) }}"></span>
+                    {{ $query->status->name }}
+                </span>
             </div>
 
             <div class="card-body">
@@ -269,9 +274,8 @@
                         return `<div class="row">
                             <div class="col-sm-12">
                                 <div class="h4 w-100 mb-1">${escape(data.name)}</div>
-                                    <div>${escape(data.phone)}</div>
-                                    <div class="text-truncate">${escape(data.full_address)}</div>
-                                </div>
+                                <div>${escape(data.phone)}</div>
+                                <div class="text-truncate">${escape(data.full_address)}</div>
                             </div>
                         </div>`;
                     },
@@ -279,9 +283,8 @@
                         return `<div class="row">
                             <div class="col-sm-12">
                                 <div class="h4 w-100 mb-1">${escape(data.name)}</div>
-                                    <div>${escape(data.phone)}</div>
-                                    <div class="text-break">${escape(data.full_address)}</div>
-                                </div>
+                                <div>${escape(data.phone)}</div>
+                                <div class="text-break">${escape(data.full_address)}</div>
                             </div>
                         </div>`;
                     }
@@ -464,7 +467,7 @@
         });
 
         $(document).on('click', '.btn-destroy', async function (e) {
-            const url = `{{ route('operating-costs.show', $query->id) }}`
+            const url = `{{ route('billings.show', $query->id) }}`
             await $.confirm({
                 title: 'Confirmation!',
                 content: `Do you want to delete this form?`,

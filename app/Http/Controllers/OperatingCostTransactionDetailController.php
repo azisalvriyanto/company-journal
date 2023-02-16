@@ -11,7 +11,7 @@ use DataTables;
 
 class OperatingCostTransactionDetailController extends Controller
 {
-    public function index(Request $request, $operatingCostTransactionDetailId)
+    public function index(Request $request, $operatingCostTransactionId)
     {
         if (request()->ajax()) {
             $owner = auth()->user()->parentCompany;
@@ -21,7 +21,7 @@ class OperatingCostTransactionDetailController extends Controller
                 'operatingCost',
             ])
             ->select(['operating_cost_transaction_details.*'])
-            ->whereOperatingCostTransactionId($operatingCostTransactionDetailId);
+            ->whereOperatingCostTransactionId($operatingCostTransactionId);
 
             return DataTables::eloquent($query)
             ->editColumn('operating_cost.name', function ($query) {
@@ -123,9 +123,9 @@ class OperatingCostTransactionDetailController extends Controller
         }
     }
 
-    public function store(Request $request, $operatingCostTransactionDetailId)
+    public function store(Request $request, $operatingCostTransactionId)
     {
         $query = new OperatingCostTransactionDetails;
-        return response()->json($query->store($request, $operatingCostTransactionDetailId));
+        return response()->json($query->store($request, $operatingCostTransactionId));
     }
 }

@@ -33,12 +33,16 @@ return new class extends Migration
 
             $table->text('note')->nullable();
 
-            $table->double('total_price', 50, 10)->default(0);
+            $table->double('subtotal', 50, 10)->default(0);
             $table->double('total_discount', 50, 10)->default(0);
             $table->double('total_shipping', 50, 10)->default(0);
             $table->double('total_shipping_discount', 50, 10)->default(0);
             $table->double('total_tax', 50, 10)->default(0);
+            $table->double('total_tax_value', 50, 10)->default(0);
+            $table->string('total_tax_type', 50, 10)->default('Percent');
             $table->double('total_bill', 50, 10)->default(0);
+            $table->double('total_amount_paid', 50, 10)->default(0);
+            $table->double('total_due_balance', 50, 10)->default(0);
 
             $table->foreignUuid('status_id')->index();
             $table->foreign('status_id')->references('id')->on('statuses')->onUpdate('cascade')->onDelete('cascade');
