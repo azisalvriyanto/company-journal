@@ -600,9 +600,9 @@
                         <div data-id="${thisId}" class="address mb-5" style="border-right: 10px solid ${ addresses.children().length+1 == 1 ? `#377dff` : `transparent` };">
                             <div class="row mb-2">
                                 <div class="col-sm-12">
-                                <div name="${addressType}[${thisId}][name]" class="h3 mb-1">${ name.val() }</div>
-                                <div name="${addressType}[${thisId}][phone]">${ phone.val() }</div>
-                                <div name="${addressType}[${thisId}][full_address]" class="text-truncate">${ fullAddress.val() }</div>
+                                    <div name="${addressType}[${thisId}][name]" class="h3 mb-1">${ name.val() }</div>
+                                    <div name="${addressType}[${thisId}][phone]">${ phone.val() }</div>
+                                    <div name="${addressType}[${thisId}][full_address]" class="text-truncate">${ fullAddress.val() }</div>
                                     <div name="${addressType}[${thisId}][is_default]" hidden="">${ addresses.children().length+1 == 1 ? `true` : `false` }</div>
                                 </div>
                             </div>

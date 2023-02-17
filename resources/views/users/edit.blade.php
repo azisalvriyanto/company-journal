@@ -153,8 +153,7 @@
                             <div name="contact_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
                             <div name="contact_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
                             <div name="contact_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                                <div name="contact_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_contact_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
-                            </div>
+                            <div name="contact_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_contact_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -201,8 +200,7 @@
                             <div name="billing_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
                             <div name="billing_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
                             <div name="billing_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                                <div name="billing_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_billing_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
-                            </div>
+                            <div name="billing_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_billing_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -249,8 +247,7 @@
                             <div name="shipping_address[{{ $contactAddress->id }}][name]" class="h3 mb-1">{{ $contactAddress->name }}</div>
                             <div name="shipping_address[{{ $contactAddress->id }}][phone]">{{ $contactAddress->phone }}</div>
                             <div name="shipping_address[{{ $contactAddress->id }}][full_address]" class="text-truncate">{{ $contactAddress->full_address }}</div>
-                                <div name="shipping_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_shipping_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
-                            </div>
+                            <div name="shipping_address[{{ $contactAddress->id }}][is_default]" hidden="">{{ $query->default_shipping_address_id == $contactAddress->id ? 'true' : 'false' }}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -738,9 +735,9 @@
                         <div data-id="${thisId}" class="address mb-5" style="border-right: 10px solid ${ addresses.children().length+1 == 1 ? `#377dff` : `transparent` };">
                             <div class="row mb-2">
                                 <div class="col-sm-12">
-                                <div name="${addressType}[${thisId}][name]" class="h3 mb-1">${ name.val() }</div>
-                                <div name="${addressType}[${thisId}][phone]" >${ phone.val() }</div>
-                                <div name="${addressType}[${thisId}][full_address]" class="text-truncate">${ fullAddress.val() }</div>
+                                    <div name="${addressType}[${thisId}][name]" class="h3 mb-1">${ name.val() }</div>
+                                    <div name="${addressType}[${thisId}][phone]" >${ phone.val() }</div>
+                                    <div name="${addressType}[${thisId}][full_address]" class="text-truncate">${ fullAddress.val() }</div>
                                     <div name="${addressType}[${thisId}][is_default]" hidden="">${ addresses.children().length+1 == 1 ? `true` : `false` }</div>
                                 </div>
                             </div>

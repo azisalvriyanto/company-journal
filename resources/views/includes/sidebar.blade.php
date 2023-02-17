@@ -61,6 +61,27 @@
                             ]
                         ];
 
+                        $groups['purchase-order'] = [
+                            'name'          => 'Purchase',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Purchase Order',
+                                    'icon'          => 'bi-bezier2',
+                                    'url'           => route('purchase-orders.index'),
+                                    'route'         => 'purchase-orders.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
                         $groups['operating-cost-tarnsaction'] = [
                             'name'          => 'Operating Cost',
                             'permissions'   => [
