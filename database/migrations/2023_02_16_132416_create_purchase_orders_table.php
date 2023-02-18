@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('monthly_journal_id')->references('id')->on('monthly_journals')->onUpdate('cascade')->onDelete('cascade');
 
             $table->datetime('transaction_time')->nullable();
-            $table->datetime('transaction_due_time')->nullable();
+            $table->datetime('order_deadline')->nullable();
 
             $table->foreignUuid('payment_term_id')->index();
             $table->foreign('payment_term_id')->references('id')->on('payment_terms')->onUpdate('cascade')->onDelete('cascade');
@@ -36,11 +36,6 @@ return new class extends Migration
 
             $table->text('note')->nullable();
 
-            $table->double('subtotal', 50, 10)->default(0);
-            $table->double('total_discount', 50, 10)->default(0);
-            $table->double('total_tax', 50, 10)->default(0);
-            $table->double('total_tax_value', 50, 10)->default(0);
-            $table->string('total_tax_type', 50, 10)->default('Percent');
             $table->double('total_purchase', 50, 10)->default(0);
 
             $table->foreignUuid('status_id')->index();

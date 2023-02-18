@@ -22,7 +22,7 @@ class PurchaseOrderController extends Controller
             ->with([
                 'monthlyJournal',
                 'status',
-                'supplier'
+                'vendor'
             ])
             ->select(['purchase_orders.*'])
             ->whereRelation('monthlyJournal', 'owner_id', $owner->id);
@@ -31,20 +31,8 @@ class PurchaseOrderController extends Controller
             ->editColumn('transaction_time', function ($query) {
                 return '<a class="text-primary" href="' . route('purchase-orders.show', $query->id) . '">' . date('Y-m-d', strtotime($query->transaction_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_time)) . '</div>' . '</a>';
             })
-            ->editColumn('transaction_due_time', function ($query) {
-                return $query->paymentTerm->name . ' / ' . date('Y-m-d', strtotime($query->transaction_due_time)) . '<div class="small">' . date('l, F j, Y', strtotime($query->transaction_due_time)) . '</div>';
-            })
-            ->editColumn('subtotal', function ($query) {
-                return number_format($query->subtotal, 0, '.', ',');
-            })
-            ->editColumn('total_shipping', function ($query) {
-                return number_format($query->total_shipping, 0, '.', ',');
-            })
-            ->editColumn('total_discount', function ($query) {
-                return number_format($query->total_discount, 0, '.', ',');
-            })
-            ->editColumn('total_tax', function ($query) {
-                return number_format($query->total_tax, 0, '.', ',');
+            ->editColumn('order_deadline', function ($query) {
+                return date('Y-m-d', strtotime($query->order_deadline)) . '<div class="small">' . date('l, F j, Y', strtotime($query->order_deadline)) . '</div>';
             })
             ->editColumn('total_purchase', function ($query) {
                 return number_format($query->total_purchase, 0, '.', ',');
@@ -118,11 +106,29 @@ class PurchaseOrderController extends Controller
                     return number_format($query->total_price, 10, '.', ',');
                 },
             ])
-            ->rawColumns(['transaction_time', 'transaction_due_time', 'code', 'total_price', 'total_shipping', 'status.name', 'actions'])
+            ->rawColumns(['transaction_time', 'order_deadline', 'code', 'total_price', 'total_shipping', 'status.name', 'actions'])
             ->addIndexColumn()
             ->toJson();
         }
 
         return view('purchase-orders.index', $data);
+    }
+
+    public function create()
+    {
+        $owner = auth()->user()->parentCompany;
+        $data['paymentTerms'] = PaymentTerm::query()
+        ->whereIn('payment_terms.owner_id', [
+            $owner->id,
+            $owner->parent_company_id
+        ])->orderBy('value')->get()->all();
+
+        return view('purchase-orders.create', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $query = new PurchaseOrders;
+        return response()->json($query->store($request));
     }
 }

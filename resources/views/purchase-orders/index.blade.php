@@ -116,8 +116,8 @@
                         "className": "text-end"
                     },
                     {
-                        "data": "transaction_due_time",
-                        "name": "transaction_due_time",
+                        "data": "order_deadline",
+                        "name": "order_deadline",
                         "className": "text-end"
                     },
                     {
@@ -127,21 +127,6 @@
                     {
                         "data": "code",
                         "name": "code"
-                    },
-                    {
-                        "data": "subtotal",
-                        "name": "subtotal",
-                        "className": "text-end"
-                    },
-                    {
-                        "data": "total_discount",
-                        "name": "total_discount",
-                        "className": "text-end"
-                    },
-                    {
-                        "data": "total_tax",
-                        "name": "total_tax",
-                        "className": "text-end"
                     },
                     {
                         "data": "total_purchase",
@@ -169,13 +154,10 @@
                 <tr>
                     <th rowspan="2">No</th>
                     <th rowspan="1">Time</th>
-                    <th rowspan="1">Due Time</th>
+                    <th rowspan="1">Order Deadline</th>
                     <th rowspan="1">Vendor</th>
                     <th rowspan="1">Code</th>
-                    <th rowspan="1">Subtotal</th>
-                    <th rowspan="1">Total Discount</th>
-                    <th rowspan="1">Total Tax</th>
-                    <th rowspan="1">Total Bill</th>
+                    <th rowspan="1">Total Purchase</th>
                     <th rowspan="1">Status</th>
                     <th rowspan="2">Actions</th>
                 </tr>
@@ -201,20 +183,8 @@
                             placeholder="Search..." data-id="5">
                     </th>
                     <th>
-                        <input type="text" class="form-control form-control-sm datatable-search text-end"
-                            placeholder="Search..." data-id="6">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search text-end"
-                            placeholder="Search..." data-id="7">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control form-control-sm datatable-search text-end"
-                            placeholder="Search..." data-id="8">
-                    </th>
-                    <th>
                         <div class="tom-select-custom">
-                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="9" data-target-table="datatablePurchaseOrder" data-hs-tom-select-options='{
+                            <select class="js-select js-datatable-filter form-select form-select-sm form-select-borderless p-0" autocomplete="off" data-target-column-index="6" data-target-table="datatablePurchaseOrder" data-hs-tom-select-options='{
                                 "searchInDropdown": false,
                                 "hideSearch": true
                             }'>
