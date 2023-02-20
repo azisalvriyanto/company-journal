@@ -131,4 +131,23 @@ class PurchaseOrderController extends Controller
         $query = new PurchaseOrders;
         return response()->json($query->store($request));
     }
+
+    public function edit($id)
+    {
+        $data['query'] = PurchaseOrder::query()->findOrFail($id);
+        $owner = auth()->user()->parentCompany;
+        $data['paymentTerms'] = PaymentTerm::query()
+        ->whereIn('payment_terms.owner_id', [
+            $owner->id,
+            $owner->parent_company_id
+        ])->orderBy('value')->get()->all();
+
+        return view('purchase-orders.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $query = new PurchaseOrders;
+        return response()->json($query->update($request, $id));
+    }
 }

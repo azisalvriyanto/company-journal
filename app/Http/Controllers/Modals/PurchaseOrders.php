@@ -141,7 +141,7 @@ class PurchaseOrders extends Controller
     {
         $validator = Validator::make($request->all(), [
             'time'              => 'required|string',
-            'due_time'          => 'required|string',
+            'order_deadline'    => 'required|string',
             'payment_term'      => 'required|exists:payment_terms,id',
             'vendor'            => 'required|exists:users,id',
             'vendor_address'    => 'required|exists:contacts,id',
