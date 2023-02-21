@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Purchase Order')
+@section('title', 'Edit ' . $query->vendor->name . ' Transaction on ' . date('F j, Y', strtotime($query->transaction_time)))
 
 @section('list-separator')
 <li class="list-inline-item">
@@ -21,7 +21,12 @@
     <div class="col-lg-12 mb-3 mb-lg-0">
         <div class="card mb-3 mb-lg-5">
             <div class="card-header">
-                <h4 class="card-header-title">Purchase order information</h4>
+                <h4 class="float-start card-header-title">Purchase order information</h4>
+
+                <span class="float-end badge {{ $query->status->background_color . ' ' . $query->status->font_color }}" style="min-width: 100px;">
+                    <span class="legend-indicator {{ str_replace('soft-', '', $query->status->background_color) }}"></span>
+                    {{ $query->status->name }}
+                </span>
             </div>
 
             <div class="card-body">

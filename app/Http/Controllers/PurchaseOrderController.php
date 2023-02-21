@@ -132,6 +132,14 @@ class PurchaseOrderController extends Controller
         return response()->json($query->store($request));
     }
 
+    public function show($id)
+    {
+        $data['query'] = PurchaseOrder::query()->findOrFail($id);
+        $data['statuses'] = collect(PurchaseOrder::STATUSES())->keyBy('name');
+
+        return view('purchase-orders.show', $data);
+    }
+
     public function edit($id)
     {
         $data['query'] = PurchaseOrder::query()->findOrFail($id);
@@ -149,5 +157,17 @@ class PurchaseOrderController extends Controller
     {
         $query = new PurchaseOrders;
         return response()->json($query->update($request, $id));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $query = new PurchaseOrders;
+        return response()->json($query->updateStatus($request, $id));
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $query = new PurchaseOrders;
+        return response()->json($query->destroy($request, $id));
     }
 }
