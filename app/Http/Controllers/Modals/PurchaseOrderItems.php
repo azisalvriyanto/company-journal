@@ -25,10 +25,10 @@ class PurchaseOrderItems extends Controller
                     try {
                         DB::beginTransaction();
 
-                        $purchaseOrderIds = $query->purchaseOrderItems->pluck('id', 'id')->toArray();
+                        $purchaseOrderItemIds = $query->purchaseOrderItems->pluck('id', 'id')->toArray();
                         if ($request->purchase_order_items) {
                             foreach($request->purchase_order_items as $purchaseOrderItemId => $purchaseOrderItem) {
-                                if (in_array($purchaseOrderItemId, $purchaseOrderIds)) {
+                                if (in_array($purchaseOrderItemId, $purchaseOrderItemIds)) {
                                     $queryPurchaseOrderItem                 = PurchaseOrderItem::query()->find($purchaseOrderItemId);
                                 } else {
                                     $queryPurchaseOrderItem                 = new PurchaseOrderItem;
@@ -42,16 +42,16 @@ class PurchaseOrderItems extends Controller
                                 $queryPurchaseOrderItem->note               = array_key_exists('note', $purchaseOrderItem) ? $purchaseOrderItem['note'] : NULL;
                                 $queryPurchaseOrderItem->save();
 
-                                if (in_array($queryPurchaseOrderItem->id, $purchaseOrderIds)) {
-                                    unset($purchaseOrderIds[$queryPurchaseOrderItem->id]);
+                                if (in_array($queryPurchaseOrderItem->id, $purchaseOrderItemIds)) {
+                                    unset($purchaseOrderItemIds[$queryPurchaseOrderItem->id]);
                                 }
                             }
                         }
 
-                        if ($purchaseOrderIds) {
+                        if ($purchaseOrderItemIds) {
                             PurchaseOrderItem::query()
                             ->wherePurchaseOrderId($purchaseOrderId)
-                            ->whereIn('id', $purchaseOrderIds)
+                            ->whereIn('id', $purchaseOrderItemIds)
                             ->delete();
                         }
 

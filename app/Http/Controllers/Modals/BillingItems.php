@@ -25,10 +25,14 @@ class BillingItems extends Controller
                     try {
                         DB::beginTransaction();
 
-                        $billingIds = $query->billingItems->pluck('id', 'id')->toArray();
+                        $billingItemIds = $query->billingItems->pluck('id', 'id')->toArray();
                         if ($request->billing_items) {
-                            foreach($request->billing_items as $billingItem) {
-                                $queryBillingItem               = new BillingItem;
+                            foreach($request->billing_items as $billingItemId => $billingItem) {
+                                if (in_array($billingItemId, $billingItemIds)) {
+                                    $queryBillingItem           = BillingItem::query()->find($billingItemId);
+                                } else {
+                                    $queryBillingItem           = new BillingItem;
+                                }
                                 $queryBillingItem->billing_id   = $billingId;
                                 $queryBillingItem->item_id      = array_key_exists('item', $billingItem) ? $billingItem['item'] : NULL;
                                 $queryBillingItem->quantity     = number_format((double) filter_var(array_key_exists('quantity', $billingItem)    ? $billingItem['quantity']   : 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) ?? 0, 10, '.', '');
@@ -37,16 +41,16 @@ class BillingItems extends Controller
                                 $queryBillingItem->note         = array_key_exists('note', $billingItem) ? $billingItem['note'] : NULL;
                                 $queryBillingItem->save();
 
-                                if (in_array($queryBillingItem->id, $billingIds)) {
-                                    unset($billingIds[$queryBillingItem->id]);
+                                if (in_array($queryBillingItem->id, $billingItemIds)) {
+                                    unset($billingItemIds[$queryBillingItem->id]);
                                 }
                             }
                         }
 
-                        if ($billingIds) {
+                        if ($billingItemIds) {
                             BillingItem::query()
                             ->whereBillingId($billingId)
-                            ->whereIn('id', $billingIds)
+                            ->whereIn('id', $billingItemIds)
                             ->delete();
                         }
 
