@@ -358,7 +358,7 @@ class PurchaseOrders extends Controller
                                 'monthlyJournal',
                                 'status',
                             ])
-                            ->select(['operating_cost_transactions.*'])
+                            ->select(['purchase_orders.*'])
                             ->whereRelation('monthlyJournal', 'owner_id', $monthlyJournal['data']->owner->id)
                             ->whereDate('created_at', '>', $query->created_at)
                             ->get();
