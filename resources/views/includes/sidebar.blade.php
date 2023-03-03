@@ -82,6 +82,27 @@
                             ]
                         ];
 
+                        $groups['invoice'] = [
+                            'name'          => 'Invoice',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Invoice',
+                                    'icon'          => 'bi-bezier2',
+                                    'url'           => route('invoices.index'),
+                                    'route'         => 'invoices.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
                         $groups['operating-cost-tarnsaction'] = [
                             'name'          => 'Operating Cost',
                             'permissions'   => [
