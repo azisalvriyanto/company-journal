@@ -22,8 +22,8 @@ class SalesOrders extends Controller
             'time'              => 'required|string',
             'order_deadline'    => 'required|string',
             'payment_term'      => 'required|exists:payment_terms,id',
-            'vendor'            => 'required|exists:users,id',
-            'vendor_address'    => 'required|exists:contacts,id',
+            'customer'          => 'required|exists:users,id',
+            'customer_address'  => 'required|exists:contacts,id',
             'internal_code'     => 'nullable|string',
             'note'              => 'nullable|string',
         ]);
@@ -45,7 +45,7 @@ class SalesOrders extends Controller
                     $paymentTerm = PaymentTerm::query()
                     ->find($request->payment_term);
                     if ($paymentTerm) {
-                        $vendor = User::query()
+                        $customer = User::query()
                         ->with([
                             'billingAddress',
                             'billingAddresses',
@@ -58,19 +58,19 @@ class SalesOrders extends Controller
                         ->whereHas('ownerTypes', function($query) {
                             $query->where('name', 'Customer');
                         })
-                        ->whereId($request->vendor)
+                        ->whereId($request->customer)
                         ->first();
-                        if ($vendor) {
-                            $vendorAddress = $vendor->billingAddresses->where('id', $request->vendor_address)->first();
-                            if ($vendorAddress) {
+                        if ($customer) {
+                            $customerAddress = $customer->billingAddresses->where('id', $request->customer_address)->first();
+                            if ($customerAddress) {
                                 $query                      = new SalesOrder;
                                 $query->monthly_journal_id  = $monthlyJournal['data']->id;
                                 $query->transaction_time    = $time;
                                 $query->order_deadline      = date('Y-m-d 00:00:00', strtotime($request->order_deadline));
                                 $query->payment_term_id     = $paymentTerm->id;
                                 $query->internal_code       = $request->internal_code ?? NULL;
-                                $query->vendor_id           = $vendor->id;
-                                $query->vendor_address_id   = $vendorAddress->id;
+                                $query->customer_id         = $customer->id;
+                                $query->customer_address_id = $customerAddress->id;
                                 $query->note                = $request->note ?? NULL;
                                 $query->status_id           = Status::query()->whereName('Draft')->whereIsEnable(TRUE)->first()->id;
                                 $query->save();
@@ -143,8 +143,8 @@ class SalesOrders extends Controller
             'time'              => 'required|string',
             'order_deadline'    => 'required|string',
             'payment_term'      => 'required|exists:payment_terms,id',
-            'vendor'            => 'required|exists:users,id',
-            'vendor_address'    => 'required|exists:contacts,id',
+            'customer'          => 'required|exists:users,id',
+            'customer_address'  => 'required|exists:contacts,id',
             'internal_code'     => 'nullable|string',
             'note'              => 'nullable|string',
         ]);
@@ -168,7 +168,7 @@ class SalesOrders extends Controller
                         $paymentTerm = PaymentTerm::query()
                         ->find($request->payment_term);
                         if ($paymentTerm) {
-                            $vendor = User::query()
+                            $customer = User::query()
                             ->with([
                                 'billingAddress',
                                 'billingAddresses',
@@ -181,17 +181,17 @@ class SalesOrders extends Controller
                             ->whereHas('ownerTypes', function($query) {
                                 $query->where('name', 'Customer');
                             })
-                            ->whereId($request->vendor)
+                            ->whereId($request->customer)
                             ->first();
-                            if ($vendor) {
-                                $vendorAddress = $vendor->billingAddresses->where('id', $request->vendor_address)->first();
-                                if ($vendorAddress) {
+                            if ($customer) {
+                                $customerAddress = $customer->billingAddresses->where('id', $request->customer_address)->first();
+                                if ($customerAddress) {
                                     $query->monthly_journal_id  = $monthlyJournal['data']->id;
                                     $query->transaction_time    = $time;
                                     $query->order_deadline      = date('Y-m-d 00:00:00', strtotime($request->order_deadline));
                                     $query->payment_term_id     = $paymentTerm->id;
-                                    $query->vendor_id           = $vendor->id;
-                                    $query->vendor_address_id   = $vendorAddress->id;
+                                    $query->customer_id         = $customer->id;
+                                    $query->customer_address_id = $customerAddress->id;
                                     $query->internal_code       = $request->internal_code ?? NULL;
                                     $query->note                = $request->note ?? NULL;
                                     $query->status_id           = Status::query()->whereName('Draft')->whereIsEnable(TRUE)->first()->id;
