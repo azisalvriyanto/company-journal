@@ -61,7 +61,7 @@
                             ]
                         ];
 
-                        $groups['purchase-order'] = [
+                        $groups['purchase'] = [
                             'name'          => 'Purchase',
                             'permissions'   => [
                                 auth()->user()->hasRole('admin'),
@@ -94,6 +94,27 @@
                                     'icon'          => 'bi-bezier2',
                                     'url'           => route('invoices.index'),
                                     'route'         => 'invoices.',
+                                    'permissions'   => [
+                                        auth()->user()->hasRole('admin'),
+                                        auth()->user()->hasRole('user'),
+                                    ],
+                                    'sub_menus'     => NULL
+                                ],
+                            ]
+                        ];
+
+                        $groups['sales'] = [
+                            'name'          => 'Sales',
+                            'permissions'   => [
+                                auth()->user()->hasRole('admin'),
+                                auth()->user()->hasRole('user'),
+                            ],
+                            'menus'         => [
+                                [
+                                    'name'          => 'Sales Order',
+                                    'icon'          => 'bi-bezier2',
+                                    'url'           => route('sales-orders.index'),
+                                    'route'         => 'sales-orders.',
                                     'permissions'   => [
                                         auth()->user()->hasRole('admin'),
                                         auth()->user()->hasRole('user'),
