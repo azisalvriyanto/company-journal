@@ -25,6 +25,10 @@ Route::middleware(["auth"])->group(function () {
     Route::put('invoices/{operating_cost_transaction}/status', [App\Http\Controllers\InvoiceController::class, 'updateStatus'])->name('invoices.status');
     Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
 
+    Route::resource('sales-orders.items', App\Http\Controllers\SalesOrderItemController::class);
+    Route::put('sales-orders/{sales_order}/status', [App\Http\Controllers\SalesOrderController::class, 'updateStatus'])->name('sales-orders.status');
+    Route::resource('sales-orders', App\Http\Controllers\SalesOrderController::class);
+
     Route::resource('operating-cost-transactions.details', App\Http\Controllers\OperatingCostTransactionDetailController::class);
     Route::put('operating-cost-transactions/{operating_cost_transaction}/status', [App\Http\Controllers\OperatingCostTransactionController::class, 'updateStatus'])->name('operating-cost-transactions.status');
     Route::resource('operating-cost-transactions', App\Http\Controllers\OperatingCostTransactionController::class);
