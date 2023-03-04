@@ -21,6 +21,8 @@ Route::middleware(["auth"])->group(function () {
     Route::put('purchase-orders/{purchase_order}/status', [App\Http\Controllers\PurchaseOrderController::class, 'updateStatus'])->name('purchase-orders.status');
     Route::resource('purchase-orders', App\Http\Controllers\PurchaseOrderController::class);
 
+    Route::resource('invoices.items', App\Http\Controllers\InvoiceItemController::class);
+    Route::put('invoices/{operating_cost_transaction}/status', [App\Http\Controllers\InvoiceController::class, 'updateStatus'])->name('invoices.status');
     Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
 
     Route::resource('operating-cost-transactions.details', App\Http\Controllers\OperatingCostTransactionDetailController::class);
